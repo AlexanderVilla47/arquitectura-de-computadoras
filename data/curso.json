@@ -1,7 +1,7 @@
 {
   "curso": "Arquitectura de Computadoras",
   "subtitulo": "UTN FRRE · Dictado Especial · Segundo Cuatrimestre 2026",
-  "generado": "2026-09-15T13:25:06.378Z",
+  "generado": "2026-09-15T13:48:01.315Z",
   "pendientes": [],
   "secciones": [
     {
@@ -972,6 +972,13 @@
         },
         {
           "tipo": "pdf",
+          "titulo": "1er PARCIAL",
+          "archivo": "Recursos Extras/Finales/1er_PARCIAL.pdf",
+          "ext": "pdf",
+          "bytes": 25220162
+        },
+        {
+          "tipo": "pdf",
           "titulo": "2do parcial resuelto",
           "archivo": "Recursos Extras/Finales/2do parcial resuelto (1).pdf",
           "ext": "pdf",
@@ -983,6 +990,13 @@
           "archivo": "Recursos Extras/Finales/3er parcial resuelto.pdf",
           "ext": "pdf",
           "bytes": 7477961
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "09. Compilado 1er parcial",
+          "archivo": "Recursos Extras/Finales/09. Compilado 1er parcial.pdf",
+          "ext": "pdf",
+          "bytes": 5461404
         },
         {
           "tipo": "pdf",
@@ -1058,20 +1072,6 @@
       "subtitulo": "Compilados y guías resueltas",
       "ruta": "Recursos Extras",
       "items": [
-        {
-          "tipo": "pdf",
-          "titulo": "1er PARCIAL",
-          "archivo": "Recursos Extras/1er_PARCIAL.pdf",
-          "ext": "pdf",
-          "bytes": 25220162
-        },
-        {
-          "tipo": "pdf",
-          "titulo": "09. Compilado 1er parcial",
-          "archivo": "Recursos Extras/09. Compilado 1er parcial.pdf",
-          "ext": "pdf",
-          "bytes": 5461404
-        },
         {
           "tipo": "pdf",
           "titulo": "EJERCICIOS RESUELTOS DE SECUENCIALES",

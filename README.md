@@ -334,8 +334,10 @@ Planificación de 16 semanas.
 <summary><b>Finales y Parciales Resueltos</b> — _Exámenes resueltos_</summary>
 
 - [1er parcial resuelto](Recursos%20Extras/Finales/1er%20parcial%20resuelto.pdf)
+- [1er PARCIAL](Recursos%20Extras/Finales/1er_PARCIAL.pdf)
 - [2do parcial resuelto](Recursos%20Extras/Finales/2do%20parcial%20resuelto%20(1).pdf)
 - [3er parcial resuelto](Recursos%20Extras/Finales/3er%20parcial%20resuelto.pdf)
+- [09. Compilado 1er parcial](Recursos%20Extras/Finales/09.%20Compilado%201er%20parcial.pdf)
 - [EJ1 PARCIAL](Recursos%20Extras/Finales/EJ1_PARCIAL.pdf)
 - [Ejercicio 2](Recursos%20Extras/Finales/Ejercicio%202.pdf)
 - [EJERCICIO Alarma](Recursos%20Extras/Finales/EJERCICIO_Alarma.pdf)
@@ -351,8 +353,6 @@ Planificación de 16 semanas.
 <details>
 <summary><b>Práctica Extra</b> — _Compilados y guías resueltas_</summary>
 
-- [1er PARCIAL](Recursos%20Extras/1er_PARCIAL.pdf)
-- [09. Compilado 1er parcial](Recursos%20Extras/09.%20Compilado%201er%20parcial.pdf)
 - [EJERCICIOS RESUELTOS DE SECUENCIALES](Recursos%20Extras/EJERCICIOS%20RESUELTOS%20DE%20SECUENCIALES.pdf)
 - [Ejercicios LogicaCombinacional](Recursos%20Extras/Ejercicios_LogicaCombinacional.pdf)
 - [GuiaPracticaResueltaArquitectura](Recursos%20Extras/GuiaPracticaResueltaArquitectura.pdf)
