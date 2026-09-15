@@ -1398,9 +1398,30 @@ function main() {
     );
   }
 
+  // GitHub Pages sirve desde la raíz del repo: sin esto habría que entrar a
+  // /site/ a mano. El meta refresh anda igual abriendo el archivo con file://.
+  fs.writeFileSync(
+    path.join(RAIZ, 'index.html'),
+    `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="refresh" content="0; url=site/index.html">
+<link rel="canonical" href="site/index.html">
+<title>${esc(curso.curso)}</title>
+</head>
+<body>
+<p>Redirigiendo al aula… si no pasa nada, entrá a <a href="site/index.html">site/index.html</a>.</p>
+</body>
+</html>
+`,
+    'utf8',
+  );
+
   const readmeOk = actualizarReadme(curso);
 
   console.log('\nSitio generado en site/');
+  console.log('  index.html             (redireccion para GitHub Pages)');
   console.log('  site/index.html');
   console.log('  site/estilos.css');
   console.log(`  site/secciones/*.html  (${orden.length} páginas)`);
