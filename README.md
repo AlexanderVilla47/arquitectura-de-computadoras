@@ -100,16 +100,12 @@ original sin tocar está en `_NoPublicar/Originales/`.
 
 ### Qué NO se publica
 
-La carpeta `_NoPublicar/` está en el `.gitignore`: sigue en tu disco, pero no
-viaja a GitHub ni aparece en el sitio.
 
 - **`_NoPublicar/Libros/`** — libros comerciales con derechos de autor
   (Stallings, Quiroga, Meinadier). Este repo es **público**: subirlos sería
   redistribuirlos, y eso puede terminar en un takedown de GitHub sobre la cuenta.
   Como material de estudio personal no hay problema — por eso quedan afuera del
   repo y no borrados.
-- **`_NoPublicar/Originales/`** — originales sin comprimir de archivos que sí
-  están en el repo en versión liviana.
 
 `npm run scan` te avisa cada vez que aparece un archivo que se pasa del límite.
 
