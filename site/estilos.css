@@ -1,0 +1,854 @@
+/* =========================================================================
+   Aula · Arquitectura de Computadoras — UTN FRRE
+   Generado por scripts/build.mjs. No editar a mano: se pisa en cada build.
+
+   Dirección: "blueprint de circuito". Malla técnica de fondo, DIN de
+   ingeniería en los títulos, monoespaciada en toda la metadata, y un
+   gradiente cian -> violeta que recorre las 8 unidades del cursado.
+   ========================================================================= */
+
+:root {
+  /* Sin CDN no hay webfonts: exprimimos las familias locales con más carácter.
+     Bahnschrift es la DIN 1451 que trae Windows — tipografía de señalética
+     e ingeniería. Cascadia/Consolas para los números. */
+  --display: "Bahnschrift", "DIN Alternate", "Oswald", "Segoe UI Variable Display", "Helvetica Neue", sans-serif;
+  --texto: "Segoe UI Variable Text", "Segoe UI", -apple-system, system-ui, sans-serif;
+  --mono: "Cascadia Mono", "Cascadia Code", Consolas, "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+
+  --tinta:    #e8edf5;
+  --apagado:  #8a97ad;
+  --tenue:    #5c697f;
+
+  --fondo:    #070a11;
+  --superficie: #0e131d;
+  --elevada:  #141b28;
+  --borde:    #1f2937;
+  --borde-vivo: #2b3849;
+
+  --malla:    rgba(120, 170, 220, .055);
+  --senal:    186;
+
+  --radio:    14px;
+  --shell:    1120px;
+  --lectura:  940px;
+
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    /* Contraparte en papel de calco: mismo plano, otra iluminación. */
+    --tinta:    #141a24;
+    --apagado:  #5a6779;
+    --tenue:    #8b98aa;
+
+    --fondo:    #eef1f6;
+    --superficie: #ffffff;
+    --elevada:  #f7f9fc;
+    --borde:    #d9e0ea;
+    --borde-vivo: #bcc8d8;
+
+    --malla:    rgba(30, 80, 140, .07);
+
+    color-scheme: light;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--tinta);
+  font-family: var(--texto);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* --- Malla de plano técnico + viñeta. Fija, no scrollea con el contenido. --- */
+.malla {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--malla) 1px, transparent 1px),
+    linear-gradient(90deg, var(--malla) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: radial-gradient(ellipse 85% 65% at 50% 0%, #000 20%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 0%, #000 20%, transparent 78%);
+}
+
+.resplandor {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(760px 420px at 18% -8%, hsl(var(--senal) 90% 55% / .17), transparent 62%),
+    radial-gradient(680px 400px at 88% 2%, hsl(288 85% 60% / .13), transparent 60%);
+}
+
+@media (prefers-color-scheme: light) {
+  .resplandor {
+    background:
+      radial-gradient(760px 420px at 18% -8%, hsl(var(--senal) 85% 52% / .13), transparent 62%),
+      radial-gradient(680px 400px at 88% 2%, hsl(288 80% 58% / .10), transparent 60%);
+  }
+}
+
+main, .top { position: relative; z-index: 1; }
+
+a { color: inherit; text-decoration: none; }
+
+/* =========================== Barra superior =========================== */
+
+.top {
+  border-bottom: 1px solid var(--borde);
+  background: color-mix(in srgb, var(--fondo) 82%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.top-int {
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 13px 26px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.marca { display: flex; align-items: center; gap: 11px; min-width: 0; }
+
+.marca-ico {
+  width: 30px; height: 30px;
+  flex: 0 0 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid hsl(var(--senal) 70% 50% / .4);
+  border-radius: 8px;
+  background: hsl(var(--senal) 80% 50% / .12);
+  color: hsl(var(--senal) 85% 62%);
+}
+.marca-ico svg { width: 18px; height: 18px; }
+
+.marca-txt { display: flex; flex-direction: column; line-height: 1.1; min-width: 0; }
+
+.marca-nom {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.marca-sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .14em;
+  color: var(--tenue);
+  text-transform: uppercase;
+}
+
+.miga {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: .07em;
+  color: var(--tenue);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.miga a { color: var(--apagado); transition: color .16s; }
+.miga a:hover { color: hsl(var(--senal) 85% 62%); }
+.miga .sep { color: var(--borde-vivo); }
+.miga .act {
+  color: var(--tinta);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 34ch;
+}
+
+/* ============================= Contenedor ============================= */
+
+.envoltura { max-width: var(--shell); margin: 0 auto; padding: 0 26px 96px; }
+.angosta { max-width: var(--lectura); }
+
+/* =============================== Portada ============================== */
+
+.hero { padding: 76px 0 62px; position: relative; }
+
+.kicker {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: hsl(var(--senal) 80% 62%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+/* La "traza" es un cable de circuito que sale del kicker y se pierde. */
+.kicker::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, hsl(var(--senal) 80% 55% / .55), transparent);
+  max-width: 320px;
+}
+
+.hero h1 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(34px, 6.6vw, 76px);
+  line-height: .95;
+  letter-spacing: -.022em;
+  margin: 0 0 22px;
+  text-transform: uppercase;
+}
+
+/* "de Computadoras" viaja junto: partirlo deja un "DE" huerfano feisimo. */
+.hero h1 .brillo { display: inline-block; white-space: nowrap; }
+
+.hero h1 .brillo {
+  background: linear-gradient(104deg, hsl(var(--senal) 88% 66%), hsl(288 82% 72%) 62%, hsl(38 92% 64%));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero p {
+  margin: 0;
+  max-width: 56ch;
+  color: var(--apagado);
+  font-size: 16.5px;
+  line-height: 1.68;
+}
+
+/* --- Panel de lecturas, tipo instrumental --- */
+.lecturas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+  gap: 1px;
+  margin-top: 46px;
+  background: var(--borde);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  overflow: hidden;
+}
+
+.lectura-celda { background: var(--superficie); padding: 18px 20px; }
+
+.lectura-celda .val {
+  font-family: var(--mono);
+  font-size: 27px;
+  font-weight: 600;
+  letter-spacing: -.02em;
+  color: hsl(var(--senal) 82% 64%);
+  line-height: 1.1;
+}
+
+.lectura-celda .etq {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+  color: var(--tenue);
+  margin-top: 5px;
+}
+
+/* ========================== Títulos de bloque ========================= */
+
+.bloque { margin-top: 62px; }
+
+.bloque-tit {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 22px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--borde);
+}
+
+.bloque-tit h2 {
+  font-family: var(--display);
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.bloque-tit .nota {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--tenue);
+  margin-left: auto;
+}
+
+/* ============================== Tarjetas ============================== */
+
+.rejilla { display: grid; gap: 14px; }
+.rejilla.dos { grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); }
+.rejilla.tres { grid-template-columns: repeat(auto-fit, minmax(min(268px, 100%), 1fr)); }
+
+.tarjeta {
+  --h: var(--senal);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  padding: 21px 22px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform .22s cubic-bezier(.2,.7,.3,1), border-color .22s, box-shadow .22s;
+
+  /* Entrada escalonada: el retardo lo pone build.mjs tarjeta por tarjeta. */
+  opacity: 0;
+  animation: asomar .55s cubic-bezier(.2,.7,.3,1) forwards;
+}
+
+@keyframes asomar {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tarjeta { animation: none; opacity: 1; }
+  html { scroll-behavior: auto; }
+}
+
+/* Halo que se enciende al pasar el mouse. */
+.tarjeta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(420px 150px at 0% 0%, hsl(var(--h) 85% 55% / .13), transparent 70%);
+  opacity: 0;
+  transition: opacity .24s;
+}
+
+/* Barra de señal en el borde izquierdo. */
+.tarjeta::after {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, hsl(var(--h) 88% 62%), hsl(var(--h) 88% 62% / 0));
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform .28s cubic-bezier(.2,.7,.3,1);
+}
+
+.tarjeta:hover {
+  transform: translateY(-3px);
+  border-color: hsl(var(--h) 60% 45% / .55);
+  box-shadow: 0 16px 40px -16px hsl(var(--h) 80% 30% / .6);
+}
+
+.tarjeta:hover::before { opacity: 1; }
+.tarjeta:hover::after { transform: scaleY(1); }
+
+.tarjeta:focus-visible {
+  outline: 2px solid hsl(var(--h) 85% 62%);
+  outline-offset: 3px;
+}
+
+/* Numeral gigante de fondo: la unidad se lee incluso de reojo. */
+.tarjeta .sello {
+  position: absolute;
+  right: 14px;
+  bottom: -22px;
+  z-index: -1;
+  font-family: var(--mono);
+  font-size: 86px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.05em;
+  color: hsl(var(--h) 70% 60% / .085);
+  transition: color .24s, transform .28s cubic-bezier(.2,.7,.3,1);
+}
+
+.tarjeta:hover .sello {
+  color: hsl(var(--h) 75% 62% / .16);
+  transform: translateY(-3px);
+}
+
+.tarjeta-ico {
+  flex: 0 0 42px;
+  width: 42px; height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  border: 1px solid hsl(var(--h) 60% 50% / .32);
+  background: hsl(var(--h) 80% 50% / .11);
+  color: hsl(var(--h) 85% 64%);
+  transition: background .24s, border-color .24s;
+}
+
+.tarjeta-ico svg { width: 21px; height: 21px; }
+.tarjeta:hover .tarjeta-ico { background: hsl(var(--h) 80% 50% / .19); border-color: hsl(var(--h) 65% 55% / .5); }
+
+.tarjeta-cuerpo { min-width: 0; flex: 1; }
+
+.tarjeta-etq {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: hsl(var(--h) 60% 62%);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.tarjeta-tit {
+  overflow-wrap: anywhere;
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: .012em;
+  display: block;
+  line-height: 1.25;
+}
+
+.tarjeta-meta {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--tenue);
+  display: block;
+  margin-top: 6px;
+  letter-spacing: .04em;
+}
+
+.tarjeta .ir {
+  flex: 0 0 auto;
+  font-size: 19px;
+  color: var(--tenue);
+  transition: transform .24s cubic-bezier(.2,.7,.3,1), color .24s;
+}
+
+.tarjeta:hover .ir { transform: translateX(4px); color: hsl(var(--h) 85% 64%); }
+
+/* ======================== Encabezado de sección ======================= */
+
+.enc {
+  --h: var(--senal);
+  position: relative;
+  padding: 52px 0 34px;
+  border-bottom: 1px solid var(--borde);
+  margin-bottom: 8px;
+}
+
+.enc-fila { display: flex; align-items: flex-start; gap: 22px; }
+
+.enc-num {
+  font-family: var(--mono);
+  font-size: clamp(46px, 9vw, 74px);
+  font-weight: 700;
+  line-height: .86;
+  letter-spacing: -.055em;
+  color: hsl(var(--h) 85% 62%);
+  flex: 0 0 auto;
+  text-shadow: 0 0 44px hsl(var(--h) 90% 55% / .45);
+}
+
+.enc h1 {
+  overflow-wrap: anywhere;
+  font-family: var(--display);
+  font-size: clamp(25px, 4.2vw, 40px);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -.012em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.enc .sub {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+  color: hsl(var(--h) 55% 64%);
+  display: block;
+  margin-bottom: 9px;
+}
+
+.enc .conteo {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--tenue);
+  margin-top: 12px;
+  display: block;
+}
+
+/* ========================== Listado de material ======================= */
+
+.lista { list-style: none; margin: 0; padding: 0; }
+
+.lista li { border-bottom: 1px solid var(--borde); }
+.lista li:last-child { border-bottom: 0; }
+
+.fila {
+  --h: 220;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 15px 16px;
+  margin: 0 -16px;
+  border-radius: 11px;
+  position: relative;
+  transition: background .17s;
+}
+
+.fila:hover { background: var(--elevada); }
+
+.fila:focus-visible {
+  outline: 2px solid hsl(var(--h) 85% 62%);
+  outline-offset: -2px;
+}
+
+.fila-ico {
+  flex: 0 0 38px;
+  width: 38px; height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  border: 1px solid hsl(var(--h) 55% 50% / .26);
+  background: hsl(var(--h) 75% 50% / .09);
+  color: hsl(var(--h) 80% 64%);
+  transition: background .17s, border-color .17s, transform .22s cubic-bezier(.2,.7,.3,1);
+}
+
+.fila-ico svg { width: 19px; height: 19px; }
+
+.fila:hover .fila-ico {
+  background: hsl(var(--h) 75% 50% / .17);
+  border-color: hsl(var(--h) 60% 55% / .45);
+  transform: scale(1.06);
+}
+
+.fila-cuerpo { min-width: 0; flex: 1; }
+
+.fila-nom {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 14.8px;
+  line-height: 1.4;
+  color: var(--tinta);
+  transition: color .17s;
+}
+
+.fila:hover .fila-nom { color: hsl(var(--h) 80% 68%); }
+
+.fila-pie {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--tenue);
+  margin-top: 3px;
+}
+
+.fila-meta {
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .07em;
+  color: var(--tenue);
+  text-transform: uppercase;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.fila-meta .accion {
+  opacity: 0;
+  color: hsl(var(--h) 80% 64%);
+  transition: opacity .17s;
+  font-size: 13px;
+}
+
+.fila:hover .fila-meta .accion { opacity: 1; }
+
+/* Índice numerado de los videos. */
+.fila-n {
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--tenue);
+  width: 2.2ch;
+  text-align: right;
+}
+
+/* Archivo que ya no está en disco. */
+.falta { opacity: .45; }
+.falta .fila-nom { text-decoration: line-through; }
+
+.aviso {
+  display: inline-block;
+  margin-left: 9px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  background: hsl(38 80% 50% / .14);
+  color: hsl(38 85% 62%);
+  border: 1px solid hsl(38 70% 50% / .32);
+  vertical-align: middle;
+}
+
+/* ====================== Agrupador dentro de sección =================== */
+
+.grupo {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin: 38px 0 6px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .19em;
+  text-transform: uppercase;
+  color: hsl(var(--h, 186) 55% 62%);
+}
+
+.grupo::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--borde-vivo), transparent);
+}
+
+.grupo:first-of-type { margin-top: 26px; }
+
+/* ========================= Tabla del cronograma ======================= */
+
+.meta-crono {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin: 26px 0 30px;
+}
+
+.pastilla {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  border: 1px solid var(--borde);
+  background: var(--superficie);
+  border-radius: 999px;
+  padding: 6px 14px;
+  color: var(--apagado);
+}
+
+.pastilla b { color: var(--tinta); font-weight: 600; }
+
+.tabla-caja {
+  overflow-x: auto;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: var(--superficie);
+}
+
+table { border-collapse: collapse; width: 100%; font-size: 14px; min-width: 600px; }
+
+thead th {
+  text-align: left;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--borde);
+  background: var(--elevada);
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+  color: var(--tenue);
+  white-space: nowrap;
+}
+
+tbody td { padding: 14px 16px; border-bottom: 1px solid var(--borde); vertical-align: top; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr { transition: background .16s; }
+tbody tr:hover { background: var(--elevada); }
+
+.celda-sem { width: 58px; }
+
+.sem {
+  display: grid;
+  place-items: center;
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  /* El matiz avanza con la semana: la tabla dibuja el arco del cuatrimestre. */
+  color: hsl(var(--h) 85% 64%);
+  background: hsl(var(--h) 80% 50% / .12);
+  border: 1px solid hsl(var(--h) 60% 50% / .28);
+}
+
+.unidad {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: .03em;
+  color: var(--tinta);
+  white-space: nowrap;
+}
+
+.teoria { color: var(--apagado); }
+
+.practica {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--tenue);
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+
+.tag-video {
+  display: inline-block;
+  margin-left: 8px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .1em;
+  padding: 1px 7px;
+  border-radius: 999px;
+  color: hsl(344 80% 68%);
+  background: hsl(344 80% 55% / .13);
+  border: 1px solid hsl(344 70% 55% / .3);
+  vertical-align: middle;
+}
+
+/* ============================ Pie de sección ========================== */
+
+.nav-pies {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 13px;
+  margin-top: 52px;
+}
+
+.nav-pies .hueco { visibility: hidden; }
+
+.salto {
+  min-width: 0;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: var(--superficie);
+  padding: 16px 19px;
+  transition: border-color .2s, transform .2s cubic-bezier(.2,.7,.3,1), background .2s;
+  display: block;
+}
+
+.salto:hover {
+  border-color: var(--borde-vivo);
+  background: var(--elevada);
+  transform: translateY(-2px);
+}
+
+.salto .etq {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+  color: var(--tenue);
+  margin-bottom: 5px;
+}
+
+.salto .nom {
+  overflow-wrap: anywhere;
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  display: block;
+  line-height: 1.25;
+}
+
+.salto.der { text-align: right; }
+
+.pie-sitio {
+  margin-top: 74px;
+  padding-top: 26px;
+  border-top: 1px solid var(--borde);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--tenue);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.vacio {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--tenue);
+  padding: 30px 0;
+}
+
+/* ============================== Responsive ============================ */
+
+@media (max-width: 720px) {
+  .envoltura, .top-int { padding-left: 18px; padding-right: 18px; }
+  .hero { padding: 48px 0 38px; }
+  .miga .act { display: none; }
+  .enc-fila { flex-direction: column; gap: 12px; }
+  .enc-num { font-size: 44px; }
+  .nav-pies { grid-template-columns: minmax(0, 1fr); }
+  .nav-pies .hueco { display: none; }
+  .fila { gap: 13px; padding: 14px 12px; margin: 0 -12px; }
+  .fila-meta .tam { display: none; }
+  .tarjeta .sello { font-size: 68px; }
+}
+
+@media (max-width: 420px) {
+  .fila-meta { display: none; }
+
+  /* El nowrap evita el "DE" huerfano, pero abajo de 420px "DE COMPUTADORAS"
+     ya no entra en la pantalla: ahi preferimos que corte antes que desbordar. */
+  .hero h1 .brillo { white-space: normal; }
+}
+
+@media print {
+  .malla, .resplandor, .top, .nav-pies { display: none; }
+  body { background: #fff; color: #000; }
+}

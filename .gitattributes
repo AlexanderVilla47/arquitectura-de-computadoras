@@ -1,0 +1,15 @@
+# Normaliza finales de línea en texto y evita que Git toque los binarios.
+* text=auto eol=lf
+
+*.pdf   binary
+*.docx  binary
+*.xlsx  binary
+*.pptx  binary
+*.zip   binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+
+# El sitio es generado: que no ensucie los diffs de los PR.
+site/** linguist-generated=true
+data/curso.json linguist-generated=true

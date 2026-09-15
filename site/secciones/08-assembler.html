@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8. Assembler · Arquitectura de Computadoras</title>
+<meta name="color-scheme" content="dark light">
+<link rel="stylesheet" href="../../site/estilos.css">
+</head>
+<body style="--senal:290">
+<div class="malla"></div>
+<div class="resplandor"></div>
+
+<header class="top">
+  <div class="top-int">
+    <a class="marca" href="../../site/index.html">
+      <span class="marca-ico"><svg viewBox="0 0 24 24" aria-hidden="true">
+<rect x="6.5" y="6.5" width="11" height="11" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="10" y="10" width="4" height="4" rx=".7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.5 3v3.5M14.5 3v3.5M9.5 17.5V21M14.5 17.5V21M3 9.5h3.5M3 14.5h3.5M17.5 9.5H21M17.5 14.5H21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></span>
+      <span class="marca-txt">
+        <span class="marca-nom">Arquitectura de Computadoras</span>
+        <span class="marca-sub">UTN FRRE · 2026 C2</span>
+      </span>
+    </a>
+    <nav class="miga"><a href="../../site/index.html">Inicio</a><span class="sep">/</span><span class="act">8. Assembler</span></nav>
+  </div>
+</header>
+
+<main class="envoltura angosta">
+  <header class="enc">
+    <div class="enc-fila">
+      <div class="enc-num">08</div>
+      <div>
+        <span class="sub">Semanas 14 a 16</span>
+        <h1>Assembler</h1>
+        <span class="conteo">12 archivos</span>
+      </div>
+    </div>
+  </header>
+  <section>
+    <ul class="lista">
+      <li><a class="fila" style="--h:38" href="../../Aula%20Cursado%20Especial/Archivos/8.%20Assembler/8086%20Material%20Complementario-20260915.zip" download>
+        
+        <span class="fila-ico"><svg viewBox="0 0 24 24" aria-hidden="true">
+<path d="M14 2.5H6.5A1.5 1.5 0 0 0 5 4v16a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 20V7.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14 2.5V7a.5.5 0 0 0 .5.5H19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.2 3v2M11.8 5v2M10.2 7v2M11.8 9v2M10.2 11v2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="9.4" y="13.4" width="3.2" height="4.2" rx=".9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></span>
+        <span class="fila-cuerpo">
+          <span class="fila-nom">8086 Material Complementario-20260915</span>
+          
+        </span>
+        <span class="fila-meta"><span>ZIP</span><span class="tam">7,7 MB</span><span class="accion">↓</span></span>
+      </a></li>
+      <li><a class="fila" style="--h:6" href="../../Aula%20Cursado%20Especial/Archivos/8.%20Assembler/Assembler%20Ejercicios%20Resueltos.pdf">
+        
+        <span class="fila-ico"><svg viewBox="0 0 24 24" aria-hidden="true">
+<path d="M14 2.5H6.5A1.5 1.5 0 0 0 5 4v16a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 20V7.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14 2.5V7a.5.5 0 0 0 .5.5H19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.5 12.5h1.2a1.2 1.2 0 0 1 0 2.4H8.5zm0 4.6v-4.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.8 12.5v4.6h1a1.6 1.6 0 0 0 1.6-1.6v-1.4a1.6 1.6 0 0 0-1.6-1.6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></span>
+        <span class="fila-cuerpo">
+          <span class="fila-nom">Assembler Ejercicios Resueltos</span>
+          
+        </span>
+        <span class="fila-meta"><span>PDF</span><span class="tam">225,2 KB</span><span class="accion">→</span></span>
+      </a></li>
+      <li><a class="fila" style="--h:38" href="../../Aula%20Cursado%20Especial/Archivos/8.%20Assembler/Ejemplos%20de%20Saltos%20(1).zip" download>
+        
+        <span class="fila-ico"><svg viewBox="0 0 24 24" aria-hidden="true">
+<path d="M14 2.5H6.5A1.5 1.5 0 0 0 5 4v16a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 20V7.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14 2.5V7a.5.5 0 0 0 .5.5H19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.2 3v2M11.8 5v2M10.2 7v2M11.8 9v2M10.2 11v2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="9.4" y="13.4" width="3.2" height="4.2" rx=".9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></span>
+        <span class="fila-cuerpo">
+          <span class="fila-nom">Ejemplos de Saltos (1)</span>
+          
+        </span>
+        <span class="fila-meta"><span>ZIP</span><span class="tam">2,7 KB</span><span class="accion">↓</span></span>
+      </a></li>
+      <li><a class="fila" style="--h:38" href="../../Aula%20Cursado%20Especial/Archivos/8.%20Assembler/Ejemplos%20de%20Saltos.zip" download>
+        
+        <span class="fila-ico"><svg viewBox="0 0 24 24" aria-hidden="true">
+<path d="M14 2.5H6.5A1.5 1.5 0 0 0 5 4v16a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 20V7.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14 2.5V7a.5.5 0 0 0 .5.5H19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.2 3v2M11.8 5v2M10.2 7v2M11.8 9v2M10.2 11v2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="9.4" y="13.4" width="3.2" height="4.2" rx=".9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></span>
+        <span class="fila-cuerpo">
+          <span class="fila-nom">Ejemplos de Saltos</span>
+          
+        </span>
+        <span class="fila-meta"><span>ZIP</span><span class="tam">2,7 KB</span><span class="accion">↓</span></span>
+      </a></li>
+      <li><a class="fila" style="--h:6" href="../../Aula%20Cursado%20Especial/Archivos/8.%20Assembler/EjerciciosResueltos_basicos.pdf">
+        
+        <span class="fila-ico"><svg viewBox="0 0 24 24" aria-hidden="true">
+<path d="M14 2.5H6.5A1.5 1.5 0 0 0 5 4v16a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 20V7.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14 2.5V7a.5.5 0 0 0 .5.5H19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.5 12.5h1.2a1.2 1.2 0 0 1 0 2.4H8.5zm0 4.6v-4.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.8 12.5v4.6h1a1.6 1.6 0 0 0 1.6-1.6v-1.4a1.6 1.6 0 0 0-1.6-1.6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></span>
+        <span class="fila-cuerpo">
+          <span class="fila-nom">EjerciciosResueltos basicos</span>
+          
+        </span>
+        <span class="fila-meta"><span>PDF</span><span class="tam">126,9 KB</span><span class="accion">→</span></span>
+      </a></li>
+      <li><a class="fila" style="--h:38" href="../../Aula%20Cursado%20Especial/Archivos/8.%20Assembler/Emu8086%20Setup%20(1).zip" download>
+        
+        <span class="fila-ico"><svg viewBox="0 0 24 24" aria-hidden="true">
+<path d="M14 2.5H6.5A1.5 1.5 0 0 0 5 4v16a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 20V7.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14 2.5V7a.5.5 0 0 0 .5.5H19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.2 3v2M11.8 5v2M10.2 7v2M11.8 9v2M10.2 11v2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="9.4" y="13.4" width="3.2" height="4.2" rx=".9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></span>
+        <span class="fila-cuerpo">
+          <span class="fila-nom">Emu8086 Setup</span>
+          
+        </span>
+        <span class="fila-meta"><span>ZIP</span><span class="tam">2,8 MB</span><span class="accion">↓</span></span>
+      </a></li>
+      <li><a class="fila" style="--h:6" href="../../Aula%20Cursado%20Especial/Archivos/8.%20Assembler/emu8086.pdf">
+        
+        <span class="fila-ico"><svg viewBox="0 0 24 24" aria-hidden="true">
+<path d="M14 2.5H6.5A1.5 1.5 0 0 0 5 4v16a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 20V7.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14 2.5V7a.5.5 0 0 0 .5.5H19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.5 12.5h1.2a1.2 1.2 0 0 1 0 2.4H8.5zm0 4.6v-4.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.8 12.5v4.6h1a1.6 1.6 0 0 0 1.6-1.6v-1.4a1.6 1.6 0 0 0-1.6-1.6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></span>
+        <span class="fila-cuerpo">
+          <span class="fila-nom">emu8086</span>
+          
+        </span>
+        <span class="fila-meta"><span>PDF</span><span class="tam">635,6 KB</span><span class="accion">→</span></span>
+      </a></li>
+      <li><a class="fila" style="--h:6" href="../../Aula%20Cursado%20Especial/Archivos/8.%20Assembler/Guia%20de%20TP%20Assembler.pdf">
+        
+        <span class="fila-ico"><svg viewBox="0 0 24 24" aria-hidden="true">
+<path d="M14 2.5H6.5A1.5 1.5 0 0 0 5 4v16a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 20V7.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14 2.5V7a.5.5 0 0 0 .5.5H19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.5 12.5h1.2a1.2 1.2 0 0 1 0 2.4H8.5zm0 4.6v-4.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.8 12.5v4.6h1a1.6 1.6 0 0 0 1.6-1.6v-1.4a1.6 1.6 0 0 0-1.6-1.6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></span>
+        <span class="fila-cuerpo">
+          <span class="fila-nom">Guia de TP Assembler</span>
+          
+        </span>
+        <span class="fila-meta"><span>PDF</span><span class="tam">145,3 KB</span><span class="accion">→</span></span>
+      </a></li>
+      <li><a class="fila" style="--h:38" href="../../Aula%20Cursado%20Especial/Archivos/8.%20Assembler/PartesProgramayModosDir%20(1).zip" download>
+        
+        <span class="fila-ico"><svg viewBox="0 0 24 24" aria-hidden="true">
+<path d="M14 2.5H6.5A1.5 1.5 0 0 0 5 4v16a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 20V7.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14 2.5V7a.5.5 0 0 0 .5.5H19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.2 3v2M11.8 5v2M10.2 7v2M11.8 9v2M10.2 11v2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="9.4" y="13.4" width="3.2" height="4.2" rx=".9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></span>
+        <span class="fila-cuerpo">
+          <span class="fila-nom">PartesProgramayModosDir</span>
+          
+        </span>
+        <span class="fila-meta"><span>ZIP</span><span class="tam">1,6 KB</span><span class="accion">↓</span></span>
+      </a></li>
+      <li><a class="fila" style="--h:6" href="../../Aula%20Cursado%20Especial/Archivos/8.%20Assembler/Presentacion%208086.pdf">
+        
+        <span class="fila-ico"><svg viewBox="0 0 24 24" aria-hidden="true">
+<path d="M14 2.5H6.5A1.5 1.5 0 0 0 5 4v16a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 20V7.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14 2.5V7a.5.5 0 0 0 .5.5H19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.5 12.5h1.2a1.2 1.2 0 0 1 0 2.4H8.5zm0 4.6v-4.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.8 12.5v4.6h1a1.6 1.6 0 0 0 1.6-1.6v-1.4a1.6 1.6 0 0 0-1.6-1.6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></span>
+        <span class="fila-cuerpo">
+          <span class="fila-nom">Presentacion 8086</span>
+          
+        </span>
+        <span class="fila-meta"><span>PDF</span><span class="tam">1,2 MB</span><span class="accion">→</span></span>
+      </a></li>
+      <li><a class="fila" style="--h:152" href="../../Aula%20Cursado%20Especial/Archivos/8.%20Assembler/RESUMEN%20DIRECTIVAS%20(1).xlsx" download>
+        
+        <span class="fila-ico"><svg viewBox="0 0 24 24" aria-hidden="true">
+<path d="M14 2.5H6.5A1.5 1.5 0 0 0 5 4v16a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 20V7.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14 2.5V7a.5.5 0 0 0 .5.5H19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.6 12.5l5 4.6M13.6 12.5l-5 4.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></span>
+        <span class="fila-cuerpo">
+          <span class="fila-nom">RESUMEN DIRECTIVAS</span>
+          
+        </span>
+        <span class="fila-meta"><span>XLSX</span><span class="tam">15,8 KB</span><span class="accion">↓</span></span>
+      </a></li>
+      <li><a class="fila" style="--h:6" href="../../Aula%20Cursado%20Especial/Archivos/8.%20Assembler/RESUMEN%20instrucciones_8086.pdf">
+        
+        <span class="fila-ico"><svg viewBox="0 0 24 24" aria-hidden="true">
+<path d="M14 2.5H6.5A1.5 1.5 0 0 0 5 4v16a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 20V7.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14 2.5V7a.5.5 0 0 0 .5.5H19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.5 12.5h1.2a1.2 1.2 0 0 1 0 2.4H8.5zm0 4.6v-4.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.8 12.5v4.6h1a1.6 1.6 0 0 0 1.6-1.6v-1.4a1.6 1.6 0 0 0-1.6-1.6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></span>
+        <span class="fila-cuerpo">
+          <span class="fila-nom">RESUMEN instrucciones 8086</span>
+          
+        </span>
+        <span class="fila-meta"><span>PDF</span><span class="tam">40,5 KB</span><span class="accion">→</span></span>
+      </a></li>
+    </ul>
+  </section>
+  <nav class="nav-pies">
+    <a class="salto " href="07-lenguaje-maquina.html">
+      <span class="etq">← Anterior</span>
+      <span class="nom">7. Lenguaje de Máquina</span>
+    </a>
+    <a class="salto der" href="90-apuntes-teoria.html">
+      <span class="etq">Siguiente →</span>
+      <span class="nom">Apuntes de Teoría</span>
+    </a>
+  </nav>
+  <footer class="pie-sitio">
+    <span>Material de cursado · UTN FRRE</span>
+    <span>Dictado especial · 2do cuatrimestre 2026</span>
+  </footer>
+</main>
+</body>
+</html>

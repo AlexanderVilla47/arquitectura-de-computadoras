@@ -1,0 +1,10 @@
+node_modules/
+
+# Basura del sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Material que no se publica: libros con copyright y originales sin comprimir.
+# Sigue todo en tu disco, sólo que no viaja a GitHub. Ver _NoPublicar/LEEME.md
+_NoPublicar/

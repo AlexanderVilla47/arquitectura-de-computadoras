@@ -1,0 +1,16 @@
+{
+  "name": "arquitectura-de-computadoras",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Aula estática del cursado de Arquitectura de Computadoras — UTN FRRE",
+  "type": "module",
+  "scripts": {
+    "scan": "node scripts/scan.mjs",
+    "sync": "node scripts/scan.mjs --sync",
+    "build": "node scripts/build.mjs",
+    "actualizar": "npm run sync && npm run build"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

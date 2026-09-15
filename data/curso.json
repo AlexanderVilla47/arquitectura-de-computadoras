@@ -1,0 +1,1106 @@
+{
+  "curso": "Arquitectura de Computadoras",
+  "subtitulo": "UTN FRRE · Dictado Especial · Segundo Cuatrimestre 2026",
+  "generado": "2026-09-15T13:25:06.378Z",
+  "pendientes": [],
+  "secciones": [
+    {
+      "id": "00-cronograma",
+      "orden": 1,
+      "grupo": "inicio",
+      "tipo": "cronograma",
+      "titulo": "Cronograma",
+      "subtitulo": "Planificación semana por semana",
+      "ruta": "Aula Cursado Especial/cronograma",
+      "datos": {
+        "titulo": "PLANIFICACIÓN 2026",
+        "subtitulo": "Dictado Especial de Arquitectura de Computadoras",
+        "meta": [
+          {
+            "etiqueta": "CUATRIMESTRE",
+            "valor": "Segundo Cuatrimestre 2026"
+          },
+          {
+            "etiqueta": "MODALIDAD",
+            "valor": "Cursado especial"
+          },
+          {
+            "etiqueta": "DURACIÓN",
+            "valor": "16 semanas"
+          }
+        ],
+        "encabezados": [
+          "Semana",
+          "Unidad temática",
+          "Actividad teórica (video)",
+          "Actividad práctica"
+        ],
+        "filas": [
+          {
+            "semana": 1,
+            "unidad": "UNIDAD I – Introducción",
+            "teoria": "Introducción, generaciones de computadoras",
+            "videos": 1,
+            "practica": "Guía TP Unidad I"
+          },
+          {
+            "semana": 2,
+            "unidad": "UNIDAD I – Codificación numérica",
+            "teoria": "Codificación, sistemas de numeración, complementos",
+            "videos": 1,
+            "practica": "Guía TP Unidad I"
+          },
+          {
+            "semana": 3,
+            "unidad": "UNIDAD I – Códigos redundantes",
+            "teoria": "Códigos BCD, alfanuméricos, redundantes",
+            "videos": 1,
+            "practica": "Guía TP Unidad I"
+          },
+          {
+            "semana": 4,
+            "unidad": "UNIDAD II – Combinacionales",
+            "teoria": "Lógica combinacional, minitérminos, formas normales",
+            "videos": 1,
+            "practica": "Guía TP Unidad II"
+          },
+          {
+            "semana": 5,
+            "unidad": "UNIDAD II – Secuenciales I",
+            "teoria": "Flip Flop RS, Autómatas",
+            "videos": 1,
+            "practica": "Guía TP Unidad II"
+          },
+          {
+            "semana": 6,
+            "unidad": "UNIDAD II – Secuenciales II",
+            "teoria": "Flip Flop JK, D, T, Monoestable",
+            "videos": 1,
+            "practica": "Guía TP Unidad II"
+          },
+          {
+            "semana": 7,
+            "unidad": "UNIDAD II – Buses y Registros",
+            "teoria": "Buses, registros, señales de gobierno, ABACUS",
+            "videos": 1,
+            "practica": "Guía TP Unidad II"
+          },
+          {
+            "semana": 8,
+            "unidad": "UNIDAD II – Arquitectura ABACUS",
+            "teoria": "SUMA en ABACUS",
+            "videos": 1,
+            "practica": "Guía TP Unidad II"
+          },
+          {
+            "semana": 9,
+            "unidad": "UNIDAD III – ALU I",
+            "teoria": "Sumadores, sustractores",
+            "videos": 1,
+            "practica": "Guía TP Unidad III"
+          },
+          {
+            "semana": 10,
+            "unidad": "UNIDAD III – ALU II",
+            "teoria": "Punto fijo y flotante",
+            "videos": 1,
+            "practica": "Guía TP Unidad III"
+          },
+          {
+            "semana": 11,
+            "unidad": "UNIDAD III – ALU III",
+            "teoria": "Multiplicación, división",
+            "videos": 1,
+            "practica": "Guía TP Unidad III"
+          },
+          {
+            "semana": 12,
+            "unidad": "UNIDAD III – Memoria I",
+            "teoria": "Clasificación y jerarquías",
+            "videos": 1,
+            "practica": "Guía TP Unidad III"
+          },
+          {
+            "semana": 13,
+            "unidad": "UNIDAD III – Memoria II",
+            "teoria": "Direccionamiento y organización",
+            "videos": 1,
+            "practica": "Guía TP Unidad III"
+          },
+          {
+            "semana": 14,
+            "unidad": "UNIDAD III – Unidad de Control I-II",
+            "teoria": "Cronogramas, fases, secuenciador",
+            "videos": 2,
+            "practica": "Guía TP Unidad III"
+          },
+          {
+            "semana": 15,
+            "unidad": "UNIDAD III – Unidad de Control III",
+            "teoria": "Microprogramación, CISC, RISC",
+            "videos": 1,
+            "practica": "Guía TP Unidad III"
+          },
+          {
+            "semana": 16,
+            "unidad": "UNIDAD IV-V – Ensamblador y E/S",
+            "teoria": "Arquitectura 8086 + Canales",
+            "videos": 2,
+            "practica": "Guía TP Unidad IV, V"
+          }
+        ]
+      },
+      "items": []
+    },
+    {
+      "id": "00-videos-teoria",
+      "orden": 2,
+      "grupo": "inicio",
+      "tipo": "videos",
+      "titulo": "Videos de Teoría y Práctica",
+      "subtitulo": "39 clases en video",
+      "ruta": "Aula Cursado Especial/Videos Teoria.docx",
+      "items": [
+        {
+          "tipo": "video",
+          "titulo": "Practica, Clase Nro 1: Codificación y Hamming",
+          "url": "https://www.youtube.com/watch?v=7_SjaPZSfyE&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=1&pp=iAQB",
+          "grupo": "CODIFICACIÓN Y CIRCUITOS COMBINACIONALES",
+          "n": 1
+        },
+        {
+          "tipo": "video",
+          "titulo": "Hamming y combinacionale 1/4",
+          "url": "https://www.youtube.com/watch?v=fxc1kvNbM9A&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=2&pp=iAQB0gcJCa0JAYcqIYzv",
+          "grupo": "CODIFICACIÓN Y CIRCUITOS COMBINACIONALES",
+          "n": 2
+        },
+        {
+          "tipo": "video",
+          "titulo": "Combinacionales 2/4",
+          "url": "https://www.youtube.com/watch?v=oXysrypVWT8&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=9&pp=iAQB",
+          "grupo": "CODIFICACIÓN Y CIRCUITOS COMBINACIONALES",
+          "n": 3
+        },
+        {
+          "tipo": "video",
+          "titulo": "¿Cómo se construye un mapa de Karnaugh?",
+          "url": "https://www.youtube.com/watch?v=nIgIREYHbx4&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=4&pp=iAQB0gcJCa0JAYcqIYzv",
+          "grupo": "CODIFICACIÓN Y CIRCUITOS COMBINACIONALES",
+          "n": 4
+        },
+        {
+          "tipo": "video",
+          "titulo": "¿Cómo inflar los GLOBOS en un mapa de karnaugh?",
+          "url": "https://www.youtube.com/watch?v=vacBsx_ZljY&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=5&pp=iAQB",
+          "grupo": "CODIFICACIÓN Y CIRCUITOS COMBINACIONALES",
+          "n": 5
+        },
+        {
+          "tipo": "video",
+          "titulo": "¿Cómo nombrar los globos de Karnaugh?",
+          "url": "https://www.youtube.com/watch?v=9dd6eW6-p1M&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=6&pp=iAQB",
+          "grupo": "CODIFICACIÓN Y CIRCUITOS COMBINACIONALES",
+          "n": 6
+        },
+        {
+          "tipo": "video",
+          "titulo": "Reglas de Boole sin memorizar",
+          "url": "https://www.youtube.com/watch?v=vOSCevaytLA&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=7&pp=iAQB",
+          "grupo": "CODIFICACIÓN Y CIRCUITOS COMBINACIONALES",
+          "n": 7
+        },
+        {
+          "tipo": "video",
+          "titulo": "Clase Nro 3: Circuitos combinacionales 3/4",
+          "url": "https://www.youtube.com/watch?v=db0wj1N--Iw&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=8&pp=iAQB0gcJCa0JAYcqIYzv",
+          "grupo": "CODIFICACIÓN Y CIRCUITOS COMBINACIONALES",
+          "n": 8
+        },
+        {
+          "tipo": "video",
+          "titulo": "Clase Nro 4 Circuitos Combinacionales 4/4",
+          "url": "https://www.youtube.com/watch?v=KmLKZ-SpzlQ&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=10&pp=iAQB",
+          "grupo": "CODIFICACIÓN Y CIRCUITOS COMBINACIONALES",
+          "n": 9
+        },
+        {
+          "tipo": "video",
+          "titulo": "Circuitos Secuenciales I",
+          "url": "https://www.youtube.com/watch?v=VXX3jLUjJCQ&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=11&pp=iAQB",
+          "grupo": "CIRCUITOS SECUENCIALES",
+          "n": 10
+        },
+        {
+          "tipo": "video",
+          "titulo": "Secuenciales II",
+          "url": "https://www.youtube.com/watch?v=6uRqHk3jAxg&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=13&pp=iAQB",
+          "grupo": "CIRCUITOS SECUENCIALES",
+          "n": 11
+        },
+        {
+          "tipo": "video",
+          "titulo": "Contadores y descontadores",
+          "url": "https://www.youtube.com/watch?v=E8I03zIU7tA&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=12&pp=iAQB",
+          "grupo": "CIRCUITOS SECUENCIALES",
+          "n": 12
+        },
+        {
+          "tipo": "video",
+          "titulo": "Biestable Funcionamiento y tabla, Circuito Secuencial",
+          "url": "https://www.youtube.com/watch?v=Q29XnzI5G0k&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=14&pp=iAQB0gcJCa0JAYcqIYzv",
+          "grupo": "CIRCUITOS SECUENCIALES",
+          "n": 13
+        },
+        {
+          "tipo": "video",
+          "titulo": "Secuenciales Conversion y Redificion",
+          "url": "https://www.youtube.com/watch?v=WIjwT9LepEE&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=15&pp=iAQB",
+          "grupo": "CIRCUITOS SECUENCIALES",
+          "n": 14
+        },
+        {
+          "tipo": "video",
+          "titulo": "Secuenciales Seriales",
+          "url": "https://www.youtube.com/watch?v=qzYIJL4bYrk&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=16&pp=iAQB",
+          "grupo": "CIRCUITOS SECUENCIALES",
+          "n": 15
+        },
+        {
+          "tipo": "video",
+          "titulo": "Secuenciales Seriales II",
+          "url": "https://www.youtube.com/watch?v=QVj6zCwkDTQ&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=17&pp=iAQB",
+          "grupo": "CIRCUITOS SECUENCIALES",
+          "n": 16
+        },
+        {
+          "tipo": "video",
+          "titulo": "Ejercicios de Secuenciales",
+          "url": "https://www.youtube.com/watch?v=lOPADeQ4RM0&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=18&pp=iAQB0gcJCa0JAYcqIYzv",
+          "grupo": "CIRCUITOS SECUENCIALES",
+          "n": 17
+        },
+        {
+          "tipo": "video",
+          "titulo": "Ejercicios de Secuenciales II",
+          "url": "https://www.youtube.com/watch?v=pj_t_Tf7oPY&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=19&pp=iAQB",
+          "grupo": "CIRCUITOS SECUENCIALES",
+          "n": 18
+        },
+        {
+          "tipo": "video",
+          "titulo": "ALU, SUMA",
+          "url": "https://www.youtube.com/watch?v=4vzIbbw5kjc&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=20&pp=iAQB",
+          "grupo": "ALU Y MEMORIA CENTRAL",
+          "n": 19
+        },
+        {
+          "tipo": "video",
+          "titulo": "ALU Sumadores BCD",
+          "url": "https://www.youtube.com/watch?v=PbXA3gbA3Bw&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=21&pp=iAQB",
+          "grupo": "ALU Y MEMORIA CENTRAL",
+          "n": 20
+        },
+        {
+          "tipo": "video",
+          "titulo": "Repaso previo al 1er parcial",
+          "url": "https://www.youtube.com/watch?v=nAs4gyHMfXY&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=22&pp=iAQB",
+          "grupo": "ALU Y MEMORIA CENTRAL",
+          "n": 21
+        },
+        {
+          "tipo": "video",
+          "titulo": "ALU Operaciones y Carga forzada",
+          "url": "https://www.youtube.com/watch?v=pVWVH0sLw3Y&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=23&pp=iAQB0gcJCa0JAYcqIYzv",
+          "grupo": "ALU Y MEMORIA CENTRAL",
+          "n": 22
+        },
+        {
+          "tipo": "video",
+          "titulo": "ALU, MC, SIGNO",
+          "url": "https://www.youtube.com/watch?v=e4jHukp62gY&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=24&pp=iAQB",
+          "grupo": "ALU Y MEMORIA CENTRAL",
+          "n": 23
+        },
+        {
+          "tipo": "video",
+          "titulo": "ALU e Introducción a la Memoria Central",
+          "url": "https://www.youtube.com/watch?v=tXEY-9wbM9A&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=25&pp=iAQB",
+          "grupo": "ALU Y MEMORIA CENTRAL",
+          "n": 24
+        },
+        {
+          "tipo": "video",
+          "titulo": "Memoria Central 1/2",
+          "url": "https://www.youtube.com/watch?v=yhpzvWDRhM4&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=28&pp=iAQB",
+          "grupo": "ALU Y MEMORIA CENTRAL",
+          "n": 25
+        },
+        {
+          "tipo": "video",
+          "titulo": "Memoria Central 2/2",
+          "url": "https://www.youtube.com/watch?v=cVGrX93lEUo&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=29&pp=iAQB",
+          "grupo": "ALU Y MEMORIA CENTRAL",
+          "n": 26
+        },
+        {
+          "tipo": "video",
+          "titulo": "Clase de consulta previo a Recuperatorio",
+          "url": "https://www.youtube.com/watch?v=pu6gx_6tR_k&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=26&pp=iAQB",
+          "grupo": "ALU Y MEMORIA CENTRAL",
+          "n": 27
+        },
+        {
+          "tipo": "video",
+          "titulo": "Introducción Unidad de Control",
+          "url": "https://www.youtube.com/watch?v=2gaW51ybRoI&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=27&pp=iAQB0gcJCa0JAYcqIYzv",
+          "grupo": "UNIDAD DE CONTROL, LENGUAJE DE MÁQUINA E INTEL 8086",
+          "n": 28
+        },
+        {
+          "tipo": "video",
+          "titulo": "Unidad de Control 1/2",
+          "url": "https://www.youtube.com/watch?v=dwaUTG1oI1U&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=30&pp=iAQB",
+          "grupo": "UNIDAD DE CONTROL, LENGUAJE DE MÁQUINA E INTEL 8086",
+          "n": 29
+        },
+        {
+          "tipo": "video",
+          "titulo": "Unidad de Control 2/2",
+          "url": "https://www.youtube.com/watch?v=PktryKiy6wU&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=31&pp=iAQB",
+          "grupo": "UNIDAD DE CONTROL, LENGUAJE DE MÁQUINA E INTEL 8086",
+          "n": 30
+        },
+        {
+          "tipo": "video",
+          "titulo": "Lenguaje de Maquina",
+          "url": "https://www.youtube.com/watch?v=oI5Oaq6hDw0&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=32&pp=iAQB",
+          "grupo": "UNIDAD DE CONTROL, LENGUAJE DE MÁQUINA E INTEL 8086",
+          "n": 31
+        },
+        {
+          "tipo": "video",
+          "titulo": "Lenguaje de Maquina Uso de Indices",
+          "url": "https://www.youtube.com/watch?v=-J-ISd_xBwI&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=33&pp=iAQB",
+          "grupo": "UNIDAD DE CONTROL, LENGUAJE DE MÁQUINA E INTEL 8086",
+          "n": 32
+        },
+        {
+          "tipo": "video",
+          "titulo": "Lenguaje de Maquina Direccionamiento Indexado y Base",
+          "url": "https://www.youtube.com/watch?v=8ReBwVOV19s&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=34&pp=iAQB",
+          "grupo": "UNIDAD DE CONTROL, LENGUAJE DE MÁQUINA E INTEL 8086",
+          "n": 33
+        },
+        {
+          "tipo": "video",
+          "titulo": "Lenguaje de Maquina recorrido de memoria",
+          "url": "https://www.youtube.com/watch?v=8tbcAhEzNhc&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=35&pp=iAQB",
+          "grupo": "UNIDAD DE CONTROL, LENGUAJE DE MÁQUINA E INTEL 8086",
+          "n": 34
+        },
+        {
+          "tipo": "video",
+          "titulo": "Procesador intel 8086 & 8088 (Parte 1/4)",
+          "url": "https://www.youtube.com/watch?v=trp0d5mtG_A&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=36&t=1088s&pp=iAQB",
+          "grupo": "UNIDAD DE CONTROL, LENGUAJE DE MÁQUINA E INTEL 8086",
+          "n": 35
+        },
+        {
+          "tipo": "video",
+          "titulo": "Procesador Intel 8086 (2/4)",
+          "url": "https://www.youtube.com/watch?v=8P1K0NE6PAg&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=37&pp=iAQB",
+          "grupo": "UNIDAD DE CONTROL, LENGUAJE DE MÁQUINA E INTEL 8086",
+          "n": 36
+        },
+        {
+          "tipo": "video",
+          "titulo": "Procesador Intel Assambler II Interrupciones (3/4)",
+          "url": "https://www.youtube.com/watch?v=yHmN1IkOMjo&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=38&pp=iAQB",
+          "grupo": "UNIDAD DE CONTROL, LENGUAJE DE MÁQUINA E INTEL 8086",
+          "n": 37
+        },
+        {
+          "tipo": "video",
+          "titulo": "Procesador Inten Asambler (4/4)",
+          "url": "https://www.youtube.com/watch?v=7TzLDVMO8jE&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=39&pp=iAQB",
+          "grupo": "UNIDAD DE CONTROL, LENGUAJE DE MÁQUINA E INTEL 8086",
+          "n": 38
+        },
+        {
+          "tipo": "video",
+          "titulo": "Ejercicios Complementarios Control de Flujo",
+          "url": "https://www.youtube.com/watch?v=ei00SzlrtvA&list=PLnfu22OUNLKA4JOROay711pZN0WpZIYSi&index=40&pp=iAQB0gcJCa0JAYcqIYzv",
+          "grupo": "UNIDAD DE CONTROL, LENGUAJE DE MÁQUINA E INTEL 8086",
+          "n": 39
+        }
+      ]
+    },
+    {
+      "id": "01-sistemas-numeracion",
+      "orden": 1,
+      "grupo": "unidades",
+      "tipo": "archivos",
+      "titulo": "1. Sistemas de Numeración y Codificación",
+      "subtitulo": "Semanas 1 a 3",
+      "ruta": "Aula Cursado Especial/Archivos/1. Sistemas de Numeración y Codificación",
+      "items": [
+        {
+          "tipo": "pdf",
+          "titulo": "00 Codificación Numérica-Resueltos",
+          "archivo": "Aula Cursado Especial/Archivos/1. Sistemas de Numeración y Codificación/00 Codificación Numérica-Resueltos.pdf",
+          "ext": "pdf",
+          "bytes": 235016
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "2025 - Guia Autoestudio Codificacion",
+          "archivo": "Aula Cursado Especial/Archivos/1. Sistemas de Numeración y Codificación/2025 - Guia Autoestudio Codificacion.pdf",
+          "ext": "pdf",
+          "bytes": 1455563
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "Codificación Ejercicios COmplementarios",
+          "archivo": "Aula Cursado Especial/Archivos/1. Sistemas de Numeración y Codificación/Codificación Ejercicios COmplementarios.pdf",
+          "ext": "pdf",
+          "bytes": 175343
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "Sist Numeracion y Codificacion 2018",
+          "archivo": "Aula Cursado Especial/Archivos/1. Sistemas de Numeración y Codificación/Sist Numeracion y Codificacion 2018.pdf",
+          "ext": "pdf",
+          "bytes": 10663327
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "Sist Numeracion y Codificacion guia",
+          "archivo": "Aula Cursado Especial/Archivos/1. Sistemas de Numeración y Codificación/Sist Numeracion y Codificacion guia.pdf",
+          "ext": "pdf",
+          "bytes": 498356
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "Tabla ASCII-EBCDIC",
+          "archivo": "Aula Cursado Especial/Archivos/1. Sistemas de Numeración y Codificación/Tabla ASCII-EBCDIC.pdf",
+          "ext": "pdf",
+          "bytes": 380355
+        }
+      ]
+    },
+    {
+      "id": "02-algebra-boole",
+      "orden": 2,
+      "grupo": "unidades",
+      "tipo": "archivos",
+      "titulo": "2. Algebra de Boole y Circuitos Combinacionales",
+      "subtitulo": "Semana 4",
+      "ruta": "Aula Cursado Especial/Archivos/2. Algebra de Boole y Circuitos Combinacionales",
+      "items": [
+        {
+          "tipo": "pdf",
+          "titulo": "01-GuiaCombinacionales",
+          "archivo": "Aula Cursado Especial/Archivos/2. Algebra de Boole y Circuitos Combinacionales/01-GuiaCombinacionales.pdf",
+          "ext": "pdf",
+          "bytes": 471823
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "01IntroCombinacionales-Ej4",
+          "archivo": "Aula Cursado Especial/Archivos/2. Algebra de Boole y Circuitos Combinacionales/01IntroCombinacionales-Ej4.pdf",
+          "ext": "pdf",
+          "bytes": 309987
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "2023 GUIAS DE AUTOESTUDIO Logica",
+          "archivo": "Aula Cursado Especial/Archivos/2. Algebra de Boole y Circuitos Combinacionales/2023 GUIAS DE AUTOESTUDIO Logica.pdf",
+          "ext": "pdf",
+          "bytes": 486349
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "Comparador de 4 bits",
+          "archivo": "Aula Cursado Especial/Archivos/2. Algebra de Boole y Circuitos Combinacionales/Comparador de 4 bits.pdf",
+          "ext": "pdf",
+          "bytes": 542099
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "GUIA AUTOESTUDIO Funciones Logicas Parte II",
+          "archivo": "Aula Cursado Especial/Archivos/2. Algebra de Boole y Circuitos Combinacionales/GUIA AUTOESTUDIO Funciones Logicas Parte II.pdf",
+          "ext": "pdf",
+          "bytes": 719440
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "problemas-de-circuitos-digitales",
+          "archivo": "Aula Cursado Especial/Archivos/2. Algebra de Boole y Circuitos Combinacionales/problemas-de-circuitos-digitales.pdf",
+          "ext": "pdf",
+          "bytes": 2801141
+        },
+        {
+          "tipo": "enlace",
+          "titulo": "Video Resolución ejercicio 11. Comparador de 4 bits",
+          "url": "https://drive.google.com/file/d/1GFWp-C5nn-bWs50dAUi_knfZ-R8OD5M3/view?usp=sharing"
+        }
+      ]
+    },
+    {
+      "id": "03-circuitos-secuenciales",
+      "orden": 3,
+      "grupo": "unidades",
+      "tipo": "archivos",
+      "titulo": "3. Circuitos Secuenciales",
+      "subtitulo": "Semanas 5 y 6",
+      "ruta": "Aula Cursado Especial/Archivos/3. Circuitos Secuenciales",
+      "items": [
+        {
+          "tipo": "pdf",
+          "titulo": "02 Secuenciales-Ejecicio5 bis",
+          "archivo": "Aula Cursado Especial/Archivos/3. Circuitos Secuenciales/02 Secuenciales-Ejecicio5 bis.pdf",
+          "ext": "pdf",
+          "bytes": 836351
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "02 Secuenciales-Ejecicio5.pptx",
+          "archivo": "Aula Cursado Especial/Archivos/3. Circuitos Secuenciales/02 Secuenciales-Ejecicio5.pptx.pdf",
+          "ext": "pdf",
+          "bytes": 851988
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "02-GuiaSecuenciales",
+          "archivo": "Aula Cursado Especial/Archivos/3. Circuitos Secuenciales/02-GuiaSecuenciales.pdf",
+          "ext": "pdf",
+          "bytes": 1129720
+        },
+        {
+          "tipo": "enlace",
+          "titulo": "Video Explicación Ejercicio 5 - Contador secuencial 3, 2, 9, 7, 1, 0, 8, 6 y repite",
+          "url": "https://youtu.be/8FPMyRe-NH8"
+        },
+        {
+          "tipo": "enlace",
+          "titulo": "Video Planteo de Ejercicios Secuenciales con Entrada en Serie (Ejercicios 9, 10, 11 y 12)",
+          "url": "https://youtu.be/WNrSS4RMujA"
+        },
+        {
+          "tipo": "enlace",
+          "titulo": "Video Planteo de Ejercicios Complementarios (Ejercicios 3 y 4)",
+          "url": "https://youtu.be/32Nifrj8lrg"
+        }
+      ]
+    },
+    {
+      "id": "04-alu",
+      "orden": 4,
+      "grupo": "unidades",
+      "tipo": "archivos",
+      "titulo": "4. ALU",
+      "subtitulo": "Semanas 7 y 8",
+      "ruta": "Aula Cursado Especial/Archivos/4. ALU",
+      "items": [
+        {
+          "tipo": "pdf",
+          "titulo": "03-Guia ALU",
+          "archivo": "Aula Cursado Especial/Archivos/4. ALU/03-Guia ALU.pdf",
+          "ext": "pdf",
+          "bytes": 581205
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "ALU-3SumQuinario-BCD",
+          "archivo": "Aula Cursado Especial/Archivos/4. ALU/ALU-3SumQuinario-BCD.pdf",
+          "ext": "pdf",
+          "bytes": 653057
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "ALU-Ejercicio5-Mini ALU",
+          "archivo": "Aula Cursado Especial/Archivos/4. ALU/ALU-Ejercicio5-Mini ALU.pdf",
+          "ext": "pdf",
+          "bytes": 874500
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "Carga Forzada",
+          "archivo": "Aula Cursado Especial/Archivos/4. ALU/Carga Forzada.pdf",
+          "ext": "pdf",
+          "bytes": 2858109
+        }
+      ]
+    },
+    {
+      "id": "05-memoria-central",
+      "orden": 5,
+      "grupo": "unidades",
+      "tipo": "archivos",
+      "titulo": "5. Memoria Central",
+      "subtitulo": "Semana 9",
+      "ruta": "Aula Cursado Especial/Archivos/5. Memoria Central",
+      "items": [
+        {
+          "tipo": "pdf",
+          "titulo": "04-Guia Memoria Central",
+          "archivo": "Aula Cursado Especial/Archivos/5. Memoria Central/04-Guia Memoria Central.pdf",
+          "ext": "pdf",
+          "bytes": 604004
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "04-IntroMC (1)",
+          "archivo": "Aula Cursado Especial/Archivos/5. Memoria Central/04-IntroMC (1).pdf",
+          "ext": "pdf",
+          "bytes": 1036788
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "04-IntroMC",
+          "archivo": "Aula Cursado Especial/Archivos/5. Memoria Central/04-IntroMC.pdf",
+          "ext": "pdf",
+          "bytes": 327448
+        }
+      ]
+    },
+    {
+      "id": "06-unidad-control",
+      "orden": 6,
+      "grupo": "unidades",
+      "tipo": "archivos",
+      "titulo": "6. Unidad de Control",
+      "subtitulo": "Semana 10",
+      "ruta": "Aula Cursado Especial/Archivos/6. Unidad de Control",
+      "items": [
+        {
+          "tipo": "pdf",
+          "titulo": "05-GuiaUC",
+          "archivo": "Aula Cursado Especial/Archivos/6. Unidad de Control/05-GuiaUC.pdf",
+          "ext": "pdf",
+          "bytes": 215037
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "05-IntroUC",
+          "archivo": "Aula Cursado Especial/Archivos/6. Unidad de Control/05-IntroUC (1).pdf",
+          "ext": "pdf",
+          "bytes": 111100
+        }
+      ]
+    },
+    {
+      "id": "07-lenguaje-maquina",
+      "orden": 7,
+      "grupo": "unidades",
+      "tipo": "archivos",
+      "titulo": "7. Lenguaje de Máquina",
+      "subtitulo": "Semanas 11 a 13",
+      "ruta": "Aula Cursado Especial/Archivos/7. Lenguaje de Máquina",
+      "items": [
+        {
+          "tipo": "pdf",
+          "titulo": "06-GuiaLenguajeMaquina",
+          "archivo": "Aula Cursado Especial/Archivos/7. Lenguaje de Máquina/06-GuiaLenguajeMaquina.pdf",
+          "ext": "pdf",
+          "bytes": 1174168
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "06-IntroLengMaquina-05",
+          "archivo": "Aula Cursado Especial/Archivos/7. Lenguaje de Máquina/06-IntroLengMaquina-05.pdf",
+          "ext": "pdf",
+          "bytes": 382626
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "06-IntroLengMaquina-Multi",
+          "archivo": "Aula Cursado Especial/Archivos/7. Lenguaje de Máquina/06-IntroLengMaquina-Multi.pdf",
+          "ext": "pdf",
+          "bytes": 364980
+        }
+      ]
+    },
+    {
+      "id": "08-assembler",
+      "orden": 8,
+      "grupo": "unidades",
+      "tipo": "archivos",
+      "titulo": "8. Assembler",
+      "subtitulo": "Semanas 14 a 16",
+      "ruta": "Aula Cursado Especial/Archivos/8. Assembler",
+      "items": [
+        {
+          "tipo": "otro",
+          "titulo": "8086 Material Complementario-20260915",
+          "archivo": "Aula Cursado Especial/Archivos/8. Assembler/8086 Material Complementario-20260915.zip",
+          "ext": "zip",
+          "bytes": 8035289
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "Assembler Ejercicios Resueltos",
+          "archivo": "Aula Cursado Especial/Archivos/8. Assembler/Assembler Ejercicios Resueltos.pdf",
+          "ext": "pdf",
+          "bytes": 230653
+        },
+        {
+          "tipo": "otro",
+          "titulo": "Ejemplos de Saltos (1)",
+          "archivo": "Aula Cursado Especial/Archivos/8. Assembler/Ejemplos de Saltos (1).zip",
+          "ext": "zip",
+          "bytes": 2806
+        },
+        {
+          "tipo": "otro",
+          "titulo": "Ejemplos de Saltos",
+          "archivo": "Aula Cursado Especial/Archivos/8. Assembler/Ejemplos de Saltos.zip",
+          "ext": "zip",
+          "bytes": 2806
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "EjerciciosResueltos basicos",
+          "archivo": "Aula Cursado Especial/Archivos/8. Assembler/EjerciciosResueltos_basicos.pdf",
+          "ext": "pdf",
+          "bytes": 129947
+        },
+        {
+          "tipo": "otro",
+          "titulo": "Emu8086 Setup",
+          "archivo": "Aula Cursado Especial/Archivos/8. Assembler/Emu8086 Setup (1).zip",
+          "ext": "zip",
+          "bytes": 2954971
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "emu8086",
+          "archivo": "Aula Cursado Especial/Archivos/8. Assembler/emu8086.pdf",
+          "ext": "pdf",
+          "bytes": 650845
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "Guia de TP Assembler",
+          "archivo": "Aula Cursado Especial/Archivos/8. Assembler/Guia de TP Assembler.pdf",
+          "ext": "pdf",
+          "bytes": 148795
+        },
+        {
+          "tipo": "otro",
+          "titulo": "PartesProgramayModosDir",
+          "archivo": "Aula Cursado Especial/Archivos/8. Assembler/PartesProgramayModosDir (1).zip",
+          "ext": "zip",
+          "bytes": 1662
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "Presentacion 8086",
+          "archivo": "Aula Cursado Especial/Archivos/8. Assembler/Presentacion 8086.pdf",
+          "ext": "pdf",
+          "bytes": 1243977
+        },
+        {
+          "tipo": "xlsx",
+          "titulo": "RESUMEN DIRECTIVAS",
+          "archivo": "Aula Cursado Especial/Archivos/8. Assembler/RESUMEN DIRECTIVAS (1).xlsx",
+          "ext": "xlsx",
+          "bytes": 16188
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "RESUMEN instrucciones 8086",
+          "archivo": "Aula Cursado Especial/Archivos/8. Assembler/RESUMEN instrucciones_8086.pdf",
+          "ext": "pdf",
+          "bytes": 41499
+        }
+      ]
+    },
+    {
+      "id": "90-apuntes-teoria",
+      "orden": 90,
+      "grupo": "extras",
+      "tipo": "archivos",
+      "titulo": "Apuntes de Teoría",
+      "subtitulo": "Apuntes y resúmenes",
+      "ruta": "Recursos Extras/Teoria",
+      "items": [
+        {
+          "tipo": "pdf",
+          "titulo": "7acf5c64-2db7-499e-b425-e57d6c371065 Unidad III Unidad Aritmtico Lgica",
+          "archivo": "Recursos Extras/Teoria/7acf5c64-2db7-499e-b425-e57d6c371065_Unidad_III_Unidad_Aritmtico_Lgica_.pdf",
+          "ext": "pdf",
+          "bytes": 35812128
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "8086 resumen propio",
+          "archivo": "Recursos Extras/Teoria/8086 resumen propio.pdf",
+          "ext": "pdf",
+          "bytes": 508091
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "Apunte Arq de Comp (2019) - Nicolás Alegre",
+          "archivo": "Recursos Extras/Teoria/Apunte Arq de Comp (2019) - Nicolás Alegre.pdf",
+          "ext": "pdf",
+          "bytes": 10207270
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "Apunte Arquitectura Aldo",
+          "archivo": "Recursos Extras/Teoria/Apunte Arquitectura Aldo.pdf",
+          "ext": "pdf",
+          "bytes": 14272661
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "Apunte Arquitectura Black",
+          "archivo": "Recursos Extras/Teoria/Apunte Arquitectura_Black.pdf",
+          "ext": "pdf",
+          "bytes": 15091631
+        },
+        {
+          "tipo": "docx",
+          "titulo": "Apunte Arquitectura",
+          "archivo": "Recursos Extras/Teoria/Apunte Arquitectura.docx",
+          "ext": "docx",
+          "bytes": 88787332
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "APUNTE TEORIA DEFINITIVO",
+          "archivo": "Recursos Extras/Teoria/APUNTE TEORIA DEFINITIVO (1).pdf",
+          "ext": "pdf",
+          "bytes": 3950001
+        },
+        {
+          "tipo": "docx",
+          "titulo": "APUNTE TEORIA",
+          "archivo": "Recursos Extras/Teoria/APUNTE TEORIA.docx",
+          "ext": "docx",
+          "bytes": 5367606
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "ARQ FinalPractica Diciembre 2025",
+          "archivo": "Recursos Extras/Teoria/ARQ_FinalPractica_Diciembre_2025.pdf",
+          "ext": "pdf",
+          "bytes": 103970
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "Arquitectura - Teoria para final",
+          "archivo": "Recursos Extras/Teoria/Arquitectura - Teoria para final.pdf",
+          "ext": "pdf",
+          "bytes": 11355285
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "ARQUITECTURA - TEORIA",
+          "archivo": "Recursos Extras/Teoria/ARQUITECTURA - TEORIA.pdf",
+          "ext": "pdf",
+          "bytes": 20956325
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "Arquitectura 8086",
+          "archivo": "Recursos Extras/Teoria/Arquitectura 8086.pdf",
+          "ext": "pdf",
+          "bytes": 2780157
+        },
+        {
+          "tipo": "docx",
+          "titulo": "mauro",
+          "archivo": "Recursos Extras/Teoria/mauro.docx",
+          "ext": "docx",
+          "bytes": 13294
+        },
+        {
+          "tipo": "otro",
+          "titulo": "Nuevo documento de texto",
+          "archivo": "Recursos Extras/Teoria/Nuevo documento de texto.txt",
+          "ext": "txt",
+          "bytes": 1176
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "Resumen final aco",
+          "archivo": "Recursos Extras/Teoria/Resumen_final_aco.pdf",
+          "ext": "pdf",
+          "bytes": 2109862
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "ResumenArqui majoymartin",
+          "archivo": "Recursos Extras/Teoria/ResumenArqui_majoymartin.pdf",
+          "ext": "pdf",
+          "bytes": 8540923
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "U1y2 NICO",
+          "archivo": "Recursos Extras/Teoria/U1y2 NICO.pdf",
+          "ext": "pdf",
+          "bytes": 5323392
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "U3 NICO",
+          "archivo": "Recursos Extras/Teoria/U3 NICO.pdf",
+          "ext": "pdf",
+          "bytes": 35812128
+        }
+      ]
+    },
+    {
+      "id": "91-finales-parciales",
+      "orden": 91,
+      "grupo": "extras",
+      "tipo": "archivos",
+      "titulo": "Finales y Parciales Resueltos",
+      "subtitulo": "Exámenes resueltos",
+      "ruta": "Recursos Extras/Finales",
+      "items": [
+        {
+          "tipo": "pdf",
+          "titulo": "1er parcial resuelto",
+          "archivo": "Recursos Extras/Finales/1er parcial resuelto.pdf",
+          "ext": "pdf",
+          "bytes": 25223898
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "2do parcial resuelto",
+          "archivo": "Recursos Extras/Finales/2do parcial resuelto (1).pdf",
+          "ext": "pdf",
+          "bytes": 11694846
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "3er parcial resuelto",
+          "archivo": "Recursos Extras/Finales/3er parcial resuelto.pdf",
+          "ext": "pdf",
+          "bytes": 7477961
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "EJ1 PARCIAL",
+          "archivo": "Recursos Extras/Finales/EJ1_PARCIAL.pdf",
+          "ext": "pdf",
+          "bytes": 211322
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "Ejercicio 2",
+          "archivo": "Recursos Extras/Finales/Ejercicio 2.pdf",
+          "ext": "pdf",
+          "bytes": 114919
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "EJERCICIO Alarma",
+          "archivo": "Recursos Extras/Finales/EJERCICIO_Alarma.pdf",
+          "ext": "pdf",
+          "bytes": 146911
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "Ejercicios de Examenes Finales - Arquitectura de Computadoras - By Geradem",
+          "archivo": "Recursos Extras/Finales/Ejercicios de Examenes Finales - Arquitectura de Computadoras - By Geradem.pdf",
+          "ext": "pdf",
+          "bytes": 805844
+        },
+        {
+          "tipo": "imagen",
+          "titulo": "PHOTO-2026-02-09-17-45-26",
+          "archivo": "Recursos Extras/Finales/PHOTO-2026-02-09-17-45-26.jpg",
+          "ext": "jpg",
+          "bytes": 106464
+        },
+        {
+          "tipo": "imagen",
+          "titulo": "PHOTO-2026-02-09-17-45-26(1)",
+          "archivo": "Recursos Extras/Finales/PHOTO-2026-02-09-17-45-26(1).jpg",
+          "ext": "jpg",
+          "bytes": 96917
+        },
+        {
+          "tipo": "imagen",
+          "titulo": "PHOTO-2026-02-09-17-45-26(2)",
+          "archivo": "Recursos Extras/Finales/PHOTO-2026-02-09-17-45-26(2).jpg",
+          "ext": "jpg",
+          "bytes": 372517
+        },
+        {
+          "tipo": "imagen",
+          "titulo": "PHOTO-2026-02-09-17-45-26(3)",
+          "archivo": "Recursos Extras/Finales/PHOTO-2026-02-09-17-45-26(3).jpg",
+          "ext": "jpg",
+          "bytes": 133832
+        },
+        {
+          "tipo": "imagen",
+          "titulo": "PHOTO-2026-02-09-17-45-26(4)",
+          "archivo": "Recursos Extras/Finales/PHOTO-2026-02-09-17-45-26(4).jpg",
+          "ext": "jpg",
+          "bytes": 88662
+        }
+      ]
+    },
+    {
+      "id": "92-practica-extra",
+      "orden": 92,
+      "grupo": "extras",
+      "tipo": "archivos",
+      "titulo": "Práctica Extra",
+      "subtitulo": "Compilados y guías resueltas",
+      "ruta": "Recursos Extras",
+      "items": [
+        {
+          "tipo": "pdf",
+          "titulo": "1er PARCIAL",
+          "archivo": "Recursos Extras/1er_PARCIAL.pdf",
+          "ext": "pdf",
+          "bytes": 25220162
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "09. Compilado 1er parcial",
+          "archivo": "Recursos Extras/09. Compilado 1er parcial.pdf",
+          "ext": "pdf",
+          "bytes": 5461404
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "EJERCICIOS RESUELTOS DE SECUENCIALES",
+          "archivo": "Recursos Extras/EJERCICIOS RESUELTOS DE SECUENCIALES.pdf",
+          "ext": "pdf",
+          "bytes": 860673
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "Ejercicios LogicaCombinacional",
+          "archivo": "Recursos Extras/Ejercicios_LogicaCombinacional.pdf",
+          "ext": "pdf",
+          "bytes": 3617715
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "GuiaPracticaResueltaArquitectura",
+          "archivo": "Recursos Extras/GuiaPracticaResueltaArquitectura.pdf",
+          "ext": "pdf",
+          "bytes": 57066372
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "ranking temas 2019 a 2022",
+          "archivo": "Recursos Extras/ranking temas  2019 a 2022.pdf",
+          "ext": "pdf",
+          "bytes": 32506
+        }
+      ]
+    }
+  ]
+}
