@@ -309,7 +309,6 @@ Planificación de 16 semanas.
 <details>
 <summary><b>Apuntes de Teoría</b> — _Apuntes y resúmenes_</summary>
 
-- [7acf5c64-2db7-499e-b425-e57d6c371065 Unidad III Unidad Aritmtico Lgica](Recursos%20Extras/Teoria/7acf5c64-2db7-499e-b425-e57d6c371065_Unidad_III_Unidad_Aritmtico_Lgica_.pdf)
 - [8086 resumen propio](Recursos%20Extras/Teoria/8086%20resumen%20propio.pdf)
 - [Apunte Arq de Comp (2019) - Nicolás Alegre](Recursos%20Extras/Teoria/Apunte%20Arq%20de%20Comp%20(2019)%20-%20Nicol%C3%A1s%20Alegre.pdf)
 - [Apunte Arquitectura Aldo](Recursos%20Extras/Teoria/Apunte%20Arquitectura%20Aldo.pdf)
@@ -321,8 +320,6 @@ Planificación de 16 semanas.
 - [Arquitectura - Teoria para final](Recursos%20Extras/Teoria/Arquitectura%20-%20Teoria%20para%20final.pdf)
 - [ARQUITECTURA - TEORIA](Recursos%20Extras/Teoria/ARQUITECTURA%20-%20TEORIA.pdf)
 - [Arquitectura 8086](Recursos%20Extras/Teoria/Arquitectura%208086.pdf)
-- [mauro](Recursos%20Extras/Teoria/mauro.docx)
-- [Nuevo documento de texto](Recursos%20Extras/Teoria/Nuevo%20documento%20de%20texto.txt)
 - [Resumen final aco](Recursos%20Extras/Teoria/Resumen_final_aco.pdf)
 - [ResumenArqui majoymartin](Recursos%20Extras/Teoria/ResumenArqui_majoymartin.pdf)
 - [U1y2 NICO](Recursos%20Extras/Teoria/U1y2%20NICO.pdf)

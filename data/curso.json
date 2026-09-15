@@ -1,7 +1,7 @@
 {
   "curso": "Arquitectura de Computadoras",
   "subtitulo": "UTN FRRE · Dictado Especial · Segundo Cuatrimestre 2026",
-  "generado": "2026-09-15T13:48:01.315Z",
+  "generado": "2026-09-15T13:49:20.762Z",
   "pendientes": [],
   "secciones": [
     {
@@ -828,13 +828,6 @@
       "items": [
         {
           "tipo": "pdf",
-          "titulo": "7acf5c64-2db7-499e-b425-e57d6c371065 Unidad III Unidad Aritmtico Lgica",
-          "archivo": "Recursos Extras/Teoria/7acf5c64-2db7-499e-b425-e57d6c371065_Unidad_III_Unidad_Aritmtico_Lgica_.pdf",
-          "ext": "pdf",
-          "bytes": 35812128
-        },
-        {
-          "tipo": "pdf",
           "titulo": "8086 resumen propio",
           "archivo": "Recursos Extras/Teoria/8086 resumen propio.pdf",
           "ext": "pdf",
@@ -909,20 +902,6 @@
           "archivo": "Recursos Extras/Teoria/Arquitectura 8086.pdf",
           "ext": "pdf",
           "bytes": 2780157
-        },
-        {
-          "tipo": "docx",
-          "titulo": "mauro",
-          "archivo": "Recursos Extras/Teoria/mauro.docx",
-          "ext": "docx",
-          "bytes": 13294
-        },
-        {
-          "tipo": "otro",
-          "titulo": "Nuevo documento de texto",
-          "archivo": "Recursos Extras/Teoria/Nuevo documento de texto.txt",
-          "ext": "txt",
-          "bytes": 1176
         },
         {
           "tipo": "pdf",
