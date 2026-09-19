@@ -212,24 +212,24 @@ Planificación de 16 semanas.
 <details>
 <summary><b>1. Sistemas de Numeración y Codificación</b> — _Semanas 1 a 3_</summary>
 
-- [00 Codificación Numérica-Resueltos](Aula%20Cursado%20Especial/Archivos/1.%20Sistemas%20de%20Numeraci%C3%B3n%20y%20Codificaci%C3%B3n/00%20Codificaci%C3%B3n%20Num%C3%A9rica-Resueltos.pdf)
-- [2025 - Guia Autoestudio Codificacion](Aula%20Cursado%20Especial/Archivos/1.%20Sistemas%20de%20Numeraci%C3%B3n%20y%20Codificaci%C3%B3n/2025%20-%20Guia%20Autoestudio%20Codificacion.pdf)
-- [Codificación Ejercicios COmplementarios](Aula%20Cursado%20Especial/Archivos/1.%20Sistemas%20de%20Numeraci%C3%B3n%20y%20Codificaci%C3%B3n/Codificaci%C3%B3n%20Ejercicios%20COmplementarios.pdf)
-- [Sist Numeracion y Codificacion 2018](Aula%20Cursado%20Especial/Archivos/1.%20Sistemas%20de%20Numeraci%C3%B3n%20y%20Codificaci%C3%B3n/Sist%20Numeracion%20y%20Codificacion%202018.pdf)
-- [Sist Numeracion y Codificacion guia](Aula%20Cursado%20Especial/Archivos/1.%20Sistemas%20de%20Numeraci%C3%B3n%20y%20Codificaci%C3%B3n/Sist%20Numeracion%20y%20Codificacion%20guia.pdf)
-- [Tabla ASCII-EBCDIC](Aula%20Cursado%20Especial/Archivos/1.%20Sistemas%20de%20Numeraci%C3%B3n%20y%20Codificaci%C3%B3n/Tabla%20ASCII-EBCDIC.pdf)
+- [00 Codificación Ejercicios Complementarios](Aula%20Cursado%20Especial/Archivos/1.%20Sistemas%20de%20Numeraci%C3%B3n%20y%20Codificaci%C3%B3n/00%20Codificaci%C3%B3n%20Ejercicios%20Complementarios.pdf)
+- [00 Codificacion Guia](Aula%20Cursado%20Especial/Archivos/1.%20Sistemas%20de%20Numeraci%C3%B3n%20y%20Codificaci%C3%B3n/00%20Codificacion%20Guia.pdf)
+- [01 Sist Numeración y Codificacion Resueltos](Aula%20Cursado%20Especial/Archivos/1.%20Sistemas%20de%20Numeraci%C3%B3n%20y%20Codificaci%C3%B3n/01%20Sist%20%20Numeraci%C3%B3n%20y%20Codificacion%20%20Resueltos.pdf)
+- [01 Sist Numeracion y Codificacion Guia](Aula%20Cursado%20Especial/Archivos/1.%20Sistemas%20de%20Numeraci%C3%B3n%20y%20Codificaci%C3%B3n/01%20Sist%20Numeracion%20y%20Codificacion%20Guia.pdf)
+- [02 Sist Numeracion y Codificacion Power](Aula%20Cursado%20Especial/Archivos/1.%20Sistemas%20de%20Numeraci%C3%B3n%20y%20Codificaci%C3%B3n/02%20Sist%20Numeracion%20y%20Codificacion%20Power.pdf)
+- [02 Tabla ASCII-EBCDIC](Aula%20Cursado%20Especial/Archivos/1.%20Sistemas%20de%20Numeraci%C3%B3n%20y%20Codificaci%C3%B3n/02%20Tabla%20ASCII-EBCDIC.pdf)
 
 </details>
 
 <details>
 <summary><b>2. Algebra de Boole y Circuitos Combinacionales</b> — _Semana 4_</summary>
 
-- [01-GuiaCombinacionales](Aula%20Cursado%20Especial/Archivos/2.%20Algebra%20de%20Boole%20y%20Circuitos%20Combinacionales/01-GuiaCombinacionales.pdf)
-- [01IntroCombinacionales-Ej4](Aula%20Cursado%20Especial/Archivos/2.%20Algebra%20de%20Boole%20y%20Circuitos%20Combinacionales/01IntroCombinacionales-Ej4.pdf)
-- [2023 GUIAS DE AUTOESTUDIO Logica](Aula%20Cursado%20Especial/Archivos/2.%20Algebra%20de%20Boole%20y%20Circuitos%20Combinacionales/2023%20GUIAS%20DE%20AUTOESTUDIO%20Logica.pdf)
-- [Comparador de 4 bits](Aula%20Cursado%20Especial/Archivos/2.%20Algebra%20de%20Boole%20y%20Circuitos%20Combinacionales/Comparador%20de%204%20bits.pdf)
-- [GUIA AUTOESTUDIO Funciones Logicas Parte II](Aula%20Cursado%20Especial/Archivos/2.%20Algebra%20de%20Boole%20y%20Circuitos%20Combinacionales/GUIA%20AUTOESTUDIO%20Funciones%20Logicas%20Parte%20II.pdf)
-- [problemas-de-circuitos-digitales](Aula%20Cursado%20Especial/Archivos/2.%20Algebra%20de%20Boole%20y%20Circuitos%20Combinacionales/problemas-de-circuitos-digitales.pdf)
+- [00 Logica Guia Autoestudio](Aula%20Cursado%20Especial/Archivos/2.%20Algebra%20de%20Boole%20y%20Circuitos%20Combinacionales/00%20Logica%20Guia%20Autoestudio.pdf)
+- [00 Logica Guia Resuelta](Aula%20Cursado%20Especial/Archivos/2.%20Algebra%20de%20Boole%20y%20Circuitos%20Combinacionales/00%20Logica%20Guia%20Resuelta.pdf)
+- [01 Combinacionales Comparador de 4 bits](Aula%20Cursado%20Especial/Archivos/2.%20Algebra%20de%20Boole%20y%20Circuitos%20Combinacionales/01%20Combinacionales%20Comparador%20de%204%20bits.pdf)
+- [01 Combinacionales Guia](Aula%20Cursado%20Especial/Archivos/2.%20Algebra%20de%20Boole%20y%20Circuitos%20Combinacionales/01%20Combinacionales%20Guia.pdf)
+- [01 Combinacionales-Ej4](Aula%20Cursado%20Especial/Archivos/2.%20Algebra%20de%20Boole%20y%20Circuitos%20Combinacionales/01%20Combinacionales-Ej4.pdf)
+- [02 Logica y Combinacionales Guia Resuelta Externa](Aula%20Cursado%20Especial/Archivos/2.%20Algebra%20de%20Boole%20y%20Circuitos%20Combinacionales/02%20Logica%20y%20Combinacionales%20Guia%20Resuelta%20Externa.pdf)
 - [Video Resolución ejercicio 11. Comparador de 4 bits](https://drive.google.com/file/d/1GFWp-C5nn-bWs50dAUi_knfZ-R8OD5M3/view?usp=sharing)
 
 </details>
@@ -237,9 +237,8 @@ Planificación de 16 semanas.
 <details>
 <summary><b>3. Circuitos Secuenciales</b> — _Semanas 5 y 6_</summary>
 
+- [02 Secuenciales Guia](Aula%20Cursado%20Especial/Archivos/3.%20Circuitos%20Secuenciales/02%20Secuenciales%20Guia.pdf)
 - [02 Secuenciales-Ejecicio5 bis](Aula%20Cursado%20Especial/Archivos/3.%20Circuitos%20Secuenciales/02%20Secuenciales-Ejecicio5%20bis.pdf)
-- [02 Secuenciales-Ejecicio5.pptx](Aula%20Cursado%20Especial/Archivos/3.%20Circuitos%20Secuenciales/02%20Secuenciales-Ejecicio5.pptx.pdf)
-- [02-GuiaSecuenciales](Aula%20Cursado%20Especial/Archivos/3.%20Circuitos%20Secuenciales/02-GuiaSecuenciales.pdf)
 - [Video Explicación Ejercicio 5 - Contador secuencial 3, 2, 9, 7, 1, 0, 8, 6 y repite](https://youtu.be/8FPMyRe-NH8)
 - [Video Planteo de Ejercicios Secuenciales con Entrada en Serie (Ejercicios 9, 10, 11 y 12)](https://youtu.be/WNrSS4RMujA)
 - [Video Planteo de Ejercicios Complementarios (Ejercicios 3 y 4)](https://youtu.be/32Nifrj8lrg)

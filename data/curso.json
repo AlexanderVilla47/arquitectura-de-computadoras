@@ -1,7 +1,7 @@
 {
   "curso": "Arquitectura de Computadoras",
   "subtitulo": "UTN FRRE · Dictado Especial · Segundo Cuatrimestre 2026",
-  "generado": "2026-09-15T13:49:20.762Z",
+  "generado": "2026-09-19T00:40:44.366Z",
   "pendientes": [],
   "secciones": [
     {
@@ -447,43 +447,43 @@
       "items": [
         {
           "tipo": "pdf",
-          "titulo": "00 Codificación Numérica-Resueltos",
-          "archivo": "Aula Cursado Especial/Archivos/1. Sistemas de Numeración y Codificación/00 Codificación Numérica-Resueltos.pdf",
-          "ext": "pdf",
-          "bytes": 235016
-        },
-        {
-          "tipo": "pdf",
-          "titulo": "2025 - Guia Autoestudio Codificacion",
-          "archivo": "Aula Cursado Especial/Archivos/1. Sistemas de Numeración y Codificación/2025 - Guia Autoestudio Codificacion.pdf",
-          "ext": "pdf",
-          "bytes": 1455563
-        },
-        {
-          "tipo": "pdf",
-          "titulo": "Codificación Ejercicios COmplementarios",
-          "archivo": "Aula Cursado Especial/Archivos/1. Sistemas de Numeración y Codificación/Codificación Ejercicios COmplementarios.pdf",
+          "titulo": "00 Codificación Ejercicios Complementarios",
+          "archivo": "Aula Cursado Especial/Archivos/1. Sistemas de Numeración y Codificación/00 Codificación Ejercicios Complementarios.pdf",
           "ext": "pdf",
           "bytes": 175343
         },
         {
           "tipo": "pdf",
-          "titulo": "Sist Numeracion y Codificacion 2018",
-          "archivo": "Aula Cursado Especial/Archivos/1. Sistemas de Numeración y Codificación/Sist Numeracion y Codificacion 2018.pdf",
+          "titulo": "00 Codificacion Guia",
+          "archivo": "Aula Cursado Especial/Archivos/1. Sistemas de Numeración y Codificación/00 Codificacion Guia.pdf",
           "ext": "pdf",
-          "bytes": 10663327
+          "bytes": 1455563
         },
         {
           "tipo": "pdf",
-          "titulo": "Sist Numeracion y Codificacion guia",
-          "archivo": "Aula Cursado Especial/Archivos/1. Sistemas de Numeración y Codificación/Sist Numeracion y Codificacion guia.pdf",
+          "titulo": "01 Sist Numeración y Codificacion Resueltos",
+          "archivo": "Aula Cursado Especial/Archivos/1. Sistemas de Numeración y Codificación/01 Sist  Numeración y Codificacion  Resueltos.pdf",
+          "ext": "pdf",
+          "bytes": 235016
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "01 Sist Numeracion y Codificacion Guia",
+          "archivo": "Aula Cursado Especial/Archivos/1. Sistemas de Numeración y Codificación/01 Sist Numeracion y Codificacion Guia.pdf",
           "ext": "pdf",
           "bytes": 498356
         },
         {
           "tipo": "pdf",
-          "titulo": "Tabla ASCII-EBCDIC",
-          "archivo": "Aula Cursado Especial/Archivos/1. Sistemas de Numeración y Codificación/Tabla ASCII-EBCDIC.pdf",
+          "titulo": "02 Sist Numeracion y Codificacion Power",
+          "archivo": "Aula Cursado Especial/Archivos/1. Sistemas de Numeración y Codificación/02 Sist Numeracion y Codificacion Power.pdf",
+          "ext": "pdf",
+          "bytes": 10663327
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "02 Tabla ASCII-EBCDIC",
+          "archivo": "Aula Cursado Especial/Archivos/1. Sistemas de Numeración y Codificación/02 Tabla ASCII-EBCDIC.pdf",
           "ext": "pdf",
           "bytes": 380355
         }
@@ -500,43 +500,43 @@
       "items": [
         {
           "tipo": "pdf",
-          "titulo": "01-GuiaCombinacionales",
-          "archivo": "Aula Cursado Especial/Archivos/2. Algebra de Boole y Circuitos Combinacionales/01-GuiaCombinacionales.pdf",
-          "ext": "pdf",
-          "bytes": 471823
-        },
-        {
-          "tipo": "pdf",
-          "titulo": "01IntroCombinacionales-Ej4",
-          "archivo": "Aula Cursado Especial/Archivos/2. Algebra de Boole y Circuitos Combinacionales/01IntroCombinacionales-Ej4.pdf",
-          "ext": "pdf",
-          "bytes": 309987
-        },
-        {
-          "tipo": "pdf",
-          "titulo": "2023 GUIAS DE AUTOESTUDIO Logica",
-          "archivo": "Aula Cursado Especial/Archivos/2. Algebra de Boole y Circuitos Combinacionales/2023 GUIAS DE AUTOESTUDIO Logica.pdf",
+          "titulo": "00 Logica Guia Autoestudio",
+          "archivo": "Aula Cursado Especial/Archivos/2. Algebra de Boole y Circuitos Combinacionales/00 Logica Guia Autoestudio.pdf",
           "ext": "pdf",
           "bytes": 486349
         },
         {
           "tipo": "pdf",
-          "titulo": "Comparador de 4 bits",
-          "archivo": "Aula Cursado Especial/Archivos/2. Algebra de Boole y Circuitos Combinacionales/Comparador de 4 bits.pdf",
-          "ext": "pdf",
-          "bytes": 542099
-        },
-        {
-          "tipo": "pdf",
-          "titulo": "GUIA AUTOESTUDIO Funciones Logicas Parte II",
-          "archivo": "Aula Cursado Especial/Archivos/2. Algebra de Boole y Circuitos Combinacionales/GUIA AUTOESTUDIO Funciones Logicas Parte II.pdf",
+          "titulo": "00 Logica Guia Resuelta",
+          "archivo": "Aula Cursado Especial/Archivos/2. Algebra de Boole y Circuitos Combinacionales/00 Logica Guia Resuelta.pdf",
           "ext": "pdf",
           "bytes": 719440
         },
         {
           "tipo": "pdf",
-          "titulo": "problemas-de-circuitos-digitales",
-          "archivo": "Aula Cursado Especial/Archivos/2. Algebra de Boole y Circuitos Combinacionales/problemas-de-circuitos-digitales.pdf",
+          "titulo": "01 Combinacionales Comparador de 4 bits",
+          "archivo": "Aula Cursado Especial/Archivos/2. Algebra de Boole y Circuitos Combinacionales/01 Combinacionales Comparador de 4 bits.pdf",
+          "ext": "pdf",
+          "bytes": 542099
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "01 Combinacionales Guia",
+          "archivo": "Aula Cursado Especial/Archivos/2. Algebra de Boole y Circuitos Combinacionales/01 Combinacionales Guia.pdf",
+          "ext": "pdf",
+          "bytes": 471823
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "01 Combinacionales-Ej4",
+          "archivo": "Aula Cursado Especial/Archivos/2. Algebra de Boole y Circuitos Combinacionales/01 Combinacionales-Ej4.pdf",
+          "ext": "pdf",
+          "bytes": 309987
+        },
+        {
+          "tipo": "pdf",
+          "titulo": "02 Logica y Combinacionales Guia Resuelta Externa",
+          "archivo": "Aula Cursado Especial/Archivos/2. Algebra de Boole y Circuitos Combinacionales/02 Logica y Combinacionales Guia Resuelta Externa.pdf",
           "ext": "pdf",
           "bytes": 2801141
         },
@@ -558,24 +558,17 @@
       "items": [
         {
           "tipo": "pdf",
+          "titulo": "02 Secuenciales Guia",
+          "archivo": "Aula Cursado Especial/Archivos/3. Circuitos Secuenciales/02 Secuenciales Guia.pdf",
+          "ext": "pdf",
+          "bytes": 1129720
+        },
+        {
+          "tipo": "pdf",
           "titulo": "02 Secuenciales-Ejecicio5 bis",
           "archivo": "Aula Cursado Especial/Archivos/3. Circuitos Secuenciales/02 Secuenciales-Ejecicio5 bis.pdf",
           "ext": "pdf",
           "bytes": 836351
-        },
-        {
-          "tipo": "pdf",
-          "titulo": "02 Secuenciales-Ejecicio5.pptx",
-          "archivo": "Aula Cursado Especial/Archivos/3. Circuitos Secuenciales/02 Secuenciales-Ejecicio5.pptx.pdf",
-          "ext": "pdf",
-          "bytes": 851988
-        },
-        {
-          "tipo": "pdf",
-          "titulo": "02-GuiaSecuenciales",
-          "archivo": "Aula Cursado Especial/Archivos/3. Circuitos Secuenciales/02-GuiaSecuenciales.pdf",
-          "ext": "pdf",
-          "bytes": 1129720
         },
         {
           "tipo": "enlace",
