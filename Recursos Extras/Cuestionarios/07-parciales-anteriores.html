@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Parciales anteriores</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root{
+  --bg:#F2F4F1; --panel:#FFFFFF; --panel2:#F7F9F7; --ink:#15201B; --muted:#56675F; --line:#D3DCD7;
+  --accent:#0E6A4E; --accent-ink:#FFFFFF; --accent-soft:#E0EEE8;
+  --ok:#1C7548; --ok-soft:#E2F2E9; --bad:#AE3730; --bad-soft:#F8E4E1; --tag:#8A5C0F; --tag-soft:#F6EBD6;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --cond:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E1412; --panel:#151D1A; --panel2:#1A2420; --ink:#E4ECE8; --muted:#93A59C; --line:#2A3630;
+    --accent:#4DC196; --accent-ink:#06150F; --accent-soft:#163129;
+    --ok:#5CCB8F; --ok-soft:#15301F; --bad:#EE7B71; --bad-soft:#3A1D1A; --tag:#E2B55C; --tag-soft:#342914;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E1412; --panel:#151D1A; --panel2:#1A2420; --ink:#E4ECE8; --muted:#93A59C; --line:#2A3630;
+  --accent:#4DC196; --accent-ink:#06150F; --accent-soft:#163129;
+  --ok:#5CCB8F; --ok-soft:#15301F; --bad:#EE7B71; --bad-soft:#3A1D1A; --tag:#E2B55C; --tag-soft:#342914;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:0 64px}
+.wrap{max-width:860px;margin:0 auto}
+header.top{padding-block:28px 12px;display:grid;gap:6px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--cond);font-weight:700;font-size:clamp(26px,5vw,36px);line-height:1.1;margin:0;text-wrap:balance}
+.lead{color:var(--muted);margin:0;max-width:65ch}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);display:grid;gap:10px;margin-bottom:18px}
+.score{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums}
+.score b{font-weight:600}
+.score .okc{color:var(--ok)} .score .badc{color:var(--bad)} .score .mut{color:var(--muted)}
+.meter{flex:1 1 160px;height:6px;border-radius:3px;background:var(--line);overflow:hidden;display:flex;min-width:120px}
+.meter i{display:block;height:100%}
+.meter .m1{background:var(--ok)} .meter .m2{background:var(--bad)}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:thin}
+.chip{flex:0 0 auto;font:500 13px var(--sans);border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:5px 10px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.chip small{font-family:var(--mono);color:var(--muted);margin-left:4px}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip[aria-pressed="true"] small{color:var(--accent-ink);opacity:.8}
+select,button,input{font:inherit}
+.btn{font:500 13px var(--sans);border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:6px 12px;border-radius:7px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.fsel{font:500 13px var(--sans);border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:6px 8px;border-radius:7px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.list{display:grid;gap:14px}
+.q{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 16px 14px;display:grid;gap:12px}
+.q.is-ok{border-color:color-mix(in srgb,var(--ok) 55%,var(--line))}
+.q.is-bad{border-color:color-mix(in srgb,var(--bad) 55%,var(--line))}
+.qh{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline}
+.num{font-family:var(--mono);font-weight:600;font-size:13px;color:var(--accent)}
+.sec{font-size:12px;color:var(--muted)}
+.kind{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--tag);background:var(--tag-soft);padding:1px 6px;border-radius:4px;margin-left:auto}
+.prompt{font-weight:500;margin:0}
+.prompt code,.opt code,.expl code,td code,.ml code{font-family:var(--mono);font-size:.93em;background:var(--panel2);border:1px solid var(--line);padding:0 4px;border-radius:4px;white-space:nowrap}
+.ov{text-decoration:overline;text-decoration-thickness:1.5px}
+.opts{display:grid;gap:6px}
+.opt{display:grid;grid-template-columns:auto auto 1fr;gap:8px;align-items:start;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer;background:var(--panel)}
+.opt:hover{border-color:var(--accent)}
+.opt input{margin:3px 0 0;accent-color:var(--accent)}
+.opt .L{font-family:var(--mono);color:var(--muted);font-size:13px;padding-top:1px}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.mrows{display:grid;gap:8px}
+.mrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:8px;align-items:center;padding:6px 8px;border:1px solid var(--line);border-radius:8px}
+.ml{font-size:14px}
+.mrow select,.tbl select{width:100%;max-width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--panel2);color:var(--ink)}
+.mrow.right{border-color:var(--ok);background:var(--ok-soft)}
+.mrow.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.fix{grid-column:1/-1;font-size:13px;color:var(--ok);font-weight:500}
+.optlist{font-size:13px;color:var(--muted);margin:0;padding-left:0;list-style:none;display:grid;gap:2px}
+.optlist li span{font-family:var(--mono)}
+@media (max-width:560px){.mrow{grid-template-columns:1fr}}
+.tw{overflow-x:auto}
+.tbl{border-collapse:collapse;font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{border:1px solid var(--line);padding:5px 10px;text-align:center}
+.tbl th{background:var(--panel2);font-weight:600}
+.tbl td.blank{padding:3px 4px;min-width:64px}
+.tbl td.right{background:var(--ok-soft)} .tbl td.wrong{background:var(--bad-soft)}
+.tbl td .corr{display:block;font-size:12px;color:var(--ok);font-weight:600}
+.tin{width:100%;max-width:360px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);color:var(--ink);font-family:var(--mono)}
+.tin.right{border-color:var(--ok);background:var(--ok-soft)} .tin.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.qf{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.verdict{font-weight:600;font-size:14px}
+.verdict.ok{color:var(--ok)} .verdict.bad{color:var(--bad)}
+.expl{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px;display:grid;gap:6px}
+.expl p{margin:0}
+.expl .ans{font-weight:600}
+pre.blk,.prompt pre{font-family:var(--mono);font-size:13px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:8px 10px;overflow-x:auto;margin:8px 0 0;font-weight:400;line-height:1.45}
+.bar{}
+@media (max-width:640px){.bar{position:static}}
+.empty{color:var(--muted);text-align:center;padding:30px 0}
+footer.note{color:var(--muted);font-size:13px;margin-top:28px;max-width:65ch}
+@media (prefers-reduced-motion:no-preference){.q{transition:border-color .15s}}
+</style>
+</head>
+<body>
+<div class="wrap" style="padding-top:14px"><a href="../../site/secciones/93-cuestionarios.html" style="color:var(--accent);font:500 13px var(--sans);text-decoration:none">← Volver al aula</a></div>
+
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Arquitectura de Computadoras · C1 · Teoría</div>
+    <h1>Parciales anteriores</h1>
+    <p class="lead">Todas las preguntas del archivo XX.05.25 (C1 20XX, C1 2025 comisión jueves y comisión lunes), tal como las tomó el profe, con corrección y explicación. Elegí, tocá <b>Corregir</b> y leé la explicación. Tus respuestas quedan guardadas en este navegador.</p>
+  </header>
+
+  <div class="bar">
+    <div class="score" id="score"></div>
+    <div class="chips" id="chips" role="toolbar" aria-label="Temas"></div>
+    <div class="controls">
+      <select class="fsel" id="filter" aria-label="Filtrar">
+        <option value="all">Todas</option>
+        <option value="todo">Sin corregir</option>
+        <option value="bad">Falladas</option>
+        <option value="ok">Correctas</option>
+      </select>
+      <button class="btn" id="shuffle" type="button">Mezclar orden</button>
+      <button class="btn" id="sim" type="button">Simulacro de 14</button>
+      <button class="btn primary" id="checkall" type="button">Corregir visibles</button>
+      <button class="btn" id="reset" type="button">Reiniciar</button>
+    </div>
+  </div>
+
+  <main class="list" id="list"></main>
+  <p class="empty" id="empty" hidden>No hay preguntas con este filtro.</p>
+  <footer class="note">Preguntas armadas a partir del apunte de Nico (U1 y U2), el apunte de cátedra y los parciales anteriores. Donde el apunte y otra bibliografía difieren, la explicación sigue al apunte.</footer>
+</div>
+
+<script>
+const DATA = {"id": "prof", "qs": [{"t": "one", "p": "Pregunta 1: Según William Stallings un computador es. Seleccione una:", "o": ["Máquina digital electromecánica para el tratamiento automático de la información, capaz de recibirla, operar sobre ella mediante procesos determinados y suministrar los resultados de tales operaciones.", "Máquina digital electrónica programable para el tratamiento automático de la información, capaz de recibirla, operar sobre ella mediante procesos determinados y suministrar los resultados de tales operaciones.", "Máquina digital para el tratamiento automático de la información, capaz de operar sobre ella mediante procesos determinados y suministrar los resultados de tales operaciones.", "Máquina digital eléctrica para el tratamiento automático de la información, capaz de recibirla mediante procesos determinados y suministrar los resultados de tales operaciones."], "a": [1], "e": "Digital, electrónica, programable; recibe, opera y suministra.", "sec": "C1 20XX · Parte 1", "id": "q1"}, {"t": "one", "p": "Pregunta 2: Si la información en el transmisor es 11111001 y no hay error, el receptor recibirá la siguiente información con los bit de control del código de Hamming para detectar y corregir un error. Seleccione una:", "o": ["111101001110", "111101001101", "111101000100", "110101001100"], "a": [2], "e": "8 bits de información → 4 de control (2⁴ ≥ 8 + 4 + 1). Posiciones de 12 (izquierda) a 1 (derecha); control en 8, 4, 2, 1 y paridad par. Los cuatro bits de control dan 0: p0 (pos 1) cubre 3,5,7,9,11 → 0; p1 (pos 2) cubre 3,6,7,10,11 → 0; p2 (pos 4) cubre 5,6,7,12 → 0; p3 (pos 8) cubre 9,10,11,12 → 0. Palabra: 1111 0 100 0 1 00 → 111101000100.", "sec": "C1 20XX · Parte 1", "id": "q2"}, {"t": "match", "p": "Pregunta 3: ¿Qué hitos definieron la aparición de cada generación de computadoras?", "rows": ["Generación 0 (hasta 1945)", "Generación 1 (1945-1955)", "Generación 2 (1955-1965)", "Generación 3 (1965-1980)", "Generación 4 (desde 1980)", "Generación 5 (desde 2010 en adelante)"], "ch": ["Sistemas mecánicos y electromecánicos", "Válvulas y tubos al vacío", "Transistores y sistemas batch", "Computadores portátiles", "Computación cuántica", "Multiprogramación y circuitos integrados"], "a": [0, 1, 2, 5, 3, 4], "e": "", "lt": true, "sec": "C1 20XX · Parte 1", "id": "q3"}, {"t": "one", "p": "Pregunta 4: Si se necesita hacer la operación A − B. Seleccione una:", "o": ["Cuando b es mayor que a podemos utilizar solamente complementos a la base", "Al sumar a más el complemento a la base menos uno de b, siempre se debe cambiar el signo del resultado obtenido", "Ninguna es correcta", "Se resuelve complementando el sustraendo o utilizando un sustractor"], "a": [3], "e": "La resta es la suma del minuendo más el complemento del sustraendo (o se usa un sustractor). El signo solo se cambia cuando no hay acarreo final.", "sec": "C1 20XX · Parte 1", "id": "q4"}, {"t": "match", "p": "Pregunta 5: Ordene de menor a mayor los distintos niveles según la visión de la organización estructurada de un computador (Andrew S. Tanenbaum):", "rows": ["Nivel 7", "Nivel 6", "Nivel 5", "Nivel 4", "Nivel 3", "Nivel 2", "Nivel 1", "Nivel 0"], "ch": ["Aplicaciones de usuarios", "Lenguajes de alto nivel", "Compiladores y ensambladores", "Sistema operativo", "Máquina convencional (lenguaje de máquina)", "Microprogramación", "Lógica digital", "Nivel físico"], "a": [0, 1, 2, 3, 4, 5, 6, 7], "e": "", "lt": true, "sec": "C1 20XX · Parte 1", "id": "q5"}, {"t": "one", "p": "Pregunta 6: El sistema de codificación BCD AIKEN. Seleccione una:", "o": ["Ninguna es correcta", "Permite hallar el complemento restringido de un número decimal bcd invirtiendo sus bits", "No permite hallar el complemento restringido de un número decimal bcd invirtiendo sus bits", "Permite hallar el complemento de un número decimal bcd invirtiendo sus bits"], "a": [1], "e": "Es simétrico (autocomplementario): invertir los bits da el complemento restringido (a 9). La d dice “complemento” a secas, que sería el auténtico (a 10).", "sec": "C1 20XX · Parte 1", "id": "q6"}, {"t": "many", "p": "Pregunta 7: La cantidad de bit necesarios para representar los caracteres de nuestro alfabeto, los símbolos del sistema decimal de numeración y los signos de puntuación (total 52 símbolos) se necesitan. Seleccione una o más de una:", "o": ["La base elevada a la 52", "Log natural de 52", "Log base dos de 52", "2 elevado a la 52"], "a": [2], "e": "log₂52 ≈ 5,7 → 6 bits.", "sec": "C1 20XX · Parte 1", "id": "q7"}, {"t": "many", "p": "Pregunta 8: En el código de paridad impar. Seleccione una o más de una:", "o": ["La cantidad de ceros o unos que llegan al receptor debe ser impar", "La cantidad de unos que llegan al receptor debe ser impar", "Ninguna es correcta", "La cantidad de ceros del mensaje debe ser impar"], "a": [1], "e": "", "sec": "C1 20XX · Parte 1", "id": "q8"}, {"t": "many", "p": "Pregunta 9: El control de paridad par permite. Seleccione una o más de una:", "o": ["Detectar solo un error", "Detectar y corregir más de un error", "Corregir un solo error", "Detectar y corregir solo un error"], "a": [0], "e": "La paridad detecta pero no corrige.", "sec": "C1 20XX · Parte 1", "id": "q9"}, {"t": "one", "p": "Pregunta 10: Un canal de comunicación. Seleccione una:", "o": ["Medio por el cual una información binaria viaja del emisor al receptor con algún tipo de codificación", "Medio por el cual una información binaria viaja del emisor al receptor", "Es un sistema que codifica y decodifica la información a transmitir", "Es un sistema que codifica la información a transmitir"], "a": [0], "e": "Respuesta más probable. El apunte define al canal como el medio que transmite de extremo a extremo minimizando la tasa de errores mediante codificación redundante. c y d describen al codificador y al decodificador. Si el profe marcó la b, es porque tomó la definición mínima.", "sec": "C1 20XX · Parte 1", "id": "q10"}, {"t": "one", "p": "Pregunta 1: La forma normal conjuntiva de una función (FNC) es. Seleccione una:", "o": ["La disyunción de disyunciones de literales de sus variables de entrada de la forma: (L11 o L12 o.. o L1n) o (L21 y L22 o.. o L2n) o (Lm1 o Lm2 o.. o Lnm)", "La disyunción de conjunciones de literales de sus variables de entrada de la forma: (L11 y L12 y .. y L1n) o (L21 y L22 y .. y L2n) o (Lm1 y Lm2 y.. y Lnm)", "La conjunción de conjunciones de los literales de sus variables de entrada de la forma: (l11 y l12 y... y l1n) y (l21 o l22 o.. o l2n) y (Lm1 o Lm2 o.. o Lnm)", "La conjunción de disyunciones de los literales de sus variables de entrada de la forma: (L11 o L12 o.. o L1n) y (L21 o L22 o.. o L2n) y (Lm1 o Lm2 o.. o Lnm)"], "a": [3], "e": "FNC = conjunción (y) de disyunciones (o) = producto de sumas.", "sec": "C1 20XX · Parte 2", "id": "q11"}, {"t": "one", "p": "Pregunta 2: Elija la función de salida correcta para circuitos secuenciales. Seleccione una:", "o": ["S(t) = F(Q(t), E(t))", "S(t) = F(Q(t+1), E(t+1))", "S(t+1) = F(Q(t), E(t))", "S(t−1) = F(Q(t−1), E(t−1))"], "a": [2], "e": "Según el apunte: S(t+1) = F[Q(t), E(t)].", "sec": "C1 20XX · Parte 2", "id": "q12"}, {"t": "one", "p": "Pregunta 3: Minitérmino es. Seleccione una:", "o": ["La suma de las variables en juego negadas que hacen que el producto valga uno", "El producto de las variables en juego o sus negaciones individuales que hacen que el producto valga uno", "La suma de las variables en juego o sus negaciones individuales que hacen que el producto valga uno", "Ninguna de las anteriores"], "a": [1], "e": "", "sec": "C1 20XX · Parte 2", "id": "q13"}, {"t": "one", "p": "Pregunta 4: Elija la definición de circuitos secuenciales que más se ajuste a lo estudiado. Seleccione una:", "o": ["Son aquellos en los que sus salidas en instante t dependen de sus entradas en instante t-1 y su último estado en t", "Son aquellos cuyas salidas en instante t+1 dependen de sus entradas en instante t y su último estado en t", "Son aquellos en los que sus salidas en instante t+1 dependen de sus entradas en instante t y sus estados", "Son aquellos que pueden o no tener salidas en t+1"], "a": [1], "e": "", "sec": "C1 20XX · Parte 2", "id": "q14"}, {"t": "one", "p": "Pregunta 5: Indique la opción que más se ajuste a la definición de registros en el ámbito del nivel de lógica digital. Seleccione una:", "o": ["Colección ordenada de flip-flops que permite realizar operaciones hexadecimales específicas sobre la información contenida.", "Arreglo de flip-flops que permite mantener una palabra de ceros y unos, y que organizados a través de una lógica combinacional / secuencial lo capacita para realizar operaciones específicas sobre la información contenida.", "Arreglo de flip-flops que permite a través de una lógica combinacional / secuencial realizar cálculos de punto flotante, de desplazamientos, y/o cuenta/descuento de su información contenida.", "Arreglo de flip-flops que permite mantener una palabra de ceros y unos, y que organizados a través de una lógica combinacional / secuencial lo capacita para realizar operaciones de desplazamientos o contadores sobre la información contenida."], "a": [1], "e": "", "sec": "C1 20XX · Parte 2", "id": "q15"}, {"t": "table", "p": "Pregunta 6: Construya tabla excitación válida para biestable RS", "h": ["Q(t)", "Q(t+1)", "S", "R"], "rows": [[{"v": "0"}, {"v": "0"}, {"b": 0}, {"b": 1}], [{"v": "0"}, {"v": "1"}, {"b": 2}, {"b": 3}], [{"v": "1"}, {"v": "0"}, {"b": 4}, {"b": 5}], [{"v": "1"}, {"v": "1"}, {"b": 6}, {"b": 7}]], "ch": ["0", "1", "X"], "a": ["0", "X", "1", "0", "0", "1", "X", "0"], "e": "X = no importa.", "sec": "C1 20XX · Parte 2", "id": "q16"}, {"t": "table", "p": "Pregunta 7: Construya tabla excitación válida para biestable JK", "h": ["Q(t)", "Q(t+1)", "J", "K"], "rows": [[{"v": "0"}, {"v": "0"}, {"b": 0}, {"b": 1}], [{"v": "0"}, {"v": "1"}, {"b": 2}, {"b": 3}], [{"v": "1"}, {"v": "0"}, {"b": 4}, {"b": 5}], [{"v": "1"}, {"v": "1"}, {"b": 6}, {"b": 7}]], "ch": ["0", "1", "X"], "a": ["0", "X", "1", "X", "X", "1", "X", "0"], "e": "X = no importa.", "sec": "C1 20XX · Parte 2", "id": "q17"}, {"t": "one", "p": "Pregunta 8: Un sistema digital es cualquier dispositivo destinado a. Seleccione una:", "o": ["La generación, transmisión, procesamiento y almacenamiento de señales analógicas y digitales", "La generación, transmisión, procesamiento y almacenamiento de señales digitales", "La generación de señales electrónicas.", "La generación, transmisión, procesamiento y almacenamiento de señales analógicas"], "a": [1], "e": "Las cuatro acciones (generación, transmisión, procesamiento y almacenamiento) y solo señales digitales.", "sec": "C1 20XX · Parte 2", "id": "q18"}, {"t": "one", "p": "Pregunta 9: Elija la definición de circuitos combinacionales que más se ajuste a lo estudiado. Seleccione una:", "o": ["Son aquellos en los que sus valores de salida dependen de las combinaciones de los valores lógicos de sus entradas y su estado en t, entregando siempre el mismo valor de salida para una combinación dada de valores binarios.", "Son aquellos en los que sus valores de salida dependen de las combinaciones de los valores lógicos de sus entradas en el mismo instante de tiempo t, no teniendo en cuenta la variable tiempo, entregando siempre el mismo valor de salida para una combinación dada de valores binarios.", "Son aquellos en los que sus valores de salida dependen de las combinaciones de los valores lógicos de sus entradas en el mismo instante de tiempo t, no teniendo en cuenta la variable tiempo, entregando distintos valores de salida para una combinación dada de valores binarios.", "Son aquellos en los que sus valores de salida dependen de las combinaciones de los valores lógicos de sus entradas en el mismo instante de tiempo, teniendo en cuenta la variable tiempo, entregando siempre el mismo valor de salida para una combinación dada de valores binarios."], "a": [1], "e": "Claves: mismo instante t, no tiene en cuenta la variable tiempo y entrega siempre el mismo valor.", "sec": "C1 20XX · Parte 2", "id": "q19"}, {"t": "one", "p": "Pregunta 10: Un sistema digital combinacional es aquel donde. Seleccione una:", "o": ["Sus salidas sólo dependen de las entradas presentes.", "Sus salidas solo dependen de las entradas futuras.", "Sus salidas solo dependen de las entradas presentes y futuras", "Sus salidas sólo dependen de las entradas anteriores."], "a": [0], "e": "", "sec": "C1 20XX · Parte 2", "id": "q20"}, {"t": "one", "p": "Pregunta 11: Una señal digital corresponde a magnitudes físicas limitadas a tomar sólo unos determinados valores. Seleccione una:", "o": ["Discretos", "Continuos y discretos", "Continuos", "Eléctricos"], "a": [0], "e": "", "sec": "C1 20XX · Parte 2", "id": "q21"}, {"t": "table", "p": "Pregunta 12: Construya tabla con los estados válidos para biestable JK", "h": ["J", "K", "Q(t)", "Q(t+1)"], "rows": [[{"v": "0"}, {"v": "0"}, {"v": "0"}, {"b": 0}], [{"v": "0"}, {"v": "0"}, {"v": "1"}, {"b": 1}], [{"v": "0"}, {"v": "1"}, {"v": "0"}, {"b": 2}], [{"v": "0"}, {"v": "1"}, {"v": "1"}, {"b": 3}], [{"v": "1"}, {"v": "0"}, {"v": "0"}, {"b": 4}], [{"v": "1"}, {"v": "0"}, {"v": "1"}, {"b": 5}], [{"v": "1"}, {"v": "1"}, {"v": "0"}, {"b": 6}], [{"v": "1"}, {"v": "1"}, {"v": "1"}, {"b": 7}]], "ch": ["0", "1", "?"], "a": ["0", "1", "0", "0", "1", "1", "1", "0"], "e": "Como el RS, pero con J = K = 1 complementa: Q(t+1) = Q̄(t).", "sec": "C1 20XX · Parte 2", "id": "q22"}, {"t": "table", "p": "Pregunta 13: Construya tabla con los estados válidos para biestable RS (símbolo ? para estados indeterminados)", "h": ["S", "R", "Q(t)", "Q(t+1)"], "rows": [[{"v": "0"}, {"v": "0"}, {"v": "0"}, {"b": 0}], [{"v": "0"}, {"v": "0"}, {"v": "1"}, {"b": 1}], [{"v": "0"}, {"v": "1"}, {"v": "0"}, {"b": 2}], [{"v": "0"}, {"v": "1"}, {"v": "1"}, {"b": 3}], [{"v": "1"}, {"v": "0"}, {"v": "0"}, {"b": 4}], [{"v": "1"}, {"v": "0"}, {"v": "1"}, {"b": 5}], [{"v": "1"}, {"v": "1"}, {"v": "0"}, {"b": 6}], [{"v": "1"}, {"v": "1"}, {"v": "1"}, {"b": 7}]], "ch": ["0", "1", "?"], "a": ["0", "1", "0", "0", "1", "1", "?", "?"], "e": "S = R = 0 mantiene; R = 1 pone 0; S = 1 pone 1; S = R = 1 indeterminado.", "sec": "C1 20XX · Parte 2", "id": "q23"}, {"t": "match", "p": "Pregunta 14: Para cada tipo de registro, seleccione la categoría correcta a la que pertenece:", "rows": ["Registro contador/descontador", "Registro formato mantisa exponente", "Registro de datos y direcciones", "Registro selección de memoria S", "Registro desplazamiento a derecha e izquierda", "Registro palabra de memoria M", "Registros para transferencia forzada de ceros y unos", "Registro contador de programa P", "Registro de solo lectura", "Registro acumulador AC"], "ch": ["Registros de datos", "Registros de memoria", "Registros de propósito general", "Registros de coma flotante", "Registros constantes", "Registros de propósito específico"], "a": [5, 3, 2, 1, 5, 0, 2, 5, 4, 0], "e": "Seguras según el apunte: mantisa-exponente → coma flotante; datos y direcciones → propósito general; solo lectura → constantes; acumulador → datos; S (guarda direcciones) → memoria. El apunte no clasifica explícitamente al contador/descontador, al de desplazamiento, al de transferencia forzada ni a P: esas respuestas son las más razonables, pero conviene confirmarlas con el profe.", "lt": true, "sec": "C1 20XX · Parte 2", "id": "q24"}, {"t": "one", "p": "Maxitérmino es. Seleccione uno:", "o": ["Es la suma de las variables en juego o sus negaciones individuales, que hacen que la suma valga uno.", "Es la suma de las variables en juego o sus negaciones individuales, que hacen que la suma valga cero.", "Es el producto de las variables en juego sin negar, que hacen que la suma valga uno.", "Ninguna de las anteriores"], "a": [1], "e": "El maxitérmino corresponde a las filas donde la función vale 0.", "sec": "C1 2025 · Com. 2.2 (jueves)", "id": "q25"}, {"t": "many", "p": "La ley de Moore. Seleccione uno o más:", "o": ["Determinar la cantidad de transistores por pulgada cuadrada", "Permite analizar el futuro desarrollo del software", "Definir con precisión la velocidad de los microprocesadores", "Ninguna es correcta"], "a": [0], "e": "", "sec": "C1 2025 · Com. 2.2 (jueves)", "id": "q26"}, {"t": "one", "p": "Elija la definición de circuitos combinacionales que más se ajuste a lo estudiado. Seleccione una:", "o": ["Son aquellos en los que sus valores de salida dependen de las combinaciones de los valores lógicos de sus entradas en el mismo instante de tiempo t, no teniendo en cuenta la variable tiempo, entregando siempre el mismo valor de salida para una combinación dada de valores binarios.", "Son aquellos en los que sus valores de salida dependen de las combinaciones de los valores lógicos de sus entradas y su estado en t, entregando siempre el mismo valor de salida para una combinación dada de valores binarios.", "Son aquellos en los que sus valores de salida dependen de las combinaciones de los valores lógicos de sus entradas en el mismo instante de tiempo, teniendo en cuenta la variable tiempo, entregando siempre el mismo valor de salida para una combinación dada de valores binarios.", "Son aquellos en los que sus valores de salida dependen de las combinaciones de los valores lógicos de sus entradas en el mismo instante de tiempo t, no teniendo en cuenta la variable tiempo, entregando distintos valores de salida para una combinación dada de valores binarios."], "a": [0], "e": "Claves: mismo instante t, no tiene en cuenta la variable tiempo y entrega siempre el mismo valor.", "sec": "C1 2025 · Com. 2.2 (jueves)", "id": "q27"}, {"t": "one", "p": "Un sistema digital es cualquier dispositivo destinado a. Seleccione una:", "o": ["La generación, transmisión, procesamiento y almacenamiento de señales digitales", "La generación, transmisión, procesamiento y almacenamiento de señales analógicas", "La generación, transmisión, procesamiento y almacenamiento de señales analógicas y digitales", "La generación de señales electrónicas.", "La generación, transmisión y procesamiento de señales digitales"], "a": [0], "e": "Las cuatro acciones (generación, transmisión, procesamiento y almacenamiento) y solo señales digitales.", "sec": "C1 2025 · Com. 2.2 (jueves)", "id": "q28"}, {"t": "match", "p": "Relacione cada ley del álgebra booleana considerando compuertas del tipo OR:", "rows": ["Asociativa", "Distributiva", "Idempotencia", "Teorema de la simplificación", "Conmutativa", "Absorción", "Complemento", "Elementos neutros (identidad)", "Demorgan", "Dominación"], "ch": ["A + 1 = 1", "A + Ā·B = A + B", "A + B = B + A", "(A + B) negado = Ā·B̄", "A + A·B = A", "A + 0 = A", "A + (B + C) = (A + B) + C", "A + Ā = 1", "A + B·C = (A + B)·(A + C)", "A + A = A"], "a": [6, 8, 9, 1, 2, 4, 7, 5, 3, 0], "e": "En el parcial no figuran las opciones; se usan las expresiones estándar en forma OR.", "lt": false, "sec": "C1 2025 · Com. 2.2 (jueves)", "id": "q29"}, {"t": "table", "p": "Pregunta 2: Construya tabla con los estados válidos para biestable RS (símbolo ? para estados indeterminados)", "h": ["S", "R", "Q(t)", "Q(t+1)"], "rows": [[{"v": "0"}, {"v": "0"}, {"v": "0"}, {"b": 0}], [{"v": "0"}, {"v": "0"}, {"v": "1"}, {"b": 1}], [{"v": "0"}, {"v": "1"}, {"v": "0"}, {"b": 2}], [{"v": "0"}, {"v": "1"}, {"v": "1"}, {"b": 3}], [{"v": "1"}, {"v": "0"}, {"v": "0"}, {"b": 4}], [{"v": "1"}, {"v": "0"}, {"v": "1"}, {"b": 5}], [{"v": "1"}, {"v": "1"}, {"v": "0"}, {"b": 6}], [{"v": "1"}, {"v": "1"}, {"v": "1"}, {"b": 7}]], "ch": ["0", "1", "?"], "a": ["0", "1", "0", "0", "1", "1", "?", "?"], "e": "S = R = 0 mantiene; R = 1 pone 0; S = 1 pone 1; S = R = 1 indeterminado.", "sec": "C1 2025 · Com. 2.2 (jueves)", "id": "q30"}, {"t": "one", "p": "Pregunta 3: Elija la definición de circuitos combinacionales que más se ajuste a lo estudiado. Seleccione una:", "o": ["Son aquellos en los que sus valores de salida dependen de las combinaciones de los valores lógicos de sus entradas en el mismo instante de tiempo t, no teniendo en cuenta la variable tiempo, entregando siempre el mismo valor de salida para una combinación dada de valores binarios.", "Son aquellos en los que sus valores de salida dependen de las combinaciones de los valores lógicos de sus entradas en el mismo instante de tiempo, teniendo en cuenta la variable tiempo, entregando siempre el mismo valor de salida para una combinación dada de valores binarios.", "Son aquellos en los que sus valores de salida dependen de las combinaciones de los valores lógicos de sus entradas en el mismo instante de tiempo t, no teniendo en cuenta la variable tiempo, entregando distintos valores de salida para una combinación dada de valores binarios.", "Son aquellos en los que sus valores de salida dependen de las combinaciones de los valores lógicos de sus entradas y su estado en t, entregando siempre el mismo valor de salida para una combinación dada de valores binarios."], "a": [0], "e": "Claves: mismo instante t, no tiene en cuenta la variable tiempo y entrega siempre el mismo valor.", "sec": "C1 2025 · Com. 2.2 (jueves)", "id": "q31"}, {"t": "many", "p": "Pregunta 4: La ley de Moore. Seleccione una o más de una:", "o": ["Define con precisión la velocidad de los microprocesadores", "Determina la cantidad de transistores por pulgada cuadrada", "Ninguna es correcta", "Permite analizar el futuro desarrollo del soft"], "a": [1], "e": "", "sec": "C1 2025 · Com. 2.2 (jueves)", "id": "q32"}, {"t": "many", "p": "Pregunta 5: Los sistemas operativos. Seleccione una o más de una:", "o": ["Todas son correctas", "Residen íntegramente en memoria central", "En la 1° generación solo administraban la memoria y los periféricos", "Aparecen en la 2o generación de computadoras"], "a": [3], "e": "En la 1ra generación no existían los SO (así que la c es falsa) y no residen íntegramente en memoria. La 2da generación es la primera en la que se proporciona software del sistema con el computador. Respuesta más probable: d.", "sec": "C1 2025 · Com. 2.2 (jueves)", "id": "q33"}, {"t": "one", "p": "Pregunta 6: Un sistema digital es cualquier dispositivo destinado a. Seleccione una:", "o": ["La generación, transmisión y procesamiento de señales digitales", "La generación, transmisión, procesamiento y almacenamiento de señales analógicas", "La generación de señales electrónicas.", "La generación, transmisión, procesamiento y almacenamiento de señales analógicas y digitales", "La generación, transmisión, procesamiento y almacenamiento de señales digitales"], "a": [4], "e": "Las cuatro acciones (generación, transmisión, procesamiento y almacenamiento) y solo señales digitales.", "sec": "C1 2025 · Com. 2.2 (jueves)", "id": "q34"}, {"t": "many", "p": "Pregunta 7: Indique cuál de las siguientes afirmaciones es correcta. Seleccione una o más de una:", "o": ["La información decodificada siempre se representa en binario", "En todos los códigos redundantes siempre hay más bit de información que de control", "En el código ebcdic el formato \"zoneado\" dificulta las operaciones en la alu", "El bit de paridad permite corregir un error en el mensaje"], "a": [2], "e": "La decodificación pasa a código de usuario (no binario). En el control 2 entre 3 hay más bits de control que de información. La paridad no corrige. El zoneado sí dificulta las operaciones en la ALU.", "sec": "C1 2025 · Com. 2.2 (jueves)", "id": "q35"}, {"t": "one", "p": "Pregunta 9: Indique cuál de las siguientes afirmaciones es correcta. Seleccione una:", "o": ["La velocidad de una máquina se mide en mhz o ghz (megaherz o gigaherz)", "En las máquinas de 3ra generación las memorias auxiliares típicas eran magnéticas", "Todas las máquinas de una misma generación tienen la misma velocidad", "Los transistores y los tubos de vacío fueron igualmente confiables"], "a": [1], "e": "MHz/GHz miden la frecuencia del reloj, no la velocidad de la máquina. En 3ra generación aparecen los discos duros; las cintas y discos magnéticos eran las memorias auxiliares típicas.", "sec": "C1 2025 · Com. 2.2 (jueves)", "id": "q36"}, {"t": "many", "p": "Pregunta 10: Indique cuál de las siguientes afirmaciones es correcta. Seleccione una o más de una:", "o": ["La información decodificada siempre se representa en binario", "En todos los códigos redundantes siempre hay más bit de información que de control", "En el código ebcdic el formato \"zoneado\" dificulta las operaciones en la alu", "El bit de paridad permite corregir un error en el mensaje"], "a": [2], "e": "La decodificación pasa a código de usuario (no binario). En el control 2 entre 3 hay más bits de control que de información. La paridad no corrige. El zoneado sí dificulta las operaciones en la ALU.", "sec": "C1 2025 · Com. 2.2 (jueves)", "id": "q37"}, {"t": "many", "p": "Pregunta 10: Los códigos de control de paridad permiten. Seleccione una o más:", "o": ["Retransmitir", "Detectar un error de 1 bit", "Detectar más de un error", "Ninguna de las respuestas anteriores", "Corregir un error"], "a": [1], "e": "La paridad solo detecta. Pedir retransmisión es una acción posterior del receptor, no algo que haga el código.", "sec": "C1 2025 · Com. 2.2 (jueves)", "id": "q38"}, {"t": "match", "p": "Pregunta 11: Relacione los elementos de ambos extremos sobre las generaciones de computadoras:", "rows": ["dos / large scale integration / ibm pc / multiprocesamiento", "multiprogramación / discos duros / tiempo compartido", "tubos al vacío / lenguaje de máquina / sin sistemas operativos", "mainframes en salas acondicionadas / tarjetas perforadas / procesos en lote", "ábacos / calculadoras mecánicas / sistemas basados en relé"], "ch": ["Generación 0", "Generación 1", "Generación 2", "Generación 3", "Generación 4"], "a": [4, 3, 1, 2, 0], "e": "", "lt": false, "sec": "C1 2025 · Com. 2.2 (jueves)", "id": "q39"}, {"t": "one", "p": "Pregunta 12: Un astable es. Seleccione una:", "o": ["Un biestable con dos posiciones estables", "Un biestable con una sola posición estable y otra inestable", "Ninguna de las respuestas", "Un biestable con dos posiciones no estables"], "a": [3], "e": "La báscula (astable) no tiene ningún estado estable.", "sec": "C1 2025 · Com. 2.2 (jueves)", "id": "q40"}, {"t": "one", "p": "Pregunta 13: Elija la función de transición correcta para circuitos secuenciales. Seleccione una:", "o": ["Q(t+1) = G(Q(t), E(t))", "Q(t) = G(Q(t), E(t))", "Q(t+1) = G(Q(t+1), E(t+1))", "Q(t+1) = G(Q(t-1), E(t))"], "a": [0], "e": "", "sec": "C1 2025 · Com. 2.2 (jueves)", "id": "q41"}, {"t": "one", "p": "Pregunta 14: La forma normal conjuntiva de una función (FNC) es. Seleccione una:", "o": ["La conjunción de conjunciones de los literales de sus variables de entrada de la forma: (l11 y l12 y... y lin) y (l21 o l22 o.. o l2n) y (lm1 o lm2 o.. o lnm)", "La conjunción de disyunciones de los literales de sus variables de entrada de la forma: (l11 o l12 o.. o l1n) y (l21 o l22 o.. o l2n) y (lm1 o lm2 o.. o lnm)", "La disyunción de disyunciones de literales de sus variables de entrada de la forma: (l11 o l12 o... o lin) o (l21 y l22 o.. o l2n) o (lm1 o lm2 o.. o lnm)", "La disyunción de conjunciones de literales de sus variables de entrada de la forma: (l11 y l12 y... y lin) o (l21 y l22 y.. y l2n) o (lm1 y lm2 y... y lnm)"], "a": [1], "e": "", "sec": "C1 2025 · Com. 2.2 (jueves)", "id": "q42"}, {"t": "table", "p": "Pregunta 15: Construya tabla de excitación válida para biestable JK", "h": ["Q(t)", "Q(t+1)", "J", "K"], "rows": [[{"v": "0"}, {"v": "0"}, {"b": 0}, {"b": 1}], [{"v": "0"}, {"v": "1"}, {"b": 2}, {"b": 3}], [{"v": "1"}, {"v": "0"}, {"b": 4}, {"b": 5}], [{"v": "1"}, {"v": "1"}, {"b": 6}, {"b": 7}]], "ch": ["0", "1", "X"], "a": ["0", "X", "1", "X", "X", "1", "X", "0"], "e": "X = no importa.", "sec": "C1 2025 · Com. 2.2 (jueves)", "id": "q43"}, {"t": "many", "p": "Pregunta 16: Indique cuál de las siguientes definiciones de sistema de computación son las más acertadas. Seleccione una o más de una:", "o": ["Máquina digital electrónica programable para el tratamiento automático de la información, capaz de recibirla, operar sobre ella mediante procesos determinados y suministrar los resultados de tales operaciones.", "Máquina electrónica analógica, dotada de memoria y procedimientos capaz de resolver problemas.", "Máquina electrónica, analógica o digital, dotada de memoria y métodos de tratamiento de información, capaz de resolver problemas lógicos.", "Máquina electrónica, analógica o digital, dotada de una memoria de gran capacidad y de métodos de tratamiento de información, capaz de resolver problemas matemáticos y lógicos mediante la utilización automática de programas informáticos.", "Máquina electromecánica, capaz de calcular operaciones matemáticas mediante el uso de memoria."], "a": [0, 3], "e": "a es la definición de Stallings y d la del apunte de cátedra.", "sec": "C1 2025 · Com. 2.2 (jueves)", "id": "q44"}, {"t": "one", "p": "Pregunta 1: Elija la función de transición correcta para circuitos secuenciales. Seleccione una:", "o": ["Q(t+1) = G(Q(t-1), E(t))", "Q(t+1) = G(Q(t+1), E(t+1))", "Q(t+1) = G(Q(t), E(t))", "Q(t) = G(Q(t), E(t))"], "a": [2], "e": "", "sec": "C1 2025 · Comisión lunes", "id": "q45"}, {"t": "many", "p": "Pregunta 2: El complemento de un número permite. Seleccione una o más de una:", "o": ["Sumar restando", "Hacer cambio directo de base con los números negativos", "Resolver las restas con menos hardware", "Representar los números negativos en bcd"], "a": [2], "e": "El complemento permite restar sumando, así no hace falta un sustractor. “Sumar restando” está invertido.", "sec": "C1 2025 · Comisión lunes", "id": "q46"}, {"t": "one", "p": "Pregunta 3: Minitérmino es. Seleccione una:", "o": ["Ninguna de las anteriores", "La suma de las variables en juego o sus negaciones individuales que hacen que el producto valga uno", "La suma de las variables en juego negadas que hacen que el producto valga uno", "El producto de las variables en juego o sus negaciones individuales que hacen que el producto valga uno"], "a": [3], "e": "", "sec": "C1 2025 · Comisión lunes", "id": "q47"}, {"t": "one", "p": "Pregunta 4: Elija la definición de circuitos secuenciales que más se ajuste a lo estudiado. Seleccione una:", "o": ["Son aquellos cuyas salidas en instante t+1 dependen de sus entradas en instante t y su último estado en t", "Son aquellos que pueden o no tener salidas en t+1", "Son aquellos en los que sus salidas en instante t+1 dependen de sus entradas en instante t y sus estados", "Son aquellos en los que sus salidas en instante t dependen de sus entradas en instante t-1 y su último estado en t"], "a": [0], "e": "", "sec": "C1 2025 · Comisión lunes", "id": "q48"}, {"t": "many", "p": "Pregunta 5: Indique cuál de las siguientes definiciones de sistema de computación son las más acertadas. Seleccione una o más de una:", "o": ["Máquina digital electrónica programable para el tratamiento automático de la información, capaz de recibirla, operar sobre ella mediante procesos determinados y suministrar los resultados de tales operaciones.", "Máquina electromecánica, capaz de calcular operaciones matemáticas mediante el uso de memoria.", "Máquina electrónica, analógica o digital, dotada de una memoria de gran capacidad y de métodos de tratamiento de información, capaz de resolver problemas matemáticos y lógicos mediante la utilización automática de programas informáticos.", "Máquina electrónica analógica, dotada de memoria y procedimientos capaz de resolver problemas.", "Máquina electrónica, analógica o digital, dotada de memoria y métodos de tratamiento de información, capaz de resolver problemas lógicos."], "a": [0, 2], "e": "", "sec": "C1 2025 · Comisión lunes", "id": "q49"}, {"t": "one", "p": "Pregunta 6: Un sistema monoestable es. Seleccione una:", "o": ["Un biestable que siempre se estabiliza en uno", "Ninguna de las respuestas", "Un biestable con una sola posición estable", "Un biestable con dos posiciones inestables"], "a": [2], "e": "", "sec": "C1 2025 · Comisión lunes", "id": "q50"}, {"t": "one", "p": "Pregunta 7: La forma normal disyuntiva de una función (FND) es. Seleccione una:", "o": ["Una conjunción de conjunciones de literales de sus variables de entrada de la forma: (l11 y l12 y.. y l1n) y (l21 y l22 y .. y l2n) y (lm1 y lm2 y .. y lnm)", "Una disyunción de conjunciones de literales de sus variables de entrada de la forma: (l11 y l12 y .. y l1n) o (l21 y l22 y... y l2n) o (lm1 y lm2 y .. y lnm)", "Una conjunción de disyunciones de los literales de sus variables de entrada de la forma: (l11 o l12 o.. o l1n) y (l21 o l22 o.. o l2n) y (lm1 o lm2 o.. o lnm)", "Una disyunción de disyunciones de los literales de sus variables de entrada de la forma: (l11 o l12 o.. o l1n) o (l21 o l22 o.. o l2n) o (lm1 o lm2 o.. o lnm)"], "a": [1], "e": "FND = disyunción (o) de conjunciones (y) = suma de productos.", "sec": "C1 2025 · Comisión lunes", "id": "q51"}, {"t": "table", "p": "Pregunta 8: Construya la tabla con los estados válidos para biestables JK", "h": ["J", "K", "Q(t)", "Q(t+1)"], "rows": [[{"v": "0"}, {"v": "0"}, {"v": "0"}, {"b": 0}], [{"v": "0"}, {"v": "0"}, {"v": "1"}, {"b": 1}], [{"v": "0"}, {"v": "1"}, {"v": "0"}, {"b": 2}], [{"v": "0"}, {"v": "1"}, {"v": "1"}, {"b": 3}], [{"v": "1"}, {"v": "0"}, {"v": "0"}, {"b": 4}], [{"v": "1"}, {"v": "0"}, {"v": "1"}, {"b": 5}], [{"v": "1"}, {"v": "1"}, {"v": "0"}, {"b": 6}], [{"v": "1"}, {"v": "1"}, {"v": "1"}, {"b": 7}]], "ch": ["0", "1", "?"], "a": ["0", "1", "0", "0", "1", "1", "1", "0"], "e": "Como el RS, pero con J = K = 1 complementa: Q(t+1) = Q̄(t).", "sec": "C1 2025 · Comisión lunes", "id": "q52"}, {"t": "one", "p": "Pregunta 9: Un sistema digital es cualquier dispositivo destinado a. Seleccione una:", "o": ["La generación, transmisión, procesamiento y almacenamiento de señales analógicas", "La generación, transmisión, procesamiento y almacenamiento de señales digitales", "La generación, transmisión y procesamiento de señales digitales", "La generación de señales electrónicas.", "La generación, transmisión, procesamiento y almacenamiento de señales analógicas y digitales"], "a": [1], "e": "Las cuatro acciones (generación, transmisión, procesamiento y almacenamiento) y solo señales digitales.", "sec": "C1 2025 · Comisión lunes", "id": "q53"}, {"t": "one", "p": "Pregunta 10: En las máquinas de 3ra generación. Seleccione una:", "o": ["No se utilizan circuitos integrados por no ser confiables", "Se duplica la velocidad de la 1ra generación", "Se utilizan por primera vez los transistores", "La memoria virtual es utilizada en las grandes máquinas (mainframes)"], "a": [3], "e": "En 3ra generación se desarrolla la máquina virtual; los transistores son de la 2da.", "sec": "C1 2025 · Comisión lunes", "id": "q54"}, {"t": "table", "p": "Pregunta 11: Construya tabla de excitación válida para biestable RS", "h": ["Q(t)", "Q(t+1)", "S", "R"], "rows": [[{"v": "0"}, {"v": "0"}, {"b": 0}, {"b": 1}], [{"v": "0"}, {"v": "1"}, {"b": 2}, {"b": 3}], [{"v": "1"}, {"v": "0"}, {"b": 4}, {"b": 5}], [{"v": "1"}, {"v": "1"}, {"b": 6}, {"b": 7}]], "ch": ["0", "1", "X"], "a": ["0", "X", "1", "0", "0", "1", "X", "0"], "e": "X = no importa.", "sec": "C1 2025 · Comisión lunes", "id": "q55"}, {"t": "match", "p": "Pregunta 12: Relacione los elementos de ambos extremos sobre las generaciones de computadoras", "rows": ["ábacos / calculadoras mecánicas / sistemas basados en relé", "tubos al vacío / lenguaje de máquina / sin sistemas operativos", "multiprogramación / discos duros / tiempo compartido", "mainframes en salas acondicionadas / tarjetas perforadas / procesos en lote", "dos / large scale integration / ibm pc / multiprocesamiento"], "ch": ["Generación 0", "Generación 1", "Generación 2", "Generación 3", "Generación 4"], "a": [0, 1, 3, 2, 4], "e": "", "lt": false, "sec": "C1 2025 · Comisión lunes", "id": "q56"}, {"t": "many", "p": "Pregunta 13: Los códigos de control de paridad permiten. Seleccione una o más de una:", "o": ["Ninguna de las respuesta anteriores", "Corregir un error", "Retransmitir", "Detectar un error de 1 bit", "Detectar más de un error"], "a": [3], "e": "", "sec": "C1 2025 · Comisión lunes", "id": "q57"}, {"t": "many", "p": "Pregunta 14: Indique cuál de las siguientes afirmaciones es correcta. Seleccione una o más de una:", "o": ["En todos los códigos redundantes siempre hay más bit de información que de control", "En el código ebcdic el formato \"zoneado\" dificulta las operaciones en la alu", "La información decodificada siempre se representa en binario", "El bit de paridad permite corregir un error en el mensaje"], "a": [1], "e": "La decodificación pasa a código de usuario (no binario). En el control 2 entre 3 hay más bits de control que de información. La paridad no corrige. El zoneado sí dificulta las operaciones en la ALU.", "sec": "C1 2025 · Comisión lunes", "id": "q58"}], "secs": ["C1 20XX · Parte 1", "C1 20XX · Parte 2", "C1 2025 · Com. 2.2 (jueves)", "C1 2025 · Comisión lunes"]};
+const KEY = "arqui-bank-" + DATA.id;
+const KIND = {one:"Seleccione una", many:"Seleccione una o más", match:"Relacione", table:"Complete la tabla", text:"Complete"};
+const L = "abcdefghijklmnopqrstuvwxyz";
+let st = {a:{}, r:{}};
+try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.a) st = s; } catch(e) {}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(st)); } catch(e) {} }
+let view = {sec:"all", filter:"all", sim:null};
+const byId = {}; DATA.qs.forEach(q => byId[q.id] = q);
+const list = document.getElementById("list");
+
+function el(tag, cls, html){ const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+function norm(s){ return String(s).toLowerCase().replace(/\s+/g,"").replace(/,/g,".").replace(/%$/,""); }
+function stripTags(h){ const d = document.createElement("div"); d.innerHTML = h; return d.textContent; }
+
+function build(q, i){
+  const card = el("article","q"); card.id = q.id;
+  const h = el("div","qh");
+  h.append(el("span","num", String(i+1).padStart(2,"0")), el("span","sec", q.sec), el("span","kind", KIND[q.t]));
+  card.append(h, el("p","prompt", q.p));
+  const body = el("div","body"); card.append(body);
+  const ans = st.a[q.id];
+  if (q.t === "one" || q.t === "many"){
+    const box = el("div","opts");
+    q.o.forEach((o, k) => {
+      const lab = el("label","opt");
+      const inp = document.createElement("input");
+      inp.type = q.t === "one" ? "radio" : "checkbox"; inp.name = q.id; inp.value = k; inp.id = q.id + "-o" + k;
+      if (ans && ans.includes(k)) { inp.checked = true; lab.classList.add("sel"); }
+      inp.addEventListener("change", () => {
+        const v = [...box.querySelectorAll("input")].filter(x => x.checked).map(x => +x.value);
+        st.a[q.id] = v; delete st.r[q.id]; save(); paint(q); score();
+      });
+      lab.append(inp, el("span","L", L[k] + "."), el("span","", o));
+      box.append(lab);
+    });
+    body.append(box);
+  } else if (q.t === "match"){
+    if (q.lt){
+      const ol = el("ul","optlist");
+      q.ch.forEach((c,k) => ol.append(el("li","", `<span>${L[k]}.</span> ${c}`)));
+      body.append(el("p","sec","Opciones:"), ol);
+    }
+    const box = el("div","mrows");
+    q.rows.forEach((r, k) => {
+      const row = el("div","mrow");
+      const s = document.createElement("select"); s.id = q.id + "-m" + k;
+      s.append(new Option("Elegir…", ""));
+      q.ch.forEach((c, j) => s.append(new Option(q.lt ? L[j] + ". " + stripTags(c) : stripTags(c), j)));
+      if (ans && ans[k] != null && ans[k] !== "") s.value = ans[k];
+      s.addEventListener("change", () => {
+        const v = [...box.querySelectorAll("select")].map(x => x.value === "" ? "" : +x.value);
+        st.a[q.id] = v; delete st.r[q.id]; save(); paint(q); score();
+      });
+      row.append(el("div","ml", r), s);
+      box.append(row);
+    });
+    body.append(box);
+  } else if (q.t === "table"){
+    const w = el("div","tw"); const t = el("table","tbl");
+    const thead = el("thead"); const tr = el("tr");
+    q.h.forEach(x => tr.append(el("th","", x))); thead.append(tr); t.append(thead);
+    const tb = el("tbody");
+    q.rows.forEach(r => {
+      const row = el("tr");
+      r.forEach(c => {
+        if (c.b != null){
+          const td = el("td","blank");
+          const s = document.createElement("select"); s.id = q.id + "-t" + c.b; s.dataset.b = c.b;
+          s.append(new Option("·", ""));
+          q.ch.forEach(v => s.append(new Option(v, v)));
+          if (ans && ans[c.b]) s.value = ans[c.b];
+          s.addEventListener("change", () => {
+            const v = []; t.querySelectorAll("select").forEach(x => v[+x.dataset.b] = x.value);
+            st.a[q.id] = v; delete st.r[q.id]; save(); paint(q); score();
+          });
+          td.append(s); row.append(td);
+        } else row.append(el("td","", c.v));
+      });
+      tb.append(row);
+    });
+    t.append(tb); w.append(t); body.append(w);
+  } else if (q.t === "text"){
+    const inp = document.createElement("input"); inp.className = "tin"; inp.id = q.id + "-txt";
+    inp.placeholder = q.ph; inp.autocomplete = "off"; inp.spellcheck = false;
+    if (ans) inp.value = ans;
+    inp.addEventListener("input", () => { st.a[q.id] = inp.value; delete st.r[q.id]; save(); paint(q); score(); });
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") check(q); });
+    body.append(inp);
+  }
+  const f = el("div","qf");
+  const b1 = el("button","btn primary","Corregir"); b1.type = "button"; b1.addEventListener("click", () => check(q));
+  const b2 = el("button","btn","Borrar"); b2.type = "button"; b2.addEventListener("click", () => clearQ(q));
+  const v = el("span","verdict");
+  f.append(b1, b2, v);
+  card.append(f);
+  const ex = el("div","expl"); ex.hidden = true; card.append(ex);
+  return card;
+}
+
+function grade(q){
+  const a = st.a[q.id];
+  if (q.t === "one" || q.t === "many"){
+    const s = (a || []).slice().sort((x,y)=>x-y);
+    return s.length === q.a.length && s.every((x,i) => x === q.a[i]);
+  }
+  if (q.t === "match") return !!a && q.a.every((x,i) => a[i] === x);
+  if (q.t === "table") return !!a && q.a.every((x,i) => a[i] === x);
+  if (q.t === "text") return !!a && q.a.some(x => norm(x) === norm(a));
+}
+function answered(q){
+  const a = st.a[q.id];
+  if (a == null) return false;
+  if (q.t === "text") return a.trim() !== "";
+  return Array.isArray(a) && a.some(x => x !== "" && x != null);
+}
+function check(q){ st.r[q.id] = grade(q) ? 1 : 0; save(); paint(q); score(); }
+function clearQ(q){
+  delete st.a[q.id]; delete st.r[q.id]; save();
+  const old = document.getElementById(q.id);
+  const idx = DATA.qs.indexOf(q);
+  const n = build(q, idx); old.replaceWith(n); paint(q); score(); applyView();
+}
+function correctText(q){
+  if (q.t === "one" || q.t === "many") return q.a.map(k => L[k]).join(", ");
+  if (q.t === "text") return q.a[0];
+  return "";
+}
+function paint(q){
+  const card = document.getElementById(q.id); if (!card) return;
+  const r = st.r[q.id]; const done = r === 0 || r === 1;
+  card.classList.toggle("is-ok", r === 1); card.classList.toggle("is-bad", r === 0);
+  const a = st.a[q.id];
+  if (q.t === "one" || q.t === "many"){
+    card.querySelectorAll(".opt").forEach((lab, k) => {
+      const chosen = !!(a && a.includes(k));
+      lab.classList.toggle("sel", chosen && !done);
+      lab.classList.toggle("right", done && q.a.includes(k));
+      lab.classList.toggle("wrong", done && chosen && !q.a.includes(k));
+    });
+  } else if (q.t === "match"){
+    card.querySelectorAll(".mrow").forEach((row, k) => {
+      row.querySelectorAll(".fix").forEach(x => x.remove());
+      const ok = a && a[k] === q.a[k];
+      row.classList.toggle("right", done && ok); row.classList.toggle("wrong", done && !ok);
+      if (done && !ok) row.append(el("div","fix","Correcta: " + (q.lt ? L[q.a[k]] + ". " : "") + q.ch[q.a[k]]));
+    });
+  } else if (q.t === "table"){
+    card.querySelectorAll("td.blank").forEach(td => {
+      const s = td.querySelector("select"); const b = +s.dataset.b;
+      td.querySelectorAll(".corr").forEach(x => x.remove());
+      const ok = a && a[b] === q.a[b];
+      td.classList.toggle("right", done && ok); td.classList.toggle("wrong", done && !ok);
+      if (done && !ok) td.append(el("span","corr", q.a[b]));
+    });
+  } else if (q.t === "text"){
+    const inp = card.querySelector(".tin");
+    inp.classList.toggle("right", r === 1); inp.classList.toggle("wrong", r === 0);
+  }
+  const v = card.querySelector(".verdict");
+  v.className = "verdict" + (r === 1 ? " ok" : r === 0 ? " bad" : "");
+  v.textContent = r === 1 ? "Correcta" : r === 0 ? "Incorrecta" : "";
+  const ex = card.querySelector(".expl");
+  ex.hidden = !done;
+  if (done){
+    const ct = correctText(q);
+    ex.innerHTML = (ct ? `<p class="ans">Respuesta: ${ct}</p>` : "") + (q.e ? `<p>${q.e}</p>` : "");
+    if (!ex.innerHTML) ex.hidden = true;
+  }
+}
+function score(){
+  const n = DATA.qs.length;
+  let ok = 0, bad = 0;
+  DATA.qs.forEach(q => { if (st.r[q.id] === 1) ok++; else if (st.r[q.id] === 0) bad++; });
+  const pend = n - ok - bad;
+  document.getElementById("score").innerHTML =
+    `<span class="okc"><b>${ok}</b> correctas</span><span class="badc"><b>${bad}</b> incorrectas</span><span class="mut"><b>${pend}</b> sin corregir · ${n} en total</span>` +
+    `<span class="meter" aria-hidden="true"><i class="m1" style="width:${ok/n*100}%"></i><i class="m2" style="width:${bad/n*100}%"></i></span>`;
+  if (view.filter !== "all") applyView();
+}
+function applyView(){
+  let shown = 0;
+  DATA.qs.forEach(q => {
+    const c = document.getElementById(q.id);
+    let vis = view.sec === "all" || q.sec === view.sec;
+    if (view.sim) vis = view.sim.includes(q.id);
+    const r = st.r[q.id];
+    if (view.filter === "todo") vis = vis && r == null;
+    if (view.filter === "bad") vis = vis && r === 0;
+    if (view.filter === "ok") vis = vis && r === 1;
+    c.hidden = !vis; if (vis) shown++;
+  });
+  document.getElementById("empty").hidden = shown > 0;
+}
+function chips(){
+  const box = document.getElementById("chips"); box.innerHTML = "";
+  const mk = (label, key, n) => {
+    const b = el("button","chip", `${label}<small>${n}</small>`); b.type = "button";
+    b.setAttribute("aria-pressed", String(view.sec === key && !view.sim));
+    b.addEventListener("click", () => { view.sec = key; view.sim = null; chips(); applyView(); });
+    box.append(b);
+  };
+  mk("Todas", "all", DATA.qs.length);
+  DATA.secs.forEach(s => mk(s, s, DATA.qs.filter(q => q.sec === s).length));
+  if (view.sim){ const b = el("button","chip","Simulacro<small>14</small>"); b.type="button"; b.setAttribute("aria-pressed","true"); box.append(b); }
+}
+function shuffleArr(a){ for (let i = a.length-1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; } return a; }
+
+DATA.qs.forEach((q,i) => { list.append(build(q,i)); });
+DATA.qs.forEach(paint);
+chips(); score(); applyView();
+
+document.getElementById("filter").addEventListener("change", e => { view.filter = e.target.value; applyView(); });
+document.getElementById("shuffle").addEventListener("click", () => {
+  const cards = shuffleArr([...list.children]); cards.forEach(c => list.append(c));
+});
+document.getElementById("sim").addEventListener("click", () => {
+  const pick = shuffleArr(DATA.qs.map(q => q.id)).slice(0, 14);
+  pick.forEach(id => { delete st.a[id]; delete st.r[id]; const q = byId[id]; const old = document.getElementById(id); old.replaceWith(build(q, DATA.qs.indexOf(q))); paint(q); });
+  save();
+  view.sim = pick; view.filter = "all"; document.getElementById("filter").value = "all";
+  pick.forEach(id => list.append(document.getElementById(id)));
+  chips(); score(); applyView(); window.scrollTo({top:0});
+});
+document.getElementById("checkall").addEventListener("click", () => {
+  DATA.qs.forEach(q => { const c = document.getElementById(q.id); if (!c.hidden && answered(q)) { st.r[q.id] = grade(q) ? 1 : 0; paint(q); } });
+  save(); score();
+});
+let armed = false;
+const rb = document.getElementById("reset");
+rb.addEventListener("click", () => {
+  if (!armed){ armed = true; rb.textContent = "¿Borrar todo? Tocá de nuevo"; setTimeout(() => { armed = false; rb.textContent = "Reiniciar"; }, 3000); return; }
+  st = {a:{}, r:{}}; save(); list.innerHTML = ""; view = {sec:"all", filter:"all", sim:null};
+  document.getElementById("filter").value = "all";
+  DATA.qs.forEach((q,i) => list.append(build(q,i))); DATA.qs.forEach(paint);
+  armed = false; rb.textContent = "Reiniciar"; chips(); score(); applyView();
+});
+</script>
+
+</body>
+</html>

@@ -1,8 +1,10 @@
 {
   "curso": "Arquitectura de Computadoras",
   "subtitulo": "UTN FRRE · Dictado Especial · Segundo Cuatrimestre 2026",
-  "generado": "2026-09-19T00:40:44.366Z",
-  "pendientes": [],
+  "generado": "2026-09-24T22:10:33.002Z",
+  "pendientes": [
+    "_Entrada/arqui-preguntas-c1.zip"
+  ],
   "secciones": [
     {
       "id": "00-cronograma",
@@ -1071,6 +1073,87 @@
           "archivo": "Recursos Extras/ranking temas  2019 a 2022.pdf",
           "ext": "pdf",
           "bytes": 32506
+        }
+      ]
+    },
+    {
+      "id": "93-cuestionarios",
+      "orden": 93,
+      "grupo": "extras",
+      "tipo": "cuestionarios",
+      "titulo": "Cuestionarios",
+      "subtitulo": "Preguntas para practicar el parcial",
+      "ruta": "Recursos Extras/Cuestionarios",
+      "items": [
+        {
+          "tipo": "cuestionario",
+          "titulo": "Introducción y generaciones",
+          "archivo": "Recursos Extras/Cuestionarios/01-introduccion.html",
+          "ext": "html",
+          "unidad": "U1",
+          "descripcion": "Definiciones de computador, estructura, niveles de Tanenbaum, clasificación, generaciones, Ley de Moore y sistemas operativos.",
+          "preguntas": 73,
+          "temas": 7
+        },
+        {
+          "tipo": "cuestionario",
+          "titulo": "Sistemas numéricos",
+          "archivo": "Recursos Extras/Cuestionarios/02-sistemas-numericos.html",
+          "ext": "html",
+          "unidad": "U1",
+          "descripcion": "Sistemas posicionales, conversiones entre bases (enteros y fraccionarios), binario, octal y hexadecimal, aritmética binaria, complementos y números con signo.",
+          "preguntas": 82,
+          "temas": 7
+        },
+        {
+          "tipo": "cuestionario",
+          "titulo": "Codificación y errores",
+          "archivo": "Recursos Extras/Cuestionarios/03-codificacion.html",
+          "ext": "html",
+          "unidad": "U1",
+          "descripcion": "Codificación numérica y alfanumérica, sistema de comunicación, paridad, control 2 entre 3 y código de Hamming con ejercicios.",
+          "preguntas": 107,
+          "temas": 8
+        },
+        {
+          "tipo": "cuestionario",
+          "titulo": "Álgebra de Boole",
+          "archivo": "Recursos Extras/Cuestionarios/04-algebra-de-boole.html",
+          "ext": "html",
+          "unidad": "U2",
+          "descripcion": "Sistemas digitales, álgebra de Boole, compuertas, formas normales, simplificación por leyes, Karnaugh y NAND/NOR.",
+          "preguntas": 66,
+          "temas": 6
+        },
+        {
+          "tipo": "cuestionario",
+          "titulo": "Circuitos combinacionales",
+          "archivo": "Recursos Extras/Cuestionarios/05-combinacionales.html",
+          "ext": "html",
+          "unidad": "U2",
+          "descripcion": "Definición, decodificadores, codificadores, semisumador, sumador completo, sumador serie y paralelo, y diseño a partir de tablas de verdad.",
+          "preguntas": 40,
+          "temas": 4
+        },
+        {
+          "tipo": "cuestionario",
+          "titulo": "Circuitos secuenciales",
+          "archivo": "Recursos Extras/Cuestionarios/06-secuenciales.html",
+          "ext": "html",
+          "unidad": "U2",
+          "descripcion": "Autómatas, tablas y diagramas de estado, biestables, monoestable y astable, detectores de secuencia, registros, contadores, buses y Abacus.",
+          "preguntas": 110,
+          "temas": 7
+        },
+        {
+          "tipo": "cuestionario",
+          "titulo": "Parciales anteriores",
+          "archivo": "Recursos Extras/Cuestionarios/07-parciales-anteriores.html",
+          "ext": "html",
+          "unidad": "Teoría",
+          "descripcion": "Todas las preguntas del archivo XX.05.25 (C1 20XX, C1 2025 comisión jueves y comisión lunes), tal como las tomó el profe, con corrección y explicación.",
+          "preguntas": 58,
+          "temas": 4
         }
       ]
     }

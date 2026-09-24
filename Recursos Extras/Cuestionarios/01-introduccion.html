@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Introducción y generaciones</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root{
+  --bg:#F2F4F1; --panel:#FFFFFF; --panel2:#F7F9F7; --ink:#15201B; --muted:#56675F; --line:#D3DCD7;
+  --accent:#0E6A4E; --accent-ink:#FFFFFF; --accent-soft:#E0EEE8;
+  --ok:#1C7548; --ok-soft:#E2F2E9; --bad:#AE3730; --bad-soft:#F8E4E1; --tag:#8A5C0F; --tag-soft:#F6EBD6;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --cond:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E1412; --panel:#151D1A; --panel2:#1A2420; --ink:#E4ECE8; --muted:#93A59C; --line:#2A3630;
+    --accent:#4DC196; --accent-ink:#06150F; --accent-soft:#163129;
+    --ok:#5CCB8F; --ok-soft:#15301F; --bad:#EE7B71; --bad-soft:#3A1D1A; --tag:#E2B55C; --tag-soft:#342914;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E1412; --panel:#151D1A; --panel2:#1A2420; --ink:#E4ECE8; --muted:#93A59C; --line:#2A3630;
+  --accent:#4DC196; --accent-ink:#06150F; --accent-soft:#163129;
+  --ok:#5CCB8F; --ok-soft:#15301F; --bad:#EE7B71; --bad-soft:#3A1D1A; --tag:#E2B55C; --tag-soft:#342914;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:0 64px}
+.wrap{max-width:860px;margin:0 auto}
+header.top{padding-block:28px 12px;display:grid;gap:6px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--cond);font-weight:700;font-size:clamp(26px,5vw,36px);line-height:1.1;margin:0;text-wrap:balance}
+.lead{color:var(--muted);margin:0;max-width:65ch}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);display:grid;gap:10px;margin-bottom:18px}
+.score{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums}
+.score b{font-weight:600}
+.score .okc{color:var(--ok)} .score .badc{color:var(--bad)} .score .mut{color:var(--muted)}
+.meter{flex:1 1 160px;height:6px;border-radius:3px;background:var(--line);overflow:hidden;display:flex;min-width:120px}
+.meter i{display:block;height:100%}
+.meter .m1{background:var(--ok)} .meter .m2{background:var(--bad)}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:thin}
+.chip{flex:0 0 auto;font:500 13px var(--sans);border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:5px 10px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.chip small{font-family:var(--mono);color:var(--muted);margin-left:4px}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip[aria-pressed="true"] small{color:var(--accent-ink);opacity:.8}
+select,button,input{font:inherit}
+.btn{font:500 13px var(--sans);border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:6px 12px;border-radius:7px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.fsel{font:500 13px var(--sans);border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:6px 8px;border-radius:7px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.list{display:grid;gap:14px}
+.q{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 16px 14px;display:grid;gap:12px}
+.q.is-ok{border-color:color-mix(in srgb,var(--ok) 55%,var(--line))}
+.q.is-bad{border-color:color-mix(in srgb,var(--bad) 55%,var(--line))}
+.qh{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline}
+.num{font-family:var(--mono);font-weight:600;font-size:13px;color:var(--accent)}
+.sec{font-size:12px;color:var(--muted)}
+.kind{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--tag);background:var(--tag-soft);padding:1px 6px;border-radius:4px;margin-left:auto}
+.prompt{font-weight:500;margin:0}
+.prompt code,.opt code,.expl code,td code,.ml code{font-family:var(--mono);font-size:.93em;background:var(--panel2);border:1px solid var(--line);padding:0 4px;border-radius:4px;white-space:nowrap}
+.ov{text-decoration:overline;text-decoration-thickness:1.5px}
+.opts{display:grid;gap:6px}
+.opt{display:grid;grid-template-columns:auto auto 1fr;gap:8px;align-items:start;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer;background:var(--panel)}
+.opt:hover{border-color:var(--accent)}
+.opt input{margin:3px 0 0;accent-color:var(--accent)}
+.opt .L{font-family:var(--mono);color:var(--muted);font-size:13px;padding-top:1px}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.mrows{display:grid;gap:8px}
+.mrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:8px;align-items:center;padding:6px 8px;border:1px solid var(--line);border-radius:8px}
+.ml{font-size:14px}
+.mrow select,.tbl select{width:100%;max-width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--panel2);color:var(--ink)}
+.mrow.right{border-color:var(--ok);background:var(--ok-soft)}
+.mrow.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.fix{grid-column:1/-1;font-size:13px;color:var(--ok);font-weight:500}
+.optlist{font-size:13px;color:var(--muted);margin:0;padding-left:0;list-style:none;display:grid;gap:2px}
+.optlist li span{font-family:var(--mono)}
+@media (max-width:560px){.mrow{grid-template-columns:1fr}}
+.tw{overflow-x:auto}
+.tbl{border-collapse:collapse;font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{border:1px solid var(--line);padding:5px 10px;text-align:center}
+.tbl th{background:var(--panel2);font-weight:600}
+.tbl td.blank{padding:3px 4px;min-width:64px}
+.tbl td.right{background:var(--ok-soft)} .tbl td.wrong{background:var(--bad-soft)}
+.tbl td .corr{display:block;font-size:12px;color:var(--ok);font-weight:600}
+.tin{width:100%;max-width:360px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);color:var(--ink);font-family:var(--mono)}
+.tin.right{border-color:var(--ok);background:var(--ok-soft)} .tin.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.qf{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.verdict{font-weight:600;font-size:14px}
+.verdict.ok{color:var(--ok)} .verdict.bad{color:var(--bad)}
+.expl{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px;display:grid;gap:6px}
+.expl p{margin:0}
+.expl .ans{font-weight:600}
+pre.blk,.prompt pre{font-family:var(--mono);font-size:13px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:8px 10px;overflow-x:auto;margin:8px 0 0;font-weight:400;line-height:1.45}
+.bar{}
+@media (max-width:640px){.bar{position:static}}
+.empty{color:var(--muted);text-align:center;padding:30px 0}
+footer.note{color:var(--muted);font-size:13px;margin-top:28px;max-width:65ch}
+@media (prefers-reduced-motion:no-preference){.q{transition:border-color .15s}}
+</style>
+</head>
+<body>
+<div class="wrap" style="padding-top:14px"><a href="../../site/secciones/93-cuestionarios.html" style="color:var(--accent);font:500 13px var(--sans);text-decoration:none">← Volver al aula</a></div>
+
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Arquitectura de Computadoras · C1 · U1</div>
+    <h1>Introducción y generaciones</h1>
+    <p class="lead">Definiciones de computador, estructura, niveles de Tanenbaum, clasificación, generaciones, Ley de Moore y sistemas operativos. Elegí, tocá <b>Corregir</b> y leé la explicación. Tus respuestas quedan guardadas en este navegador.</p>
+  </header>
+
+  <div class="bar">
+    <div class="score" id="score"></div>
+    <div class="chips" id="chips" role="toolbar" aria-label="Temas"></div>
+    <div class="controls">
+      <select class="fsel" id="filter" aria-label="Filtrar">
+        <option value="all">Todas</option>
+        <option value="todo">Sin corregir</option>
+        <option value="bad">Falladas</option>
+        <option value="ok">Correctas</option>
+      </select>
+      <button class="btn" id="shuffle" type="button">Mezclar orden</button>
+      <button class="btn" id="sim" type="button">Simulacro de 14</button>
+      <button class="btn primary" id="checkall" type="button">Corregir visibles</button>
+      <button class="btn" id="reset" type="button">Reiniciar</button>
+    </div>
+  </div>
+
+  <main class="list" id="list"></main>
+  <p class="empty" id="empty" hidden>No hay preguntas con este filtro.</p>
+  <footer class="note">Preguntas armadas a partir del apunte de Nico (U1 y U2), el apunte de cátedra y los parciales anteriores. Donde el apunte y otra bibliografía difieren, la explicación sigue al apunte.</footer>
+</div>
+
+<script>
+const DATA = {"id": "intro", "qs": [{"t": "one", "p": "Según William Stallings, un computador es:", "o": ["Máquina digital electrónica programable para el tratamiento automático de la información, capaz de recibirla, operar sobre ella mediante procesos determinados y suministrar los resultados de tales operaciones.", "Máquina digital electromecánica no programable para el tratamiento de la información, capaz de recibirla y operar sobre ella mediante procesos determinados.", "Máquina digital electrónica programable para el tratamiento automático de la información, capaz de recibirla y suministrar los resultados sin necesidad de operar sobre ella.", "Máquina analógica electrónica programable para el tratamiento automático de la información, capaz de recibirla, operar sobre ella mediante procesos determinados y suministrar los resultados de tales operaciones."], "a": [0], "e": "Las cuatro palabras clave son <b>digital, electrónica, programable<\/b> y las tres acciones <b>recibir, operar mediante procesos determinados y suministrar resultados<\/b>. Si falta una acción o cambia digital/electrónica, es incorrecta.", "sec": "Definiciones", "id": "q1"}, {"t": "many", "p": "Indique cuáles de las siguientes definiciones de computadora son las más acertadas. Seleccione una o más de una:", "o": ["Máquina electrónica, analógica o digital, dotada de una memoria de gran capacidad y de métodos de tratamiento de información, capaz de resolver problemas matemáticos y lógicos mediante la utilización automática de programas informáticos.", "Máquina electrónica digital, sin memoria, capaz de resolver únicamente problemas matemáticos mediante programas cableados.", "Máquina digital electrónica programable para el tratamiento automático de la información, capaz de recibirla, operar sobre ella mediante procesos determinados y suministrar los resultados de tales operaciones.", "Máquina electromecánica capaz de calcular operaciones matemáticas mediante el uso de memoria.", "Máquina electrónica analógica, dotada de memoria y procedimientos, capaz de resolver problemas."], "a": [0, 2], "e": "La (a) es la definición del apunte de cátedra y la (c) la de Stallings. Las demás recortan la definición (sin memoria, solo analógica, electromecánica).", "sec": "Definiciones", "id": "q2"}, {"t": "one", "p": "Un algoritmo computacional se define como:", "o": ["Una secuencia infinita de operaciones que la computadora ejecuta hasta encontrar un resultado.", "Una secuencia finita de operaciones que permite resolver un problema computacional.", "La traducción de un programa a código de máquina.", "El conjunto de instrucciones escrito en un lenguaje de programación determinado."], "a": [1], "e": "El algoritmo es la secuencia finita de operaciones. Su representación en un lenguaje de programación es el <b>programa<\/b>.", "sec": "Definiciones", "id": "q3"}, {"t": "one", "p": "Un programa es:", "o": ["El microcódigo que interpreta la unidad de control.", "La representación de un algoritmo en un lenguaje de programación.", "El conjunto de datos de entrada que procesa la computadora.", "La secuencia finita de pasos lógicos que resuelve un problema, independientemente del lenguaje."], "a": [1], "e": "Al conjunto de instrucciones que representa un algoritmo se lo denomina programa.", "sec": "Definiciones", "id": "q4"}, {"t": "many", "p": "Las funciones básicas que puede llevar a cabo un computador son. Seleccione una o más de una:", "o": ["Procesamiento de datos", "Almacenamiento de datos", "Transferencia de datos", "Codificación redundante de datos", "Control"], "a": [0, 1, 2, 4], "e": "Stallings: procesamiento, almacenamiento, transferencia y control. La codificación redundante es una técnica, no una función básica.", "sec": "Definiciones", "id": "q5"}, {"t": "one", "p": "Cuando se reciben o se llevan datos a un dispositivo que está directamente conectado con el computador, el proceso se conoce como:", "o": ["Comunicación de datos", "Transferencia remota", "Teleproceso", "Entrada-salida (E/S)"], "a": [3], "e": "Si el dispositivo está directamente conectado es E/S y el dispositivo es un <b>periférico<\/b>. Si es a larga distancia, desde o hacia un dispositivo remoto, es <b>comunicación de datos<\/b>.", "sec": "Definiciones", "id": "q6"}, {"t": "one", "p": "El proceso de transferir datos a largas distancias, desde o hacia un dispositivo remoto, recibe el nombre de:", "o": ["Procesamiento por lotes", "Comunicación de datos", "Entrada-salida", "Multiprogramación"], "a": [1], "e": "", "sec": "Definiciones", "id": "q7"}, {"t": "match", "p": "Relacione cada componente estructural del computador con su función:", "rows": ["CPU", "Memoria principal", "E/S", "Sistema de interconexión", "Unidad de control", "ALU", "Registros", "Interconexiones CPU"], "ch": ["Controla el funcionamiento del computador y lleva a cabo sus funciones de procesamiento de datos", "Almacena datos", "Transfiere datos entre el computador y el entorno externo", "Proporciona la comunicación entre la CPU, la memoria principal y la E/S", "Controla el funcionamiento de la CPU", "Lleva a cabo las funciones de procesamiento de datos", "Proporcionan almacenamiento interno a la CPU", "Comunican la unidad de control, la ALU y los registros"], "a": [0, 1, 2, 3, 4, 5, 6, 7], "e": "Ojo con la diferencia entre sistema de interconexión (CPU–memoria–E/S) e interconexiones CPU (UC–ALU–registros).", "lt": true, "sec": "Definiciones", "id": "q8"}, {"t": "many", "p": "El procesador central tiene como secciones principales. Seleccione una o más de una:", "o": ["Unidad de control (UC)", "Canales (IACP)", "Registros auxiliares", "Memoria central", "Unidad aritmético lógica (UAL)"], "a": [0, 2, 4], "e": "La memoria central y los canales son externos al procesador.", "sec": "Definiciones", "id": "q9"}, {"t": "one", "p": "Si el procesador central está constituido por un único circuito integrado se denomina:", "o": ["Mainframe", "Minicomputador", "Microprocesador", "Microcomputador"], "a": [2], "e": "Una CPU en una pastilla es un microprocesador. CPU + memoria + control de interconexión forman un <b>microcomputador<\/b>.", "sec": "Definiciones", "id": "q10"}, {"t": "one", "p": "Los canales (Interfaces de Adaptación y Control de Periféricos, IACP) tienen como función principal:", "o": ["Almacenar de forma permanente los programas de arranque.", "Traducir los programas de alto nivel a código de máquina.", "Adaptar las diferencias de velocidad de funcionamiento entre la CPU y los periféricos.", "Ejecutar las instrucciones contenidas en memoria central."], "a": [2], "e": "Son dispositivos intermedios entre periféricos y memoria; para adaptar velocidades usan registros especializados y una memoria buffer.", "sec": "Definiciones", "id": "q11"}, {"t": "one", "p": "El tiempo de acceso a memoria central para leer o escribir una información está en el orden de:", "o": ["10 a 100 µs", "10 a 100 ns", "1 a 5 ms", "1 a 5 s"], "a": [1], "e": "Memoria: 10–100 ns (≈10⁷ accesos por segundo). Un disco necesita 1–5 ms para posicionar la cabeza.", "sec": "Definiciones", "id": "q12"}, {"t": "one", "p": "La memoria buffer:", "o": ["Es la memoria principal de mayor capacidad del sistema.", "Es una memoria de solo lectura que contiene el firmware.", "Reemplaza a los registros de la CPU cuando estos se llenan.", "La utilizan algunos periféricos y los canales para adaptarse a la velocidad de la CPU."], "a": [3], "e": "", "sec": "Definiciones", "id": "q13"}, {"t": "one", "p": "Para que el canal gestione de forma autónoma una transferencia con el exterior, la unidad de control debe suministrarle:", "o": ["El código de operación y la dirección del operando.", "La dirección de la próxima instrucción a ejecutar.", "Solo la dirección del periférico implicado.", "La dirección del periférico, la dirección de la primera información y la cantidad de informaciones a transferir."], "a": [3], "e": "Luego, por cada información transferida, el canal suma 1 a la dirección y resta 1 a la cantidad; al terminar avisa a la UC mediante una interrupción.", "sec": "Definiciones", "id": "q14"}, {"t": "one", "p": "Las interrupciones son:", "o": ["Instrucciones de salto incondicional dentro del programa.", "Señales de reloj que sincronizan la memoria.", "Órdenes que provienen del medio exterior y piden ejecutar un programa asociado, suspendiendo el programa en curso.", "Errores de la ALU por división por cero."], "a": [2], "e": "Terminado el programa prioritario se reanuda el interrumpido. Por ejemplo, así avisan los canales que terminó una E/S.", "sec": "Definiciones", "id": "q15"}, {"t": "match", "p": "Relacione cada nivel de la organización estructurada de un computador (Andrew S. Tanenbaum) con su nombre:", "rows": ["Nivel 0", "Nivel 1", "Nivel 2", "Nivel 3", "Nivel 4", "Nivel 5", "Nivel 6", "Nivel 7"], "ch": ["Nivel físico", "Lógica digital", "Microprogramación", "Máquina convencional (lenguaje de máquina)", "Sistema operativo", "Compiladores y ensambladores", "Lenguajes de alto nivel", "Aplicaciones de usuarios"], "a": [0, 1, 2, 3, 4, 5, 6, 7], "e": "De abajo hacia arriba: Físico → Lógica digital → Microprogramación → Máquina convencional → SO → Compiladores y ensambladores → Alto nivel → Aplicaciones.", "lt": true, "sec": "Niveles y arquitectura", "id": "q16"}, {"t": "one", "p": "Ordenando de menor a mayor, ¿qué nivel se ubica inmediatamente por encima de la máquina convencional (lenguaje de máquina)?", "o": ["Sistema operativo", "Compiladores y ensambladores", "Lógica digital", "Microprogramación"], "a": [0], "e": "", "sec": "Niveles y arquitectura", "id": "q17"}, {"t": "one", "p": "¿En qué nivel los objetos de interés son las compuertas (gates), que aunque se construyen con componentes analógicos se modelan como dispositivos digitales?", "o": ["Lógica digital", "Nivel físico", "Microprogramación", "Máquina convencional"], "a": [0], "e": "", "sec": "Niveles y arquitectura", "id": "q18"}, {"t": "one", "p": "El nivel en el que se observa una colección de registros que forman una memoria local y una ALU, conectados formando un camino de datos (data path), es:", "o": ["Microarquitectura / microprogramación", "Lenguajes de alto nivel", "Lógica digital", "Sistema operativo"], "a": [0], "e": "En algunas máquinas el camino de datos lo controla un microprograma; en otras, directamente el hardware.", "sec": "Niveles y arquitectura", "id": "q19"}, {"t": "one", "p": "Tanenbaum describe como nivel “híbrido” (la mayoría de sus instrucciones están en el nivel inferior, más un conjunto nuevo, otra organización de memoria y ejecución concurrente) al nivel de:", "o": ["Máquina convencional", "Sistema operativo", "Compiladores y ensambladores", "Microprogramación"], "a": [1], "e": "", "sec": "Niveles y arquitectura", "id": "q20"}, {"t": "one", "p": "Existe un quiebre fundamental entre el nivel del sistema operativo y los niveles superiores porque:", "o": ["Los niveles inferiores no están pensados para el programador promedio sino para ejecutar los intérpretes y traductores de los niveles superiores.", "Los niveles inferiores no existen físicamente.", "A partir del SO desaparece el hardware.", "Los niveles superiores no necesitan traducción."], "a": [0], "e": "Esos intérpretes y traductores los escriben los programadores de sistemas.", "sec": "Niveles y arquitectura", "id": "q21"}, {"t": "one", "p": "Los programas escritos en lenguajes de alto nivel generalmente se traducen mediante:", "o": ["Ensambladores", "Cargadores", "Microprogramas", "Compiladores"], "a": [3], "e": "El ensamblador traduce el lenguaje ensamblador; el compilador traduce los lenguajes de alto nivel (aunque a veces se interpretan).", "sec": "Niveles y arquitectura", "id": "q22"}, {"t": "one", "p": "La descripción de las características visibles relativas a las prestaciones que una determinada configuración interna puede brindar corresponde al concepto de:", "o": ["Lógica digital", "Tecnología", "Organización de la computadora", "Arquitectura de la computadora"], "a": [3], "e": "La <b>organización<\/b> identifica los componentes desde su estructura, cómo se relacionan y las cuestiones tecnológicas.", "sec": "Niveles y arquitectura", "id": "q23"}, {"t": "one", "p": "Se puede admitir que el hardware se nutre de dos disciplinas:", "o": ["Arquitectura y software", "Organización y arquitectura", "Electrónica y programación", "Tecnología y lógica"], "a": [3], "e": "La tecnología aporta los componentes (transistores, memorias, etc.) y la lógica cómo ensamblarlos (registros, sumadores, ALU).", "sec": "Niveles y arquitectura", "id": "q24"}, {"t": "one", "p": "El set de instrucciones de una computadora:", "o": ["Es el conjunto de periféricos conectados al sistema.", "Permite representar los algoritmos que solucionan los problemas.", "Define la frecuencia del reloj del procesador.", "Es exclusivo del nivel de aplicaciones de usuario."], "a": [1], "e": "", "sec": "Niveles y arquitectura", "id": "q25"}, {"t": "match", "p": "Relacione cada tipo de computadora con su característica:", "rows": ["Analógicas", "Digitales", "Híbridas"], "ch": ["Procesan datos continuos; el modelo representa una única aplicación y la salida carece de exactitud", "Procesan dígitos binarios; cálculos precisos y el modelo se arma sobre un programa intercambiable", "Una parte toma los datos continuos y otra efectúa los cálculos en forma discreta"], "a": [0, 1, 2], "e": "", "lt": true, "sec": "Clasificación", "id": "q26"}, {"t": "many", "p": "Son ventajas de las computadoras digitales. Seleccione una o más de una:", "o": ["Efectúan cálculos precisos.", "El modelo se arma sobre un programa intercambiable, sin cambiar partes físicas.", "Simulan directamente un sistema físico mediante voltajes análogos.", "Procesan variables continuas con diferencias infinitesimales de forma natural."], "a": [0, 1], "e": "Para variables continuas las digitales resultan inadecuadas (hay que ingresar diferencias infinitesimales). La simulación directa es propia de las analógicas.", "sec": "Clasificación", "id": "q27"}, {"t": "one", "p": "Según el apunte, un ejemplo actual de computadora híbrida es:", "o": ["Un teléfono fijo", "Un mainframe IBM 360", "El GPS del auto", "Una calculadora de bolsillo"], "a": [2], "e": "", "sec": "Clasificación", "id": "q28"}, {"t": "many", "p": "Son desventajas de las primeras computadoras analógicas. Seleccione una o más de una:", "o": ["No podían procesar datos no discretos como temperatura o presión.", "Necesitaban un programa almacenado en memoria.", "El modelo construido representaba una única aplicación y no servía para otra.", "Falta de exactitud en la salida por el carácter continuo de la magnitud."], "a": [2, 3], "e": "Procesar datos no discretos (temperatura, presión, altura) es justamente su ventaja.", "sec": "Clasificación", "id": "q29"}, {"t": "match", "p": "¿Qué hitos definieron la aparición de cada generación de computadoras?", "rows": ["Generación 0 (hasta 1945)", "Generación 1 (1945-1955)", "Generación 2 (1955-1965)", "Generación 3 (1965-1980)", "Generación 4 (desde 1980)", "Generación 5 (desde 2010)"], "ch": ["Sistemas mecánicos y electromecánicos", "Válvulas y tubos al vacío", "Transistores y sistemas batch", "Multiprogramación y circuitos integrados", "Computadores personales / LSI", "Computación cuántica"], "a": [0, 1, 2, 3, 4, 5], "e": "", "lt": true, "sec": "Generaciones", "id": "q30"}, {"t": "match", "p": "Relacione los elementos de ambos extremos sobre las generaciones de computadoras:", "rows": ["Pascalina / máquina analítica de Babbage / Mark I de relés", "ENIAC / UNIVAC I / programación alambrando tableros", "IBM 1401 / IBM 7094 / COBOL y FORTRAN", "IBM 360 / DEC PDP-8 / tiempo compartido", "Commodore 64 / Intel 80386 / GUI de Macintosh", "Qubits / IBM Q System One / entrelazamiento"], "ch": ["Generación 0", "Generación 1", "Generación 2", "Generación 3", "Generación 4", "Generación 5"], "a": [0, 1, 2, 3, 4, 5], "e": "", "lt": true, "sec": "Generaciones", "id": "q31"}, {"t": "match", "p": "Relacione cada conjunto de características con su generación:", "rows": ["LSI / IBM PC con DOS / SO en red y distribuidos", "Circuitos integrados SSI y MSI / discos duros / multiprogramación", "Tubos al vacío / lenguaje de máquina / sin sistemas operativos", "Transistores / tarjetas perforadas / procesamiento por lotes", "Ábacos / calculadoras mecánicas / sistemas basados en relé"], "ch": ["Generación 4", "Generación 3", "Generación 1", "Generación 2", "Generación 0"], "a": [0, 1, 2, 3, 4], "e": "", "lt": true, "sec": "Generaciones", "id": "q32"}, {"t": "one", "p": "En las máquinas de 1ra generación. Seleccione una:", "o": ["Se utilizaban circuitos integrados de pequeña escala.", "Existía el procesamiento por lotes con cintas magnéticas.", "Toda la programación se hacía en lenguaje de máquina, por ejemplo alambrando tableros.", "Se usaban lenguajes de alto nivel como FORTRAN."], "a": [2], "e": "Gen 1: tubos al vacío, enormes y lentas, un solo grupo diseñaba/construía/programaba/operaba, sin sistemas operativos. En 1950 se introducen las tarjetas perforadas.", "sec": "Generaciones", "id": "q33"}, {"t": "one", "p": "En las máquinas de 2da generación. Seleccione una:", "o": ["Se introduce el tiempo compartido entre usuarios.", "Se crea el proceso por lotes que agrupa trabajos.", "Se introduce el microprocesador.", "La memoria virtual es utilizada en los mainframes."], "a": [1], "e": "Gen 2: transistores, circuitos impresos, mainframes en salas acondicionadas, distinción entre diseñadores, operadores, etc., y procesamiento por lotes.", "sec": "Generaciones", "id": "q34"}, {"t": "one", "p": "En las máquinas de 3ra generación. Seleccione una:", "o": ["Toda la programación se hace en lenguaje de máquina.", "Se introducen los discos duros y el tiempo compartido entre usuarios.", "Se utilizan por primera vez los transistores.", "No se utilizan circuitos integrados por no ser confiables."], "a": [1], "e": "Gen 3: circuitos integrados, IBM 360, multiprogramación, discos duros, tiempo compartido, teleproceso y máquina virtual.", "sec": "Generaciones", "id": "q35"}, {"t": "one", "p": "En las máquinas de 4ta generación. Seleccione una:", "o": ["Se trabaja exclusivamente por lotes.", "Se reemplazan los transistores por válvulas de vacío.", "Desaparecen las interfaces gráficas.", "La tecnología LSI permitió incluir una CPU completa en una sola pastilla, el microprocesador."], "a": [3], "e": "", "sec": "Generaciones", "id": "q36"}, {"t": "many", "p": "Son características de la generación 5 (computación cuántica). Seleccione una o más de una:", "o": ["Utiliza compuertas NAND de transistores bipolares como unidad básica.", "Los equipos deben mantenerse a una temperatura cercana al cero absoluto.", "Aprovecha el entrelazamiento cuántico entre pares de qubits.", "Se basa en el principio de superposición de estados.", "La unidad de información es el qubit."], "a": [1, 2, 3, 4], "e": "Trabajan con compuertas cuánticas, no con compuertas lógicas clásicas.", "sec": "Generaciones", "id": "q37"}, {"t": "one", "p": "Cada nueva generación de computadores se caracteriza, respecto de la anterior, por:", "o": ["Mayor tamaño, mayor velocidad y menor memoria.", "Igual velocidad pero menor consumo.", "Mayor velocidad, mayor capacidad de memoria y menor tamaño.", "Menor velocidad pero mayor confiabilidad."], "a": [2], "e": "", "sec": "Generaciones", "id": "q38"}, {"t": "one", "p": "Indique cuál de las siguientes afirmaciones es correcta. Seleccione una:", "o": ["Los transistores y los tubos de vacío fueron igualmente confiables.", "La velocidad de una máquina queda definida solo por la frecuencia de su reloj en MHz o GHz.", "En las máquinas de 3ra generación las memorias auxiliares típicas eran magnéticas (discos y cintas).", "Todas las máquinas de una misma generación tienen la misma velocidad."], "a": [2], "e": "La frecuencia de reloj no es por sí sola la velocidad de la máquina. Dentro de una generación hay máquinas de distinta velocidad, y el transistor fue mucho más confiable que la válvula.", "sec": "Generaciones", "id": "q39"}, {"t": "many", "p": "Indique cuáles de las siguientes afirmaciones son correctas. Seleccione una o más de una:", "o": ["El uso del transistor define la tercera generación de computadores.", "El Sistema/360 de IBM fue la primera familia de computadores planificada.", "Las máquinas de 1ra generación disipaban gran cantidad de calor y ocupaban una superficie muy amplia.", "En la 3ra generación aparece el byte de 8 bits con el IBM 360."], "a": [1, 2, 3], "e": "El transistor define la 2da generación.", "sec": "Generaciones", "id": "q40"}, {"t": "one", "p": "Diferencia entre multiprogramación y multiprocesamiento. La multiprogramación es:", "o": ["Ingresar datos por terminales remotas según prioridad.", "Ejecutar un programa por vez en forma secuencial.", "Que varios programas residan en forma simultánea en la memoria en estado de ejecución.", "Procesar varios programas en forma simultánea en CPU diferentes que se relacionan entre sí."], "a": [2], "e": "Multiprocesamiento: varios programas simultáneos en <b>CPU diferentes<\/b> relacionadas entre sí.", "sec": "Generaciones", "id": "q41"}, {"t": "one", "p": "El multiprocesamiento consiste en:", "o": ["Agrupar trabajos en lotes en una cinta magnética.", "Dividir la memoria en páginas.", "Que varios programas residan simultáneamente en memoria compartiendo una sola CPU.", "Procesar varios programas en forma simultánea en CPU diferentes que se relacionan entre sí."], "a": [3], "e": "", "sec": "Generaciones", "id": "q42"}, {"t": "one", "p": "El teleproceso o procesamiento a distancia, posible a partir de la 3ra generación, es:", "o": ["La copia de tarjetas a cinta mediante un procesador auxiliar.", "Un sistema de carga directa en el que los datos ingresan y egresan por terminales remotas según una prioridad dada.", "La ejecución de un programa en varias CPU.", "Un sistema de carga por lotes en cinta magnética."], "a": [1], "e": "", "sec": "Generaciones", "id": "q43"}, {"t": "one", "p": "Cuando un sistema admite la atención de múltiples usuarios se denomina multiusuario. Todo sistema multiusuario:", "o": ["Necesita varias CPU.", "Es multitarea y además administra los recursos asignados a los usuarios.", "Es monotarea.", "Trabaja exclusivamente por lotes."], "a": [1], "e": "", "sec": "Generaciones", "id": "q44"}, {"t": "one", "p": "El concepto de máquina virtual desarrollado en la 3ra generación:", "o": ["Es un emulador de tarjetas perforadas.", "Es la memoria caché del procesador.", "Es una máquina ficticia creada y controlada por el sistema operativo, sin limitaciones de configuración (sobre todo en capacidad de memoria central).", "Es una computadora física de reserva."], "a": [2], "e": "Simplifica la labor del programador, que solo conoce esa máquina ficticia.", "sec": "Generaciones", "id": "q45"}, {"t": "one", "p": "En la 3ra generación la “carga por lotes” se sustituyó por:", "o": ["La carga manual por tableros.", "La carga desde cinta perforada.", "La carga en tiempo real por internet.", "La carga continua: los trabajos esperan en cola en un disco magnético y el SO los ejecuta según prioridad."], "a": [3], "e": "", "sec": "Generaciones", "id": "q46"}, {"t": "match", "p": "Relacione la escala de integración con la generación en que se utiliza:", "rows": ["SSI (Small Scale Integration)", "MSI (Medium Scale Integration)", "LSI (Large Scale Integration)", "Transistores discretos en circuitos impresos"], "ch": ["Generación 1", "Generación 2", "Generación 3", "Generación 4"], "a": [2, 2, 3, 1], "e": "", "lt": false, "sec": "Generaciones", "id": "q47"}, {"t": "one", "p": "En la 2da generación, el paliativo para la desproporción entre la velocidad de cálculo y la velocidad de E/S fue:", "o": ["Eliminar las operaciones de E/S.", "Usar cinta magnética como soporte intermedio: se copiaba de tarjeta a cinta y de cinta a impresora con un procesador auxiliar.", "Usar discos duros y tiempo compartido.", "Duplicar la cantidad de válvulas."], "a": [1], "e": "Ese procedimiento de explotación se denominó procesamiento por lotes.", "sec": "Generaciones", "id": "q48"}, {"t": "one", "p": "En la 1ra generación las tareas se ejecutaban en forma secuencial (cargar, ejecutar instrucción por instrucción, imprimir). Por lo tanto la duración del proceso era:", "o": ["Igual a la operación más larga.", "Igual a la suma de todas las operaciones.", "Independiente de las operaciones de E/S.", "La mitad gracias a la simultaneidad cálculo/E/S."], "a": [1], "e": "", "sec": "Generaciones", "id": "q49"}, {"t": "one", "p": "El ENIAC:", "o": ["Fue el primer computador electrónico de propósito general y era una máquina decimal, no binaria.", "Utilizaba transistores y programa almacenado.", "Fue construido con relés en Harvard.", "Fue el primer computador comercial de éxito."], "a": [0], "e": "Unos 18 000 tubos, 30 toneladas, 140 kW, 5 000 sumas por segundo. Se programaba manualmente con conmutadores y cables.", "sec": "Generaciones", "id": "q50"}, {"t": "one", "p": "El concepto de programa almacenado, publicado en 1945 en la propuesta del EDVAC, se atribuye a:", "o": ["Charles Babbage", "Alan Turing", "Howard Aiken", "John von Neumann"], "a": [3], "e": "", "sec": "Generaciones", "id": "q51"}, {"t": "match", "p": "Relacione cada personaje con su aporte:", "rows": ["Blaise Pascal", "Charles Babbage", "Ada Lovelace", "George Boole", "Herman Hollerith", "Howard Aiken", "Alan Turing", "John von Neumann"], "ch": ["Pascalina: calculadora mecánica de suma y resta", "Máquina analítica programable con tarjetas perforadas", "Software para la máquina analítica", "Álgebra que relaciona conceptos lógicos", "Procesamiento de grandes volúmenes de datos con tarjetas perforadas", "Mark I, computador de relés (Harvard, 1944)", "Participó en el diseño del COLOSSUS", "Concepto de programa almacenado"], "a": [0, 1, 2, 3, 4, 5, 6, 7], "e": "", "lt": true, "sec": "Generaciones", "id": "q52"}, {"t": "one", "p": "El primer computador comercial de éxito, diseñado para aplicaciones científicas y comerciales, fue:", "o": ["IBM 7094", "Mark I", "UNIVAC I", "ENIAC"], "a": [2], "e": "", "sec": "Generaciones", "id": "q53"}, {"t": "one", "p": "El DEC PDP-8 se destaca por ser:", "o": ["El primer minicomputador, que no necesitaba una habitación con aire acondicionado.", "El primer microprocesador.", "La primera computadora cuántica comercial.", "El primer computador de relés."], "a": [0], "e": "Costaba unos 16 000 dólares y entraba en una mesa de laboratorio.", "sec": "Generaciones", "id": "q54"}, {"t": "one", "p": "El IBM 704 fue:", "o": ["El primer minicomputador.", "El primer computador personal.", "La primera familia de computadores planificada.", "La primera computadora producida en masa con hardware basado en aritmética de coma flotante."], "a": [3], "e": "", "sec": "Generaciones", "id": "q55"}, {"t": "match", "p": "Relacione cada máquina de 2da generación con su uso típico:", "rows": ["IBM 1401", "IBM 7094"], "ch": ["Comercial: leer tarjetas, copiar cintas e imprimir resultados", "Científico: hacer cómputos"], "a": [0, 1], "e": "", "lt": true, "sec": "Generaciones", "id": "q56"}, {"t": "one", "p": "El primer microprocesador de Intel, lanzado en 1971 para facilitar el diseño de una calculadora, fue el:", "o": ["Intel 8086", "Intel 80286", "Intel 4004", "Intel 8080"], "a": [2], "e": "", "sec": "Generaciones", "id": "q57"}, {"t": "one", "p": "Intel desarrolló el chip “Horse Ridge”, clave para:", "o": ["La computación cuántica, controlando qubits desde dentro de la cámara criogénica.", "El procesamiento por lotes.", "La memoria virtual de los mainframes.", "Los primeros computadores personales."], "a": [0], "e": "", "sec": "Generaciones", "id": "q58"}, {"t": "one", "p": "La máquina de von Neumann tenía cinco partes básicas:", "o": ["CPU, disco, teclado, monitor e impresora.", "Registros, acumulador, canal, buffer y memoria.", "Memoria, ALU, unidad de control, equipo de entrada y equipo de salida.", "Memoria, caché, ALU, bus y reloj."], "a": [2], "e": "Dentro de la ALU había un registro especial de 40 bits llamado acumulador.", "sec": "Generaciones", "id": "q59"}, {"t": "many", "p": "Conceptos fundamentales propuestos por von Neumann en 1945. Seleccione una o más de una:", "o": ["Multiprogramación.", "Programa almacenado: datos y programas residen en la memoria.", "Memoria caché de varios niveles.", "Ruptura de secuencia: instrucción de salto condicional."], "a": [1, 3], "e": "", "sec": "Generaciones", "id": "q60"}, {"t": "many", "p": "La ley de Moore. Seleccione una o más de una:", "o": ["Define con precisión la velocidad de los microprocesadores.", "Permite analizar el futuro desarrollo del software.", "Observa que el número de transistores que se podían integrar en un chip se duplicaba cada año.", "Ninguna es correcta."], "a": [2], "e": "Habla de densidad de transistores (cantidad por chip, “por pulgada cuadrada”), no de velocidad ni de software.", "sec": "Ley de Moore", "id": "q61"}, {"t": "many", "p": "Son consecuencias de la ley de Moore. Seleccione una o más de una:", "o": ["El computador es más pequeño y más adecuado para más entornos.", "Aumentan las conexiones soldadas entre chips, que son más fiables.", "Hay una reducción de las necesidades de potencia y refrigeración.", "El precio de un chip permaneció prácticamente invariable, por lo que el costo de la lógica y de la memoria cayó drásticamente.", "Al estar los elementos más próximos, disminuye la longitud de las interconexiones y aumenta la velocidad."], "a": [0, 2, 3, 4], "e": "Es al revés: con más circuitos por chip hay <b>menos<\/b> conexiones entre chips, y las interconexiones de los CI son más fiables que las soldadas.", "sec": "Ley de Moore", "id": "q62"}, {"t": "many", "p": "Los sistemas operativos. Seleccione una o más de una:", "o": ["Residen íntegramente en memoria central.", "En la 2da generación se proporcionó por primera vez software del sistema junto con el computador.", "En la 4ta generación se introducen los SO en red y los SO distribuidos.", "En la 1ra generación no existían los sistemas operativos.", "Todas son correctas."], "a": [1, 2, 3], "e": "El SO no reside íntegramente en memoria central. Nota: el parcial preguntó “Aparecen en la 2° generación”; el apunte dice que en la 2da se proporcionó software del sistema con el computador y en la 1ra no existían.", "sec": "Sistemas operativos", "id": "q63"}, {"t": "one", "p": "En la 4ta generación Microsoft adopta la interfaz gráfica (GUI) y desarrolla:", "o": ["Windows, sobre DOS", "UNIX", "X Windows", "VAX VMS"], "a": [0], "e": "La GUI la populariza Macintosh; UNIX saca X Windows y se mantiene fuerte en computadores potentes con chips RISC.", "sec": "Sistemas operativos", "id": "q64"}, {"t": "one", "p": "El IBM PC (1980) utilizaba el sistema operativo:", "o": ["Windows 95", "DOS", "UNIX", "Linux"], "a": [1], "e": "", "sec": "Sistemas operativos", "id": "q65"}, {"t": "match", "p": "Relacione cada modalidad de procesamiento con su generación de origen:", "rows": ["Procesamiento por lotes", "Multiprogramación y tiempo compartido", "Procesamiento en tiempo real y SO distribuidos", "Ejecución secuencial sin sistema operativo"], "ch": ["Generación 1", "Generación 2", "Generación 3", "Generación 4"], "a": [1, 2, 3, 0], "e": "", "lt": false, "sec": "Sistemas operativos", "id": "q66"}, {"t": "one", "p": "La diferencia entre dato e información es:", "o": ["Son sinónimos.", "La información es el conjunto de símbolos sin procesar y el dato su resultado.", "El dato siempre es numérico y la información siempre es texto.", "Los datos son símbolos que representan un objeto; la información es la consecuencia de procesar los datos para que tengan un significado."], "a": [3], "e": "La información disminuye la incertidumbre y facilita la toma de decisiones.", "sec": "Datos, hardware y unidades", "id": "q67"}, {"t": "match", "p": "Relacione cada tipo de proceso con su descripción:", "rows": ["Secuencial", "Concurrente"], "ch": ["Operaciones totalmente ordenadas en el tiempo que se realizan una por vez (modelo Von Neumann)", "Operaciones cuya ejecución se superpone en el tiempo, siempre que no usen los mismos recursos"], "a": [0, 1], "e": "", "lt": true, "sec": "Datos, hardware y unidades", "id": "q68"}, {"t": "match", "p": "Relacione cada concepto con su definición:", "rows": ["Hardware", "Software", "Firmware"], "ch": ["Conjunto de dispositivos electrónicos y electromecánicos que forman la estructura física", "Conjunto de programas para procesar datos; la parte lógica", "Dispositivos físicos programados que no se borran al desconectar la alimentación (ROM)"], "a": [0, 1, 2], "e": "", "lt": true, "sec": "Datos, hardware y unidades", "id": "q69"}, {"t": "match", "p": "Relacione cada unidad con su definición:", "rows": ["Bit", "Nibble", "Byte", "Palabra", "Kilobyte"], "ch": ["Dígito binario; unidad mínima de información", "Medio byte (4 bits)", "Combinación de 8 bits consecutivos tomados como unidad", "Unidad de trabajo de la CPU; su longitud se relaciona con la de los registros", "2¹⁰ = 1024 unidades de información"], "a": [0, 1, 2, 3, 4], "e": "", "lt": true, "sec": "Datos, hardware y unidades", "id": "q70"}, {"t": "text", "p": "¿Cuántos caracteres puede almacenar una memoria de 4 KB? (número entero)", "a": ["4096"], "e": "1 KB = 2¹⁰ = 1024 → 4 × 1024 = 4096.", "ph": "Ej: 1024", "sec": "Datos, hardware y unidades", "id": "q71"}, {"t": "one", "p": "Se denomina formato de una entidad binaria a:", "o": ["El tamaño físico del disco.", "La estructura y la cantidad de bits de un determinado tipo de dato para su tratamiento en la computadora.", "La velocidad a la que se transmite un dato.", "El código ASCII de un carácter."], "a": [1], "e": "Los formatos pueden ser de longitud fija o variable, y quien interpreta un grupo de bits bajo un formato es un programa.", "sec": "Datos, hardware y unidades", "id": "q72"}, {"t": "one", "p": "Las instrucciones y los datos que ingresan a la memoria desde el exterior lo hacen:", "o": ["En un código alfanumérico de representación de caracteres, por ejemplo ASCII.", "En coma flotante normalizada.", "Directamente en código de máquina.", "En BCD empaquetado."], "a": [0], "e": "Luego un programa de traducción (ensamblador, traductor o compilador) transforma las instrucciones a código de máquina.", "sec": "Datos, hardware y unidades", "id": "q73"}], "secs": ["Definiciones", "Niveles y arquitectura", "Clasificación", "Generaciones", "Ley de Moore", "Sistemas operativos", "Datos, hardware y unidades"]};
+const KEY = "arqui-bank-" + DATA.id;
+const KIND = {one:"Seleccione una", many:"Seleccione una o más", match:"Relacione", table:"Complete la tabla", text:"Complete"};
+const L = "abcdefghijklmnopqrstuvwxyz";
+let st = {a:{}, r:{}};
+try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.a) st = s; } catch(e) {}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(st)); } catch(e) {} }
+let view = {sec:"all", filter:"all", sim:null};
+const byId = {}; DATA.qs.forEach(q => byId[q.id] = q);
+const list = document.getElementById("list");
+
+function el(tag, cls, html){ const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+function norm(s){ return String(s).toLowerCase().replace(/\s+/g,"").replace(/,/g,".").replace(/%$/,""); }
+function stripTags(h){ const d = document.createElement("div"); d.innerHTML = h; return d.textContent; }
+
+function build(q, i){
+  const card = el("article","q"); card.id = q.id;
+  const h = el("div","qh");
+  h.append(el("span","num", String(i+1).padStart(2,"0")), el("span","sec", q.sec), el("span","kind", KIND[q.t]));
+  card.append(h, el("p","prompt", q.p));
+  const body = el("div","body"); card.append(body);
+  const ans = st.a[q.id];
+  if (q.t === "one" || q.t === "many"){
+    const box = el("div","opts");
+    q.o.forEach((o, k) => {
+      const lab = el("label","opt");
+      const inp = document.createElement("input");
+      inp.type = q.t === "one" ? "radio" : "checkbox"; inp.name = q.id; inp.value = k; inp.id = q.id + "-o" + k;
+      if (ans && ans.includes(k)) { inp.checked = true; lab.classList.add("sel"); }
+      inp.addEventListener("change", () => {
+        const v = [...box.querySelectorAll("input")].filter(x => x.checked).map(x => +x.value);
+        st.a[q.id] = v; delete st.r[q.id]; save(); paint(q); score();
+      });
+      lab.append(inp, el("span","L", L[k] + "."), el("span","", o));
+      box.append(lab);
+    });
+    body.append(box);
+  } else if (q.t === "match"){
+    if (q.lt){
+      const ol = el("ul","optlist");
+      q.ch.forEach((c,k) => ol.append(el("li","", `<span>${L[k]}.</span> ${c}`)));
+      body.append(el("p","sec","Opciones:"), ol);
+    }
+    const box = el("div","mrows");
+    q.rows.forEach((r, k) => {
+      const row = el("div","mrow");
+      const s = document.createElement("select"); s.id = q.id + "-m" + k;
+      s.append(new Option("Elegir…", ""));
+      q.ch.forEach((c, j) => s.append(new Option(q.lt ? L[j] + ". " + stripTags(c) : stripTags(c), j)));
+      if (ans && ans[k] != null && ans[k] !== "") s.value = ans[k];
+      s.addEventListener("change", () => {
+        const v = [...box.querySelectorAll("select")].map(x => x.value === "" ? "" : +x.value);
+        st.a[q.id] = v; delete st.r[q.id]; save(); paint(q); score();
+      });
+      row.append(el("div","ml", r), s);
+      box.append(row);
+    });
+    body.append(box);
+  } else if (q.t === "table"){
+    const w = el("div","tw"); const t = el("table","tbl");
+    const thead = el("thead"); const tr = el("tr");
+    q.h.forEach(x => tr.append(el("th","", x))); thead.append(tr); t.append(thead);
+    const tb = el("tbody");
+    q.rows.forEach(r => {
+      const row = el("tr");
+      r.forEach(c => {
+        if (c.b != null){
+          const td = el("td","blank");
+          const s = document.createElement("select"); s.id = q.id + "-t" + c.b; s.dataset.b = c.b;
+          s.append(new Option("·", ""));
+          q.ch.forEach(v => s.append(new Option(v, v)));
+          if (ans && ans[c.b]) s.value = ans[c.b];
+          s.addEventListener("change", () => {
+            const v = []; t.querySelectorAll("select").forEach(x => v[+x.dataset.b] = x.value);
+            st.a[q.id] = v; delete st.r[q.id]; save(); paint(q); score();
+          });
+          td.append(s); row.append(td);
+        } else row.append(el("td","", c.v));
+      });
+      tb.append(row);
+    });
+    t.append(tb); w.append(t); body.append(w);
+  } else if (q.t === "text"){
+    const inp = document.createElement("input"); inp.className = "tin"; inp.id = q.id + "-txt";
+    inp.placeholder = q.ph; inp.autocomplete = "off"; inp.spellcheck = false;
+    if (ans) inp.value = ans;
+    inp.addEventListener("input", () => { st.a[q.id] = inp.value; delete st.r[q.id]; save(); paint(q); score(); });
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") check(q); });
+    body.append(inp);
+  }
+  const f = el("div","qf");
+  const b1 = el("button","btn primary","Corregir"); b1.type = "button"; b1.addEventListener("click", () => check(q));
+  const b2 = el("button","btn","Borrar"); b2.type = "button"; b2.addEventListener("click", () => clearQ(q));
+  const v = el("span","verdict");
+  f.append(b1, b2, v);
+  card.append(f);
+  const ex = el("div","expl"); ex.hidden = true; card.append(ex);
+  return card;
+}
+
+function grade(q){
+  const a = st.a[q.id];
+  if (q.t === "one" || q.t === "many"){
+    const s = (a || []).slice().sort((x,y)=>x-y);
+    return s.length === q.a.length && s.every((x,i) => x === q.a[i]);
+  }
+  if (q.t === "match") return !!a && q.a.every((x,i) => a[i] === x);
+  if (q.t === "table") return !!a && q.a.every((x,i) => a[i] === x);
+  if (q.t === "text") return !!a && q.a.some(x => norm(x) === norm(a));
+}
+function answered(q){
+  const a = st.a[q.id];
+  if (a == null) return false;
+  if (q.t === "text") return a.trim() !== "";
+  return Array.isArray(a) && a.some(x => x !== "" && x != null);
+}
+function check(q){ st.r[q.id] = grade(q) ? 1 : 0; save(); paint(q); score(); }
+function clearQ(q){
+  delete st.a[q.id]; delete st.r[q.id]; save();
+  const old = document.getElementById(q.id);
+  const idx = DATA.qs.indexOf(q);
+  const n = build(q, idx); old.replaceWith(n); paint(q); score(); applyView();
+}
+function correctText(q){
+  if (q.t === "one" || q.t === "many") return q.a.map(k => L[k]).join(", ");
+  if (q.t === "text") return q.a[0];
+  return "";
+}
+function paint(q){
+  const card = document.getElementById(q.id); if (!card) return;
+  const r = st.r[q.id]; const done = r === 0 || r === 1;
+  card.classList.toggle("is-ok", r === 1); card.classList.toggle("is-bad", r === 0);
+  const a = st.a[q.id];
+  if (q.t === "one" || q.t === "many"){
+    card.querySelectorAll(".opt").forEach((lab, k) => {
+      const chosen = !!(a && a.includes(k));
+      lab.classList.toggle("sel", chosen && !done);
+      lab.classList.toggle("right", done && q.a.includes(k));
+      lab.classList.toggle("wrong", done && chosen && !q.a.includes(k));
+    });
+  } else if (q.t === "match"){
+    card.querySelectorAll(".mrow").forEach((row, k) => {
+      row.querySelectorAll(".fix").forEach(x => x.remove());
+      const ok = a && a[k] === q.a[k];
+      row.classList.toggle("right", done && ok); row.classList.toggle("wrong", done && !ok);
+      if (done && !ok) row.append(el("div","fix","Correcta: " + (q.lt ? L[q.a[k]] + ". " : "") + q.ch[q.a[k]]));
+    });
+  } else if (q.t === "table"){
+    card.querySelectorAll("td.blank").forEach(td => {
+      const s = td.querySelector("select"); const b = +s.dataset.b;
+      td.querySelectorAll(".corr").forEach(x => x.remove());
+      const ok = a && a[b] === q.a[b];
+      td.classList.toggle("right", done && ok); td.classList.toggle("wrong", done && !ok);
+      if (done && !ok) td.append(el("span","corr", q.a[b]));
+    });
+  } else if (q.t === "text"){
+    const inp = card.querySelector(".tin");
+    inp.classList.toggle("right", r === 1); inp.classList.toggle("wrong", r === 0);
+  }
+  const v = card.querySelector(".verdict");
+  v.className = "verdict" + (r === 1 ? " ok" : r === 0 ? " bad" : "");
+  v.textContent = r === 1 ? "Correcta" : r === 0 ? "Incorrecta" : "";
+  const ex = card.querySelector(".expl");
+  ex.hidden = !done;
+  if (done){
+    const ct = correctText(q);
+    ex.innerHTML = (ct ? `<p class="ans">Respuesta: ${ct}</p>` : "") + (q.e ? `<p>${q.e}</p>` : "");
+    if (!ex.innerHTML) ex.hidden = true;
+  }
+}
+function score(){
+  const n = DATA.qs.length;
+  let ok = 0, bad = 0;
+  DATA.qs.forEach(q => { if (st.r[q.id] === 1) ok++; else if (st.r[q.id] === 0) bad++; });
+  const pend = n - ok - bad;
+  document.getElementById("score").innerHTML =
+    `<span class="okc"><b>${ok}</b> correctas</span><span class="badc"><b>${bad}</b> incorrectas</span><span class="mut"><b>${pend}</b> sin corregir · ${n} en total</span>` +
+    `<span class="meter" aria-hidden="true"><i class="m1" style="width:${ok/n*100}%"></i><i class="m2" style="width:${bad/n*100}%"></i></span>`;
+  if (view.filter !== "all") applyView();
+}
+function applyView(){
+  let shown = 0;
+  DATA.qs.forEach(q => {
+    const c = document.getElementById(q.id);
+    let vis = view.sec === "all" || q.sec === view.sec;
+    if (view.sim) vis = view.sim.includes(q.id);
+    const r = st.r[q.id];
+    if (view.filter === "todo") vis = vis && r == null;
+    if (view.filter === "bad") vis = vis && r === 0;
+    if (view.filter === "ok") vis = vis && r === 1;
+    c.hidden = !vis; if (vis) shown++;
+  });
+  document.getElementById("empty").hidden = shown > 0;
+}
+function chips(){
+  const box = document.getElementById("chips"); box.innerHTML = "";
+  const mk = (label, key, n) => {
+    const b = el("button","chip", `${label}<small>${n}</small>`); b.type = "button";
+    b.setAttribute("aria-pressed", String(view.sec === key && !view.sim));
+    b.addEventListener("click", () => { view.sec = key; view.sim = null; chips(); applyView(); });
+    box.append(b);
+  };
+  mk("Todas", "all", DATA.qs.length);
+  DATA.secs.forEach(s => mk(s, s, DATA.qs.filter(q => q.sec === s).length));
+  if (view.sim){ const b = el("button","chip","Simulacro<small>14</small>"); b.type="button"; b.setAttribute("aria-pressed","true"); box.append(b); }
+}
+function shuffleArr(a){ for (let i = a.length-1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; } return a; }
+
+DATA.qs.forEach((q,i) => { list.append(build(q,i)); });
+DATA.qs.forEach(paint);
+chips(); score(); applyView();
+
+document.getElementById("filter").addEventListener("change", e => { view.filter = e.target.value; applyView(); });
+document.getElementById("shuffle").addEventListener("click", () => {
+  const cards = shuffleArr([...list.children]); cards.forEach(c => list.append(c));
+});
+document.getElementById("sim").addEventListener("click", () => {
+  const pick = shuffleArr(DATA.qs.map(q => q.id)).slice(0, 14);
+  pick.forEach(id => { delete st.a[id]; delete st.r[id]; const q = byId[id]; const old = document.getElementById(id); old.replaceWith(build(q, DATA.qs.indexOf(q))); paint(q); });
+  save();
+  view.sim = pick; view.filter = "all"; document.getElementById("filter").value = "all";
+  pick.forEach(id => list.append(document.getElementById(id)));
+  chips(); score(); applyView(); window.scrollTo({top:0});
+});
+document.getElementById("checkall").addEventListener("click", () => {
+  DATA.qs.forEach(q => { const c = document.getElementById(q.id); if (!c.hidden && answered(q)) { st.r[q.id] = grade(q) ? 1 : 0; paint(q); } });
+  save(); score();
+});
+let armed = false;
+const rb = document.getElementById("reset");
+rb.addEventListener("click", () => {
+  if (!armed){ armed = true; rb.textContent = "¿Borrar todo? Tocá de nuevo"; setTimeout(() => { armed = false; rb.textContent = "Reiniciar"; }, 3000); return; }
+  st = {a:{}, r:{}}; save(); list.innerHTML = ""; view = {sec:"all", filter:"all", sim:null};
+  document.getElementById("filter").value = "all";
+  DATA.qs.forEach((q,i) => list.append(build(q,i))); DATA.qs.forEach(paint);
+  armed = false; rb.textContent = "Reiniciar"; chips(); score(); applyView();
+});
+</script>
+
+</body>
+</html>

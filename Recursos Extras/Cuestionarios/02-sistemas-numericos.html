@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sistemas numéricos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root{
+  --bg:#F2F4F1; --panel:#FFFFFF; --panel2:#F7F9F7; --ink:#15201B; --muted:#56675F; --line:#D3DCD7;
+  --accent:#0E6A4E; --accent-ink:#FFFFFF; --accent-soft:#E0EEE8;
+  --ok:#1C7548; --ok-soft:#E2F2E9; --bad:#AE3730; --bad-soft:#F8E4E1; --tag:#8A5C0F; --tag-soft:#F6EBD6;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --cond:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E1412; --panel:#151D1A; --panel2:#1A2420; --ink:#E4ECE8; --muted:#93A59C; --line:#2A3630;
+    --accent:#4DC196; --accent-ink:#06150F; --accent-soft:#163129;
+    --ok:#5CCB8F; --ok-soft:#15301F; --bad:#EE7B71; --bad-soft:#3A1D1A; --tag:#E2B55C; --tag-soft:#342914;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E1412; --panel:#151D1A; --panel2:#1A2420; --ink:#E4ECE8; --muted:#93A59C; --line:#2A3630;
+  --accent:#4DC196; --accent-ink:#06150F; --accent-soft:#163129;
+  --ok:#5CCB8F; --ok-soft:#15301F; --bad:#EE7B71; --bad-soft:#3A1D1A; --tag:#E2B55C; --tag-soft:#342914;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:0 64px}
+.wrap{max-width:860px;margin:0 auto}
+header.top{padding-block:28px 12px;display:grid;gap:6px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--cond);font-weight:700;font-size:clamp(26px,5vw,36px);line-height:1.1;margin:0;text-wrap:balance}
+.lead{color:var(--muted);margin:0;max-width:65ch}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);display:grid;gap:10px;margin-bottom:18px}
+.score{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums}
+.score b{font-weight:600}
+.score .okc{color:var(--ok)} .score .badc{color:var(--bad)} .score .mut{color:var(--muted)}
+.meter{flex:1 1 160px;height:6px;border-radius:3px;background:var(--line);overflow:hidden;display:flex;min-width:120px}
+.meter i{display:block;height:100%}
+.meter .m1{background:var(--ok)} .meter .m2{background:var(--bad)}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:thin}
+.chip{flex:0 0 auto;font:500 13px var(--sans);border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:5px 10px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.chip small{font-family:var(--mono);color:var(--muted);margin-left:4px}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip[aria-pressed="true"] small{color:var(--accent-ink);opacity:.8}
+select,button,input{font:inherit}
+.btn{font:500 13px var(--sans);border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:6px 12px;border-radius:7px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.fsel{font:500 13px var(--sans);border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:6px 8px;border-radius:7px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.list{display:grid;gap:14px}
+.q{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 16px 14px;display:grid;gap:12px}
+.q.is-ok{border-color:color-mix(in srgb,var(--ok) 55%,var(--line))}
+.q.is-bad{border-color:color-mix(in srgb,var(--bad) 55%,var(--line))}
+.qh{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline}
+.num{font-family:var(--mono);font-weight:600;font-size:13px;color:var(--accent)}
+.sec{font-size:12px;color:var(--muted)}
+.kind{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--tag);background:var(--tag-soft);padding:1px 6px;border-radius:4px;margin-left:auto}
+.prompt{font-weight:500;margin:0}
+.prompt code,.opt code,.expl code,td code,.ml code{font-family:var(--mono);font-size:.93em;background:var(--panel2);border:1px solid var(--line);padding:0 4px;border-radius:4px;white-space:nowrap}
+.ov{text-decoration:overline;text-decoration-thickness:1.5px}
+.opts{display:grid;gap:6px}
+.opt{display:grid;grid-template-columns:auto auto 1fr;gap:8px;align-items:start;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer;background:var(--panel)}
+.opt:hover{border-color:var(--accent)}
+.opt input{margin:3px 0 0;accent-color:var(--accent)}
+.opt .L{font-family:var(--mono);color:var(--muted);font-size:13px;padding-top:1px}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.mrows{display:grid;gap:8px}
+.mrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:8px;align-items:center;padding:6px 8px;border:1px solid var(--line);border-radius:8px}
+.ml{font-size:14px}
+.mrow select,.tbl select{width:100%;max-width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--panel2);color:var(--ink)}
+.mrow.right{border-color:var(--ok);background:var(--ok-soft)}
+.mrow.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.fix{grid-column:1/-1;font-size:13px;color:var(--ok);font-weight:500}
+.optlist{font-size:13px;color:var(--muted);margin:0;padding-left:0;list-style:none;display:grid;gap:2px}
+.optlist li span{font-family:var(--mono)}
+@media (max-width:560px){.mrow{grid-template-columns:1fr}}
+.tw{overflow-x:auto}
+.tbl{border-collapse:collapse;font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{border:1px solid var(--line);padding:5px 10px;text-align:center}
+.tbl th{background:var(--panel2);font-weight:600}
+.tbl td.blank{padding:3px 4px;min-width:64px}
+.tbl td.right{background:var(--ok-soft)} .tbl td.wrong{background:var(--bad-soft)}
+.tbl td .corr{display:block;font-size:12px;color:var(--ok);font-weight:600}
+.tin{width:100%;max-width:360px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);color:var(--ink);font-family:var(--mono)}
+.tin.right{border-color:var(--ok);background:var(--ok-soft)} .tin.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.qf{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.verdict{font-weight:600;font-size:14px}
+.verdict.ok{color:var(--ok)} .verdict.bad{color:var(--bad)}
+.expl{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px;display:grid;gap:6px}
+.expl p{margin:0}
+.expl .ans{font-weight:600}
+pre.blk,.prompt pre{font-family:var(--mono);font-size:13px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:8px 10px;overflow-x:auto;margin:8px 0 0;font-weight:400;line-height:1.45}
+.bar{}
+@media (max-width:640px){.bar{position:static}}
+.empty{color:var(--muted);text-align:center;padding:30px 0}
+footer.note{color:var(--muted);font-size:13px;margin-top:28px;max-width:65ch}
+@media (prefers-reduced-motion:no-preference){.q{transition:border-color .15s}}
+</style>
+</head>
+<body>
+<div class="wrap" style="padding-top:14px"><a href="../../site/secciones/93-cuestionarios.html" style="color:var(--accent);font:500 13px var(--sans);text-decoration:none">← Volver al aula</a></div>
+
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Arquitectura de Computadoras · C1 · U1</div>
+    <h1>Sistemas numéricos</h1>
+    <p class="lead">Sistemas posicionales, conversiones entre bases (enteros y fraccionarios), binario, octal y hexadecimal, aritmética binaria, complementos y números con signo. Elegí, tocá <b>Corregir</b> y leé la explicación. Tus respuestas quedan guardadas en este navegador.</p>
+  </header>
+
+  <div class="bar">
+    <div class="score" id="score"></div>
+    <div class="chips" id="chips" role="toolbar" aria-label="Temas"></div>
+    <div class="controls">
+      <select class="fsel" id="filter" aria-label="Filtrar">
+        <option value="all">Todas</option>
+        <option value="todo">Sin corregir</option>
+        <option value="bad">Falladas</option>
+        <option value="ok">Correctas</option>
+      </select>
+      <button class="btn" id="shuffle" type="button">Mezclar orden</button>
+      <button class="btn" id="sim" type="button">Simulacro de 14</button>
+      <button class="btn primary" id="checkall" type="button">Corregir visibles</button>
+      <button class="btn" id="reset" type="button">Reiniciar</button>
+    </div>
+  </div>
+
+  <main class="list" id="list"></main>
+  <p class="empty" id="empty" hidden>No hay preguntas con este filtro.</p>
+  <footer class="note">Preguntas armadas a partir del apunte de Nico (U1 y U2), el apunte de cátedra y los parciales anteriores. Donde el apunte y otra bibliografía difieren, la explicación sigue al apunte.</footer>
+</div>
+
+<script>
+const DATA = {"id": "num", "qs": [{"t": "one", "p": "Un sistema de numeración en base b:", "o": ["Representa cada número con b cifras.", "Utiliza b − 1 símbolos más el cero.", "Utiliza siempre los símbolos 0 a 9.", "Utiliza para representar los números un alfabeto compuesto por b símbolos o cifras."], "a": [3], "e": "", "sec": "Conceptos", "id": "q1"}, {"t": "one", "p": "En un sistema de numeración posicional, el valor de cada cifra depende de:", "o": ["La cifra en sí y de la posición que ocupa en la secuencia.", "Solo de la cifra.", "De la cantidad total de cifras.", "Solo de la posición."], "a": [0], "e": "N = … n₂·b² + n₁·b¹ + n₀·b⁰ + n₋₁·b⁻¹ + …", "sec": "Conceptos", "id": "q2"}, {"t": "match", "p": "Relacione cada base con su alfabeto:", "rows": ["b = 2 (binario)", "b = 8 (octal)", "b = 10 (decimal)", "b = 16 (hexadecimal)"], "ch": ["{0, 1}", "{0, 1, …, 7}", "{0, 1, …, 9}", "{0, …, 9, A, B, C, D, E, F}"], "a": [0, 1, 2, 3], "e": "", "lt": true, "sec": "Conceptos", "id": "q3"}, {"t": "one", "p": "El rango de representación con n cifras en base b es:", "o": ["nᵇ combinaciones, de 0 a nᵇ.", "b·n combinaciones, de 1 a b·n.", "bⁿ combinaciones distintas, desde 0 hasta bⁿ − 1.", "2ⁿ combinaciones en cualquier base."], "a": [2], "e": "", "sec": "Conceptos", "id": "q4"}, {"t": "text", "p": "¿Cuál es el mayor número decimal representable con 8 bits?", "a": ["255"], "e": "bⁿ − 1 = 2^8 − 1 = 255.", "ph": "Ej: 99", "sec": "Conceptos", "id": "q5"}, {"t": "text", "p": "¿Cuál es el mayor número decimal representable con 4 cifras octales?", "a": ["4095"], "e": "bⁿ − 1 = 8^4 − 1 = 4095.", "ph": "Ej: 99", "sec": "Conceptos", "id": "q6"}, {"t": "text", "p": "¿Cuál es el mayor número decimal representable con 3 cifras hexadecimales?", "a": ["4095"], "e": "bⁿ − 1 = 16^3 − 1 = 4095.", "ph": "Ej: 99", "sec": "Conceptos", "id": "q7"}, {"t": "text", "p": "¿Cuántas combinaciones distintas se forman con 3 cifras hexadecimales?", "a": ["4096"], "e": "16³ = 4096.", "ph": "Ej: 256", "sec": "Conceptos", "id": "q8"}, {"t": "match", "p": "Relacione cada paso de la conversión de decimal a base b con su método:", "rows": ["Parte entera", "Parte fraccionaria", "Restos mayores que 9 (base > 10)", "Fracción que no termina"], "ch": ["Divisiones sucesivas entre la base b", "Multiplicaciones sucesivas por la base b", "Se reemplazan por letras: 10 = A, 11 = B, …", "Se corta en una cantidad de cifras: error de truncamiento"], "a": [0, 1, 2, 3], "e": "", "lt": true, "sec": "Conceptos", "id": "q9"}, {"t": "one", "p": "En el método de divisiones sucesivas, el número en base b se forma:", "o": ["Leyendo los restos del primero al último.", "Sumando todos los restos.", "Leyendo los restos desde el último hasta el primero (el último resto es la cifra más significativa).", "Con los cocientes sucesivos."], "a": [2], "e": "26 / 2: restos 0, 1, 0, 1, 1 → leídos de abajo hacia arriba: 11010.", "sec": "Conceptos", "id": "q10"}, {"t": "one", "p": "En el método de multiplicaciones sucesivas para la parte fraccionaria:", "o": ["Se multiplica siempre por 10.", "Se usan los restos de la división.", "La parte entera de cada producto es una cifra; la primera obtenida es la más significativa (la que va después de la coma).", "La primera parte entera obtenida es la menos significativa."], "a": [2], "e": "0,1875·2 = 0,375 → 0; ·2 = 0,75 → 0; ·2 = 1,5 → 1; 0,5·2 = 1,0 → 1. Resultado 0,0011.", "sec": "Conceptos", "id": "q11"}, {"t": "one", "p": "Al convertir 0,1 decimal a binario:", "o": ["El resultado es 0,0001.", "El resultado es exactamente 0,1.", "No se puede convertir.", "El resultado es periódico y hay que truncarlo, lo que genera error de truncamiento."], "a": [3], "e": "0,1·2 = 0,2 → 0; 0,4 → 0; 0,8 → 0; 1,6 → 1; 1,2 → 1; 0,4 → 0… y se repite.", "sec": "Conceptos", "id": "q12"}, {"t": "text", "p": "Convierta 26₁₀ a binario.", "a": ["11010"], "e": "Divisiones sucesivas por 2 → 11010.", "ph": "Ej: 1010", "sec": "Decimal a base b", "id": "q13"}, {"t": "text", "p": "Convierta 45₁₀ a binario.", "a": ["101101"], "e": "Divisiones sucesivas por 2 → 101101.", "ph": "Ej: 1010", "sec": "Decimal a base b", "id": "q14"}, {"t": "text", "p": "Convierta 100₁₀ a binario.", "a": ["1100100"], "e": "Divisiones sucesivas por 2 → 1100100.", "ph": "Ej: 1010", "sec": "Decimal a base b", "id": "q15"}, {"t": "text", "p": "Convierta 213₁₀ a binario.", "a": ["11010101"], "e": "Divisiones sucesivas por 2 → 11010101.", "ph": "Ej: 1010", "sec": "Decimal a base b", "id": "q16"}, {"t": "text", "p": "Convierta 0,1875₁₀ a binario.", "a": ["0,0011", "0.0011"], "e": "Multiplicaciones sucesivas por 2 → 0,0011.", "ph": "Ej: 0,01", "sec": "Decimal a base b", "id": "q17"}, {"t": "text", "p": "Convierta 0,625₁₀ a binario.", "a": ["0,101", "0.101"], "e": "Multiplicaciones sucesivas por 2 → 0,101.", "ph": "Ej: 0,01", "sec": "Decimal a base b", "id": "q18"}, {"t": "text", "p": "Convierta 0,8125₁₀ a binario.", "a": ["0,1101", "0.1101"], "e": "Multiplicaciones sucesivas por 2 → 0,1101.", "ph": "Ej: 0,01", "sec": "Decimal a base b", "id": "q19"}, {"t": "text", "p": "Convierta 26,1875₁₀ a binario.", "a": ["11010,0011", "11010.0011"], "e": "Parte entera 11010 (divisiones), parte fraccionaria 0,0011 (multiplicaciones).", "ph": "Ej: 101,01", "sec": "Decimal a base b", "id": "q20"}, {"t": "text", "p": "Convierta 13,75₁₀ a binario.", "a": ["1101,11", "1101.11"], "e": "13 = 1101 y 0,75 = 0,11.", "ph": "Ej: 101,01", "sec": "Decimal a base b", "id": "q21"}, {"t": "text", "p": "Convierta 0,3₁₀ a binario con 4 cifras fraccionarias (truncando).", "a": ["0,0100", "0.0100", "0,01", "0.01"], "e": "0,3·2 = 0,6 → 0; 1,2 → 1; 0,4 → 0; 0,8 → 0. Queda 0,0100 y se trunca: 0,0100₂ = 0,25, error de truncamiento 0,05.", "ph": "Ej: 0,0000", "sec": "Decimal a base b", "id": "q22"}, {"t": "text", "p": "Convierta 156₁₀ a base 8.", "a": ["234"], "e": "Divisiones sucesivas por 8 → 234.", "ph": "Ej: 123", "sec": "Decimal a base b", "id": "q23"}, {"t": "text", "p": "Convierta 250₁₀ a base 16.", "a": ["FA"], "e": "Divisiones sucesivas por 16 → FA.", "ph": "Ej: 123", "sec": "Decimal a base b", "id": "q24"}, {"t": "text", "p": "Convierta 3000₁₀ a base 16.", "a": ["BB8"], "e": "Divisiones sucesivas por 16 → BB8.", "ph": "Ej: 123", "sec": "Decimal a base b", "id": "q25"}, {"t": "text", "p": "Convierta 500₁₀ a base 8.", "a": ["764"], "e": "Divisiones sucesivas por 8 → 764.", "ph": "Ej: 123", "sec": "Decimal a base b", "id": "q26"}, {"t": "text", "p": "Convierta 75₁₀ a base 5.", "a": ["300"], "e": "Divisiones sucesivas por 5 → 300.", "ph": "Ej: 123", "sec": "Decimal a base b", "id": "q27"}, {"t": "text", "p": "Convierta 110100₍2₎ a decimal.", "a": ["52"], "e": "Se multiplica cada cifra por la base elevada a su posición y se suma: 52.", "ph": "Ej: 10", "sec": "Base b a decimal", "id": "q28"}, {"t": "text", "p": "Convierta 11111111₍2₎ a decimal.", "a": ["255"], "e": "Se multiplica cada cifra por la base elevada a su posición y se suma: 255.", "ph": "Ej: 10", "sec": "Base b a decimal", "id": "q29"}, {"t": "text", "p": "Convierta 237₍8₎ a decimal.", "a": ["159"], "e": "Se multiplica cada cifra por la base elevada a su posición y se suma: 159.", "ph": "Ej: 10", "sec": "Base b a decimal", "id": "q30"}, {"t": "text", "p": "Convierta 2AF₍16₎ a decimal.", "a": ["687"], "e": "Se multiplica cada cifra por la base elevada a su posición y se suma: 687.", "ph": "Ej: 10", "sec": "Base b a decimal", "id": "q31"}, {"t": "text", "p": "Convierta FF₍16₎ a decimal.", "a": ["255"], "e": "Se multiplica cada cifra por la base elevada a su posición y se suma: 255.", "ph": "Ej: 10", "sec": "Base b a decimal", "id": "q32"}, {"t": "text", "p": "Convierta 1234₍5₎ a decimal.", "a": ["194"], "e": "Se multiplica cada cifra por la base elevada a su posición y se suma: 194.", "ph": "Ej: 10", "sec": "Base b a decimal", "id": "q33"}, {"t": "text", "p": "Convierta 0,101₂ a decimal.", "a": ["0,625", "0.625"], "e": "2⁻¹ + 2⁻³ = 0,5 + 0,125 = 0,625.", "ph": "Ej: 0,5", "sec": "Base b a decimal", "id": "q34"}, {"t": "text", "p": "Convierta 10100,001₂ a decimal.", "a": ["20,125", "20.125"], "e": "2⁴ + 2² + 2⁻³ = 16 + 4 + 0,125 = 20,125.", "ph": "Ej: 1,5", "sec": "Base b a decimal", "id": "q35"}, {"t": "text", "p": "Convierta 1011,11₂ a decimal.", "a": ["11,75", "11.75"], "e": "8 + 2 + 1 + 0,5 + 0,25 = 11,75.", "ph": "Ej: 1,5", "sec": "Base b a decimal", "id": "q36"}, {"t": "one", "p": "1101100₂ en decimal es:", "o": ["100", "108", "54", "216"], "a": [1], "e": "64 + 32 + 8 + 4 = 108.", "sec": "Base b a decimal", "id": "q37"}, {"t": "one", "p": "Para pasar de binario a hexadecimal directamente:", "o": ["Se pasa siempre primero a decimal.", "Se agrupan de a 8.", "Se agrupan de a 3.", "Se agrupan los bits de a 4 desde la coma hacia afuera y se reemplaza cada grupo por su cifra hexadecimal."], "a": [3], "e": "Para octal se agrupan de a 3, porque 8 = 2³ y 16 = 2⁴.", "sec": "Binario, octal y hexadecimal", "id": "q38"}, {"t": "text", "p": "Convierta 110101101₂ a octal.", "a": ["655"], "e": "Grupos de 3 bits desde la derecha.", "ph": "Ej: 17", "sec": "Binario, octal y hexadecimal", "id": "q39"}, {"t": "text", "p": "Convierta 110101101₂ a hexadecimal.", "a": ["1AD"], "e": "Grupos de 4 bits desde la derecha.", "ph": "Ej: 1F", "sec": "Binario, octal y hexadecimal", "id": "q40"}, {"t": "text", "p": "Convierta 1011110011₂ a octal.", "a": ["1363"], "e": "Grupos de 3 bits desde la derecha.", "ph": "Ej: 17", "sec": "Binario, octal y hexadecimal", "id": "q41"}, {"t": "text", "p": "Convierta 1011110011₂ a hexadecimal.", "a": ["2F3"], "e": "Grupos de 4 bits desde la derecha.", "ph": "Ej: 1F", "sec": "Binario, octal y hexadecimal", "id": "q42"}, {"t": "text", "p": "Convierta 11111110₂ a octal.", "a": ["376"], "e": "Grupos de 3 bits desde la derecha.", "ph": "Ej: 17", "sec": "Binario, octal y hexadecimal", "id": "q43"}, {"t": "text", "p": "Convierta 11111110₂ a hexadecimal.", "a": ["FE"], "e": "Grupos de 4 bits desde la derecha.", "ph": "Ej: 1F", "sec": "Binario, octal y hexadecimal", "id": "q44"}, {"t": "text", "p": "Convierta 3C7₍16₎ a binario (una cifra = 4 bits).", "a": ["001111000111", "1111000111"], "e": "Cada cifra se reemplaza por su grupo: 0011 1100 0111.", "ph": "Ej: 0101", "sec": "Binario, octal y hexadecimal", "id": "q45"}, {"t": "text", "p": "Convierta 725₍8₎ a binario (una cifra = 3 bits).", "a": ["111010101", "111010101"], "e": "Cada cifra se reemplaza por su grupo: 111 010 101.", "ph": "Ej: 0101", "sec": "Binario, octal y hexadecimal", "id": "q46"}, {"t": "text", "p": "Convierta B6₍16₎ a binario (una cifra = 4 bits).", "a": ["10110110", "10110110"], "e": "Cada cifra se reemplaza por su grupo: 1011 0110.", "ph": "Ej: 0101", "sec": "Binario, octal y hexadecimal", "id": "q47"}, {"t": "text", "p": "Convierta 1F₁₆ a octal.", "a": ["37"], "e": "1F = 0001 1111 = 011 111 = 37₈.", "ph": "Ej: 17", "sec": "Binario, octal y hexadecimal", "id": "q48"}, {"t": "text", "p": "Convierta 0,1011₂ a hexadecimal.", "a": ["0,B", "0.B"], "e": "Después de la coma se agrupa hacia la derecha: 1011 = B.", "ph": "Ej: 0,A", "sec": "Binario, octal y hexadecimal", "id": "q49"}, {"t": "text", "p": "Sume en binario 1011 + 0110.", "a": ["10001"], "e": "11 + 6 = 17 = 10001.", "ph": "Ej: 1010", "sec": "Aritmética binaria", "id": "q50"}, {"t": "text", "p": "Sume en binario 11011 + 1011.", "a": ["100110"], "e": "27 + 11 = 38 = 100110.", "ph": "Ej: 1010", "sec": "Aritmética binaria", "id": "q51"}, {"t": "text", "p": "Sume en binario 1111 + 1.", "a": ["10000"], "e": "15 + 1 = 16 = 10000.", "ph": "Ej: 1010", "sec": "Aritmética binaria", "id": "q52"}, {"t": "text", "p": "Reste en binario (método directo, con préstamo) 10110 − 01011.", "a": ["01011", "1011"], "e": "22 − 11 = 11 = 01011 (ejemplo del apunte de Nico).", "ph": "Ej: 00000", "sec": "Aritmética binaria", "id": "q53"}, {"t": "text", "p": "Reste en binario 11000 − 00111.", "a": ["10001"], "e": "24 − 7 = 17 = 10001.", "ph": "Ej: 00000", "sec": "Aritmética binaria", "id": "q54"}, {"t": "text", "p": "Multiplique en binario 101 × 11.", "a": ["1111"], "e": "5 × 3 = 15 = 1111.", "ph": "Ej: 1010", "sec": "Aritmética binaria", "id": "q55"}, {"t": "text", "p": "Multiplique en binario 110 × 101.", "a": ["11110"], "e": "6 × 5 = 30 = 11110.", "ph": "Ej: 1010", "sec": "Aritmética binaria", "id": "q56"}, {"t": "text", "p": "Multiplique en binario 1011 × 101.", "a": ["110111"], "e": "11 × 5 = 55 = 110111.", "ph": "Ej: 1010", "sec": "Aritmética binaria", "id": "q57"}, {"t": "text", "p": "Sume en hexadecimal 2A + 3F.", "a": ["69"], "e": "42 + 63 = 105 = 69₁₆.", "ph": "Ej: 1F", "sec": "Aritmética binaria", "id": "q58"}, {"t": "text", "p": "Sume en octal 57 + 26.", "a": ["105"], "e": "47 + 22 = 69 = 105₈.", "ph": "Ej: 17", "sec": "Aritmética binaria", "id": "q59"}, {"t": "one", "p": "Si se necesita hacer la operación A − B. Seleccione una:", "o": ["Al sumar A más el complemento a la base menos uno de B, siempre se debe cambiar el signo del resultado.", "Cuando B es mayor que A podemos utilizar solamente complementos a la base.", "Se resuelve complementando el sustraendo o utilizando un sustractor.", "Ninguna es correcta."], "a": [2], "e": "Restar equivale a sumar el opuesto (complemento) del sustraendo; así se evita poner un sustractor junto al sumador.", "sec": "Complementos y resta", "id": "q60"}, {"t": "many", "p": "El complemento de un número permite. Seleccione una o más de una:", "o": ["Representar números binarios negativos", "Resolver las restas con menos hardware (sin sustractor)", "Hacer cambio directo de base", "Restar sumando", "Sumar restando"], "a": [0, 1, 3], "e": "", "sec": "Complementos y resta", "id": "q61"}, {"t": "one", "p": "La resta de dos números binarios es equivalente a:", "o": ["El complemento de la suma.", "La multiplicación por −1 del minuendo.", "La suma entre el primer elemento y el complemento del segundo.", "La suma de los complementos de ambos."], "a": [2], "e": "", "sec": "Complementos y resta", "id": "q62"}, {"t": "match", "p": "Relacione cada nombre con el complemento correspondiente:", "rows": ["Complemento a la base menos uno (restringido) en binario", "Complemento a la base (auténtico) en binario", "Complemento restringido en decimal", "Complemento auténtico en decimal"], "ch": ["Complemento a 1 (C1)", "Complemento a 2 (C2)", "Complemento a 9", "Complemento a 10"], "a": [0, 1, 2, 3], "e": "", "lt": true, "sec": "Complementos y resta", "id": "q63"}, {"t": "text", "p": "Calcule el complemento a 1 de 0101 1010.", "a": ["10100101"], "e": "Se invierten todos los bits.", "ph": "Ej: 0000 0000", "sec": "Complementos y resta", "id": "q64"}, {"t": "text", "p": "Calcule el complemento a 1 de 1100 1000.", "a": ["00110111"], "e": "Se invierten todos los bits.", "ph": "Ej: 0000 0000", "sec": "Complementos y resta", "id": "q65"}, {"t": "text", "p": "Calcule el complemento a 2 de 0101 1000.", "a": ["10101000"], "e": "C1 = 1010 0111, más 1 = 1010 1000. Atajo: copiar de derecha a izquierda hasta el primer 1 inclusive e invertir el resto.", "ph": "Ej: 0000 0000", "sec": "Complementos y resta", "id": "q66"}, {"t": "text", "p": "Calcule el complemento a 2 de 0001 0100.", "a": ["11101100"], "e": "C1 = 1110 1011, más 1 = 1110 1100. Atajo: copiar de derecha a izquierda hasta el primer 1 inclusive e invertir el resto.", "ph": "Ej: 0000 0000", "sec": "Complementos y resta", "id": "q67"}, {"t": "text", "p": "Calcule el complemento a 9 de 372.", "a": ["627"], "e": "9−3, 9−7, 9−2 = 627.", "ph": "Ej: 000", "sec": "Complementos y resta", "id": "q68"}, {"t": "text", "p": "Calcule el complemento a 10 de 372.", "a": ["628"], "e": "Complemento a 9 + 1 = 628.", "ph": "Ej: 000", "sec": "Complementos y resta", "id": "q69"}, {"t": "one", "p": "Con 4 bits y complemento a 2, la resta 1100 − 0101 da:", "o": ["1001", "0111 (se descarta el acarreo final)", "1 0111 y el resultado es negativo", "0110 (hay que sumar el acarreo)"], "a": [1], "e": "C2(0101) = 1011. 1100 + 1011 = 1 0111 → se descarta el acarreo: 0111 = 7 (12 − 5).", "sec": "Complementos y resta", "id": "q70"}, {"t": "one", "p": "Con 4 bits y complemento a 1, la resta 1001 − 0011 da:", "o": ["1 0101 negativo", "0110 (el acarreo final se suma al resultado)", "0101", "1100"], "a": [1], "e": "C1(0011) = 1100. 1001 + 1100 = 1 0101 → acarreo circular: 0101 + 1 = 0110 = 6 (9 − 3).", "sec": "Complementos y resta", "id": "q71"}, {"t": "one", "p": "Con 4 bits y complemento a 2, la resta 0011 − 0110 produce 1101 sin acarreo final. Esto significa que:", "o": ["Hubo desbordamiento y el resultado no es válido.", "El resultado es negativo y su magnitud es el complemento a 2 de 1101, es decir −3.", "El resultado es 13.", "Hay que sumar el acarreo."], "a": [1], "e": "Sin acarreo final el resultado está complementado: C2(1101) = 0011 → −3.", "sec": "Complementos y resta", "id": "q72"}, {"t": "one", "p": "Con 4 bits y complemento a 1, la resta 0010 − 0111 da 1010 sin acarreo final. El resultado es:", "o": ["+5", "10", "−6", "−5, porque C1(1010) = 0101"], "a": [3], "e": "C1(0111) = 1000; 0010 + 1000 = 1010, sin acarreo → negativo, magnitud C1(1010) = 0101 = 5.", "sec": "Complementos y resta", "id": "q73"}, {"t": "one", "p": "Resuelva A − B con A = 10110 y B = 01011 usando complemento a 1 (ejemplo del apunte):", "o": ["10110 + 10100 = 1 01010; el acarreo se suma al resultado: 01011", "10110 + 10101 = 1 01011; se descarta el acarreo: 01011", "10110 + 01011 = 100001", "10110 − 10100 = 00010"], "a": [0], "e": "C1(01011) = 10100. Con complemento a 1 el acarreo final se suma (acarreo circular). La opción b es el método con C2, que también da 01011, pero no usa el complemento a 1.", "sec": "Complementos y resta", "id": "q74"}, {"t": "match", "p": "Relacione cada representación de números negativos (n bits, bit de signo a la izquierda) con su rango:", "rows": ["Módulo y signo", "Complemento a 1", "Complemento a 2"], "ch": ["−(2ⁿ⁻¹ − 1) a +(2ⁿ⁻¹ − 1), con doble cero", "−(2ⁿ⁻¹ − 1) a +(2ⁿ⁻¹ − 1), también con doble cero", "−2ⁿ⁻¹ a +(2ⁿ⁻¹ − 1), un solo cero", "0 a 2ⁿ − 1"], "a": [0, 1, 2], "e": "", "lt": true, "sec": "Números con signo", "id": "q75"}, {"t": "text", "p": "¿Cuál es el rango de un número en complemento a 2 de 8 bits? (formato: mínimo a máximo)", "a": ["-128a127", "−128a127", "-128a+127"], "e": "−2⁷ a 2⁷ − 1 = −128 a 127.", "ph": "Ej: -10 a 10", "sec": "Números con signo", "id": "q76"}, {"t": "one", "p": "En la representación de números con signo, el signo positivo se representa con:", "o": ["0 en el bit de menor peso", "El complemento", "1 en el bit de mayor peso", "0 en el bit de mayor peso"], "a": [3], "e": "", "sec": "Números con signo", "id": "q77"}, {"t": "text", "p": "Represente −5 en complemento a 2 con 8 bits.", "a": ["11111011"], "e": "+5 = 0000 0101 → C2 = 1111 1011.", "ph": "Ej: 0000 0000", "sec": "Números con signo", "id": "q78"}, {"t": "text", "p": "Represente −5 en módulo y signo con 8 bits.", "a": ["10000101"], "e": "Signo 1 y magnitud 000 0101.", "ph": "Ej: 0000 0000", "sec": "Números con signo", "id": "q79"}, {"t": "text", "p": "Represente −5 en complemento a 1 con 8 bits.", "a": ["11111010"], "e": "Se invierten los bits de 0000 0101.", "ph": "Ej: 0000 0000", "sec": "Números con signo", "id": "q80"}, {"t": "one", "p": "En complemento a 2 con 4 bits se suma 0111 + 0011 y se obtiene 1010. Esto indica:", "o": ["Que hubo acarreo que debe descartarse.", "Desbordamiento: la suma de dos positivos dio un resultado con signo negativo.", "Que hay que complementar el resultado.", "Que el resultado es −6 y es correcto."], "a": [1], "e": "7 + 3 = 10 no entra en el rango −8…+7. Se detecta porque el arrastre hacia el bit de signo es distinto del arrastre que sale del bit de signo.", "sec": "Números con signo", "id": "q81"}, {"t": "one", "p": "La condición de desbordamiento en una suma en complemento a 2 se detecta cuando:", "o": ["Los dos operandos tienen distinto signo.", "Hay arrastre final.", "El arrastre del bit más significativo de la magnitud y el arrastre del bit de signo son distintos.", "El resultado es cero."], "a": [2], "e": "Se indica en un biestable (FF de desbordamiento) con una XOR de ambos arrastres.", "sec": "Números con signo", "id": "q82"}], "secs": ["Conceptos", "Decimal a base b", "Base b a decimal", "Binario, octal y hexadecimal", "Aritmética binaria", "Complementos y resta", "Números con signo"]};
+const KEY = "arqui-bank-" + DATA.id;
+const KIND = {one:"Seleccione una", many:"Seleccione una o más", match:"Relacione", table:"Complete la tabla", text:"Complete"};
+const L = "abcdefghijklmnopqrstuvwxyz";
+let st = {a:{}, r:{}};
+try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.a) st = s; } catch(e) {}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(st)); } catch(e) {} }
+let view = {sec:"all", filter:"all", sim:null};
+const byId = {}; DATA.qs.forEach(q => byId[q.id] = q);
+const list = document.getElementById("list");
+
+function el(tag, cls, html){ const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+function norm(s){ return String(s).toLowerCase().replace(/\s+/g,"").replace(/,/g,".").replace(/%$/,""); }
+function stripTags(h){ const d = document.createElement("div"); d.innerHTML = h; return d.textContent; }
+
+function build(q, i){
+  const card = el("article","q"); card.id = q.id;
+  const h = el("div","qh");
+  h.append(el("span","num", String(i+1).padStart(2,"0")), el("span","sec", q.sec), el("span","kind", KIND[q.t]));
+  card.append(h, el("p","prompt", q.p));
+  const body = el("div","body"); card.append(body);
+  const ans = st.a[q.id];
+  if (q.t === "one" || q.t === "many"){
+    const box = el("div","opts");
+    q.o.forEach((o, k) => {
+      const lab = el("label","opt");
+      const inp = document.createElement("input");
+      inp.type = q.t === "one" ? "radio" : "checkbox"; inp.name = q.id; inp.value = k; inp.id = q.id + "-o" + k;
+      if (ans && ans.includes(k)) { inp.checked = true; lab.classList.add("sel"); }
+      inp.addEventListener("change", () => {
+        const v = [...box.querySelectorAll("input")].filter(x => x.checked).map(x => +x.value);
+        st.a[q.id] = v; delete st.r[q.id]; save(); paint(q); score();
+      });
+      lab.append(inp, el("span","L", L[k] + "."), el("span","", o));
+      box.append(lab);
+    });
+    body.append(box);
+  } else if (q.t === "match"){
+    if (q.lt){
+      const ol = el("ul","optlist");
+      q.ch.forEach((c,k) => ol.append(el("li","", `<span>${L[k]}.</span> ${c}`)));
+      body.append(el("p","sec","Opciones:"), ol);
+    }
+    const box = el("div","mrows");
+    q.rows.forEach((r, k) => {
+      const row = el("div","mrow");
+      const s = document.createElement("select"); s.id = q.id + "-m" + k;
+      s.append(new Option("Elegir…", ""));
+      q.ch.forEach((c, j) => s.append(new Option(q.lt ? L[j] + ". " + stripTags(c) : stripTags(c), j)));
+      if (ans && ans[k] != null && ans[k] !== "") s.value = ans[k];
+      s.addEventListener("change", () => {
+        const v = [...box.querySelectorAll("select")].map(x => x.value === "" ? "" : +x.value);
+        st.a[q.id] = v; delete st.r[q.id]; save(); paint(q); score();
+      });
+      row.append(el("div","ml", r), s);
+      box.append(row);
+    });
+    body.append(box);
+  } else if (q.t === "table"){
+    const w = el("div","tw"); const t = el("table","tbl");
+    const thead = el("thead"); const tr = el("tr");
+    q.h.forEach(x => tr.append(el("th","", x))); thead.append(tr); t.append(thead);
+    const tb = el("tbody");
+    q.rows.forEach(r => {
+      const row = el("tr");
+      r.forEach(c => {
+        if (c.b != null){
+          const td = el("td","blank");
+          const s = document.createElement("select"); s.id = q.id + "-t" + c.b; s.dataset.b = c.b;
+          s.append(new Option("·", ""));
+          q.ch.forEach(v => s.append(new Option(v, v)));
+          if (ans && ans[c.b]) s.value = ans[c.b];
+          s.addEventListener("change", () => {
+            const v = []; t.querySelectorAll("select").forEach(x => v[+x.dataset.b] = x.value);
+            st.a[q.id] = v; delete st.r[q.id]; save(); paint(q); score();
+          });
+          td.append(s); row.append(td);
+        } else row.append(el("td","", c.v));
+      });
+      tb.append(row);
+    });
+    t.append(tb); w.append(t); body.append(w);
+  } else if (q.t === "text"){
+    const inp = document.createElement("input"); inp.className = "tin"; inp.id = q.id + "-txt";
+    inp.placeholder = q.ph; inp.autocomplete = "off"; inp.spellcheck = false;
+    if (ans) inp.value = ans;
+    inp.addEventListener("input", () => { st.a[q.id] = inp.value; delete st.r[q.id]; save(); paint(q); score(); });
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") check(q); });
+    body.append(inp);
+  }
+  const f = el("div","qf");
+  const b1 = el("button","btn primary","Corregir"); b1.type = "button"; b1.addEventListener("click", () => check(q));
+  const b2 = el("button","btn","Borrar"); b2.type = "button"; b2.addEventListener("click", () => clearQ(q));
+  const v = el("span","verdict");
+  f.append(b1, b2, v);
+  card.append(f);
+  const ex = el("div","expl"); ex.hidden = true; card.append(ex);
+  return card;
+}
+
+function grade(q){
+  const a = st.a[q.id];
+  if (q.t === "one" || q.t === "many"){
+    const s = (a || []).slice().sort((x,y)=>x-y);
+    return s.length === q.a.length && s.every((x,i) => x === q.a[i]);
+  }
+  if (q.t === "match") return !!a && q.a.every((x,i) => a[i] === x);
+  if (q.t === "table") return !!a && q.a.every((x,i) => a[i] === x);
+  if (q.t === "text") return !!a && q.a.some(x => norm(x) === norm(a));
+}
+function answered(q){
+  const a = st.a[q.id];
+  if (a == null) return false;
+  if (q.t === "text") return a.trim() !== "";
+  return Array.isArray(a) && a.some(x => x !== "" && x != null);
+}
+function check(q){ st.r[q.id] = grade(q) ? 1 : 0; save(); paint(q); score(); }
+function clearQ(q){
+  delete st.a[q.id]; delete st.r[q.id]; save();
+  const old = document.getElementById(q.id);
+  const idx = DATA.qs.indexOf(q);
+  const n = build(q, idx); old.replaceWith(n); paint(q); score(); applyView();
+}
+function correctText(q){
+  if (q.t === "one" || q.t === "many") return q.a.map(k => L[k]).join(", ");
+  if (q.t === "text") return q.a[0];
+  return "";
+}
+function paint(q){
+  const card = document.getElementById(q.id); if (!card) return;
+  const r = st.r[q.id]; const done = r === 0 || r === 1;
+  card.classList.toggle("is-ok", r === 1); card.classList.toggle("is-bad", r === 0);
+  const a = st.a[q.id];
+  if (q.t === "one" || q.t === "many"){
+    card.querySelectorAll(".opt").forEach((lab, k) => {
+      const chosen = !!(a && a.includes(k));
+      lab.classList.toggle("sel", chosen && !done);
+      lab.classList.toggle("right", done && q.a.includes(k));
+      lab.classList.toggle("wrong", done && chosen && !q.a.includes(k));
+    });
+  } else if (q.t === "match"){
+    card.querySelectorAll(".mrow").forEach((row, k) => {
+      row.querySelectorAll(".fix").forEach(x => x.remove());
+      const ok = a && a[k] === q.a[k];
+      row.classList.toggle("right", done && ok); row.classList.toggle("wrong", done && !ok);
+      if (done && !ok) row.append(el("div","fix","Correcta: " + (q.lt ? L[q.a[k]] + ". " : "") + q.ch[q.a[k]]));
+    });
+  } else if (q.t === "table"){
+    card.querySelectorAll("td.blank").forEach(td => {
+      const s = td.querySelector("select"); const b = +s.dataset.b;
+      td.querySelectorAll(".corr").forEach(x => x.remove());
+      const ok = a && a[b] === q.a[b];
+      td.classList.toggle("right", done && ok); td.classList.toggle("wrong", done && !ok);
+      if (done && !ok) td.append(el("span","corr", q.a[b]));
+    });
+  } else if (q.t === "text"){
+    const inp = card.querySelector(".tin");
+    inp.classList.toggle("right", r === 1); inp.classList.toggle("wrong", r === 0);
+  }
+  const v = card.querySelector(".verdict");
+  v.className = "verdict" + (r === 1 ? " ok" : r === 0 ? " bad" : "");
+  v.textContent = r === 1 ? "Correcta" : r === 0 ? "Incorrecta" : "";
+  const ex = card.querySelector(".expl");
+  ex.hidden = !done;
+  if (done){
+    const ct = correctText(q);
+    ex.innerHTML = (ct ? `<p class="ans">Respuesta: ${ct}</p>` : "") + (q.e ? `<p>${q.e}</p>` : "");
+    if (!ex.innerHTML) ex.hidden = true;
+  }
+}
+function score(){
+  const n = DATA.qs.length;
+  let ok = 0, bad = 0;
+  DATA.qs.forEach(q => { if (st.r[q.id] === 1) ok++; else if (st.r[q.id] === 0) bad++; });
+  const pend = n - ok - bad;
+  document.getElementById("score").innerHTML =
+    `<span class="okc"><b>${ok}</b> correctas</span><span class="badc"><b>${bad}</b> incorrectas</span><span class="mut"><b>${pend}</b> sin corregir · ${n} en total</span>` +
+    `<span class="meter" aria-hidden="true"><i class="m1" style="width:${ok/n*100}%"></i><i class="m2" style="width:${bad/n*100}%"></i></span>`;
+  if (view.filter !== "all") applyView();
+}
+function applyView(){
+  let shown = 0;
+  DATA.qs.forEach(q => {
+    const c = document.getElementById(q.id);
+    let vis = view.sec === "all" || q.sec === view.sec;
+    if (view.sim) vis = view.sim.includes(q.id);
+    const r = st.r[q.id];
+    if (view.filter === "todo") vis = vis && r == null;
+    if (view.filter === "bad") vis = vis && r === 0;
+    if (view.filter === "ok") vis = vis && r === 1;
+    c.hidden = !vis; if (vis) shown++;
+  });
+  document.getElementById("empty").hidden = shown > 0;
+}
+function chips(){
+  const box = document.getElementById("chips"); box.innerHTML = "";
+  const mk = (label, key, n) => {
+    const b = el("button","chip", `${label}<small>${n}</small>`); b.type = "button";
+    b.setAttribute("aria-pressed", String(view.sec === key && !view.sim));
+    b.addEventListener("click", () => { view.sec = key; view.sim = null; chips(); applyView(); });
+    box.append(b);
+  };
+  mk("Todas", "all", DATA.qs.length);
+  DATA.secs.forEach(s => mk(s, s, DATA.qs.filter(q => q.sec === s).length));
+  if (view.sim){ const b = el("button","chip","Simulacro<small>14</small>"); b.type="button"; b.setAttribute("aria-pressed","true"); box.append(b); }
+}
+function shuffleArr(a){ for (let i = a.length-1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; } return a; }
+
+DATA.qs.forEach((q,i) => { list.append(build(q,i)); });
+DATA.qs.forEach(paint);
+chips(); score(); applyView();
+
+document.getElementById("filter").addEventListener("change", e => { view.filter = e.target.value; applyView(); });
+document.getElementById("shuffle").addEventListener("click", () => {
+  const cards = shuffleArr([...list.children]); cards.forEach(c => list.append(c));
+});
+document.getElementById("sim").addEventListener("click", () => {
+  const pick = shuffleArr(DATA.qs.map(q => q.id)).slice(0, 14);
+  pick.forEach(id => { delete st.a[id]; delete st.r[id]; const q = byId[id]; const old = document.getElementById(id); old.replaceWith(build(q, DATA.qs.indexOf(q))); paint(q); });
+  save();
+  view.sim = pick; view.filter = "all"; document.getElementById("filter").value = "all";
+  pick.forEach(id => list.append(document.getElementById(id)));
+  chips(); score(); applyView(); window.scrollTo({top:0});
+});
+document.getElementById("checkall").addEventListener("click", () => {
+  DATA.qs.forEach(q => { const c = document.getElementById(q.id); if (!c.hidden && answered(q)) { st.r[q.id] = grade(q) ? 1 : 0; paint(q); } });
+  save(); score();
+});
+let armed = false;
+const rb = document.getElementById("reset");
+rb.addEventListener("click", () => {
+  if (!armed){ armed = true; rb.textContent = "¿Borrar todo? Tocá de nuevo"; setTimeout(() => { armed = false; rb.textContent = "Reiniciar"; }, 3000); return; }
+  st = {a:{}, r:{}}; save(); list.innerHTML = ""; view = {sec:"all", filter:"all", sim:null};
+  document.getElementById("filter").value = "all";
+  DATA.qs.forEach((q,i) => list.append(build(q,i))); DATA.qs.forEach(paint);
+  armed = false; rb.textContent = "Reiniciar"; chips(); score(); applyView();
+});
+</script>
+
+</body>
+</html>

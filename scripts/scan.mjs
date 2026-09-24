@@ -12,6 +12,7 @@ import path from 'node:path';
 
 import { gruposDeVideos } from './lib/docx.mjs';
 import { parsearCronograma } from './lib/cronograma.mjs';
+import { leerCuestionario } from './lib/cuestionarios.mjs';
 import {
   RAIZ,
   aPosix,
@@ -34,6 +35,7 @@ const SALIDA = path.join(RAIZ, 'data', 'curso.json');
 const DIR_AULA = 'Aula Cursado Especial/Archivos';
 const ARCHIVO_CRONOGRAMA = 'Aula Cursado Especial/cronograma';
 const ARCHIVO_VIDEOS = 'Aula Cursado Especial/Videos Teoria.docx';
+const DIR_CUESTIONARIOS = 'Recursos Extras/Cuestionarios';
 const DIR_ENTRADA = '_Entrada';
 
 /** Carpetas sueltas que también se publican, cada una como su propia sección. */
@@ -312,12 +314,60 @@ function seccionesExtras() {
   }));
 }
 
+/**
+ * Bancos de preguntas interactivos. No son material para bajar sino páginas
+ * para usar, así que van con su propio tipo: en vez de "peso y extensión"
+ * mostramos de qué unidad son y cuántas preguntas tienen.
+ *
+ * La fuente de verdad de cada banco es su propio HTML: el título sale del
+ * <h1> y la cantidad de preguntas de contar el banco embebido. Si querés
+ * cambiar cómo figura uno en el aula, editá el HTML, no el JSON.
+ */
+function seccionCuestionarios() {
+  if (!existe(DIR_CUESTIONARIOS)) return null;
+
+  const items = [];
+  for (const rutaRel of listar(DIR_CUESTIONARIOS, { soloNivel1: true })) {
+    if (extDe(path.basename(rutaRel)) !== 'html') continue;
+
+    const c = leerCuestionario(abs(rutaRel));
+    if (!c) continue; // HTML suelto que no es un banco de preguntas
+
+    items.push({
+      tipo: 'cuestionario',
+      titulo: c.titulo || tituloDesdeArchivo(path.basename(rutaRel)),
+      archivo: aPosix(rutaRel),
+      ext: 'html',
+      unidad: c.unidad,
+      descripcion: c.descripcion,
+      preguntas: c.preguntas,
+      temas: c.temas.length,
+    });
+  }
+
+  if (!items.length) return null;
+
+  return {
+    id: '93-cuestionarios',
+    orden: 93,
+    grupo: 'extras',
+    tipo: 'cuestionarios',
+    titulo: 'Cuestionarios',
+    // Descriptivo y no numérico, como el resto de los extras: la cuenta de
+    // preguntas ya la pone el build debajo del título.
+    subtitulo: 'Preguntas para practicar el parcial',
+    ruta: DIR_CUESTIONARIOS,
+    items,
+  };
+}
+
 function escanear() {
   return [
     seccionCronograma(),
     seccionVideos(),
     ...seccionesDeUnidades(),
     ...seccionesExtras(),
+    seccionCuestionarios(),
   ].filter(Boolean);
 }
 
@@ -329,10 +379,22 @@ function escanear() {
 const clave = (item) => item.archivo ?? item.url ?? item.titulo;
 
 /**
+ * Secciones cuyo subtítulo es un conteo ("39 clases en video"). Conservar el
+ * viejo sería publicar un número que ya no es: en estas manda el fresco.
+ */
+const SUBTITULO_DERIVADO = new Set(['videos']);
+
+/**
  * Si el título guardado no coincide con el que generaría el scan, es porque
  * lo editaste vos. En ese caso manda el tuyo.
+ *
+ * Los cuestionarios quedan afuera: su título sale del <h1> del propio HTML,
+ * no del nombre del archivo. Ahí la fuente de verdad es el banco, así que
+ * siempre manda el título fresco.
  */
 function conservarTitulo(viejo, nuevo) {
+  if (nuevo.tipo === 'cuestionario') return nuevo.titulo;
+
   const auto = viejo.archivo
     ? tituloDesdeArchivo(path.basename(viejo.archivo))
     : null;
@@ -379,7 +441,9 @@ function fusionar(previo, fresco) {
       ...sNueva,
       // El título de sección también puede estar editado a mano.
       titulo: sVieja.titulo !== sNueva.titulo ? sVieja.titulo : sNueva.titulo,
-      subtitulo: sVieja.subtitulo || sNueva.subtitulo,
+      subtitulo: SUBTITULO_DERIVADO.has(sNueva.tipo)
+        ? sNueva.subtitulo
+        : sVieja.subtitulo || sNueva.subtitulo,
       items,
     };
   });
@@ -451,8 +515,15 @@ function main() {
     const f = s.items.filter((i) => i.archivo).length;
     const u = s.items.filter((i) => i.url).length;
     const falta = s.items.filter((i) => i.faltante).length;
+    // En los bancos, "7 archivos" no dice nada: lo que importa es cuánto hay
+    // para practicar.
+    const preguntas = s.items.reduce((suma, i) => suma + (i.preguntas ?? 0), 0);
     const detalle = [
-      f ? `${f} archivo${f === 1 ? '' : 's'}` : null,
+      preguntas
+        ? `${f} banco${f === 1 ? '' : 's'}, ${preguntas} preguntas`
+        : f
+          ? `${f} archivo${f === 1 ? '' : 's'}`
+          : null,
       u ? `${u} enlace${u === 1 ? '' : 's'}` : null,
       falta ? `${falta} FALTANTE${falta === 1 ? '' : 'S'}` : null,
     ]

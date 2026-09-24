@@ -87,6 +87,14 @@ const ICONOS = {
   carpeta: `<svg viewBox="0 0 24 24" aria-hidden="true">
 <path d="M3 7.2a1.8 1.8 0 0 1 1.8-1.8h4.3l2.2 2.6H19.2A1.8 1.8 0 0 1 21 9.8v8.4a1.8 1.8 0 0 1-1.8 1.8H4.8A1.8 1.8 0 0 1 3 18.2z" ${TRAZO}/>
 </svg>`,
+  /* Planilla con tildes: los bancos de preguntas se resuelven, no se bajan. */
+  cuestionario: `<svg viewBox="0 0 24 24" aria-hidden="true">
+<path d="M8.6 4H6.5A1.5 1.5 0 0 0 5 5.5v15A1.5 1.5 0 0 0 6.5 22h11a1.5 1.5 0 0 0 1.5-1.5v-15A1.5 1.5 0 0 0 17.5 4h-2.1" ${TRAZO}/>
+<rect x="8.6" y="2" width="6.8" height="3.4" rx="1.2" ${TRAZO}/>
+<path d="M7.9 11.4l1.3 1.3 2.4-2.6" ${TRAZO}/>
+<path d="M7.9 16.8l1.3 1.3 2.4-2.6" ${TRAZO}/>
+<path d="M14.2 11.2h2.9M14.2 16.6h2.9" ${TRAZO}/>
+</svg>`,
   otro: hoja(''),
 };
 
@@ -94,6 +102,7 @@ const ICONOS = {
 function iconoDe(item) {
   if (item.tipo === 'enlace') return ICONOS.enlace;
   if (item.tipo === 'video') return ICONOS.video;
+  if (item.tipo === 'cuestionario') return ICONOS.cuestionario;
   if (['zip', 'rar', '7z'].includes(item.ext)) return ICONOS.zip;
   if (['pptx', 'ppt'].includes(item.ext)) return ICONOS.ppt;
   if (item.ext === 'txt') return ICONOS.txt;
@@ -104,6 +113,7 @@ function iconoDe(item) {
 function matizDeItem(item) {
   if (item.tipo === 'enlace') return 186;
   if (item.tipo === 'video') return 344;
+  if (item.tipo === 'cuestionario') return 158;
   if (['zip', 'rar', '7z'].includes(item.ext)) return 38;
   if (item.tipo === 'pdf') return 6;
   if (item.tipo === 'docx') return 214;
@@ -116,6 +126,7 @@ const ICONO_SECCION = {
   cronograma: ICONOS.calendario,
   videos: ICONOS.video,
   archivos: ICONOS.chip,
+  cuestionarios: ICONOS.cuestionario,
 };
 
 // ---------------------------------------------------------------------------
@@ -701,6 +712,20 @@ a { color: inherit; text-decoration: none; }
   margin-top: 3px;
 }
 
+/* Qué entra en cada banco de preguntas: dos líneas y corta, para que la lista
+   siga siendo una lista y no un muro de texto. */
+.fila-desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 12.6px;
+  line-height: 1.5;
+  color: var(--tenue);
+  margin-top: 4px;
+  max-width: 68ch;
+}
+
 .fila-meta {
   flex: 0 0 auto;
   font-family: var(--mono);
@@ -967,6 +992,11 @@ tbody tr:hover { background: var(--elevada); }
 @media (max-width: 420px) {
   .fila-meta { display: none; }
 
+  /* Salvo en los bancos: cuantas preguntas tiene cada uno es lo que te hace
+     elegir cual hacer, asi que ese dato sobrevive en pantalla chica. */
+  .fila-meta.clave { display: flex; }
+  .fila-meta.clave .accion { display: none; }
+
   /* El nowrap evita el "DE" huerfano, pero abajo de 420px "DE COMPUTADORAS"
      ya no entra en la pantalla: ahi preferimos que corte antes que desbordar. */
   .hero h1 .brillo { white-space: normal; }
@@ -1052,30 +1082,56 @@ function fila(item, subida, indice) {
     .filter(Boolean)
     .join(' ');
 
+  const esCuestionario = item.tipo === 'cuestionario';
+
   const pie = esExterno
     ? item.tipo === 'video'
       ? 'YouTube'
       : 'Enlace externo'
-    : '';
+    : esCuestionario
+      ? [item.unidad, item.temas ? `${item.temas} temas` : null]
+          .filter(Boolean)
+          .join('  ·  ')
+      : '';
 
+  // Un banco no se baja: se resuelve. El peso y la extensión no le dicen nada
+  // a nadie, la cantidad de preguntas sí.
   const meta = esExterno
     ? `<span class="accion">↗</span>`
-    : [
-        item.ext ? `<span>${esc(item.ext.toUpperCase())}</span>` : '',
-        item.bytes ? `<span class="tam">${esc(tamanoLegible(item.bytes))}</span>` : '',
-        `<span class="accion">${descarga ? '↓' : '→'}</span>`,
-      ]
-        .filter(Boolean)
-        .join('');
+    : esCuestionario
+      ? `<span>${esc(String(item.preguntas))} preguntas</span><span class="accion">→</span>`
+      : [
+          item.ext ? `<span>${esc(item.ext.toUpperCase())}</span>` : '',
+          item.bytes ? `<span class="tam">${esc(tamanoLegible(item.bytes))}</span>` : '',
+          `<span class="accion">${descarga ? '↓' : '→'}</span>`,
+        ]
+          .filter(Boolean)
+          .join('');
+
+  // Las partes opcionales se filtran antes de unirlas: interpolar un '' deja
+  // una línea de espacios en blanco por cada item que no la tiene, y el HTML
+  // generado termina lleno de huecos.
+  const encabezado = [
+    indice != null ? `<span class="fila-n">${esc(String(indice))}</span>` : null,
+    `<span class="fila-ico">${iconoDe(item)}</span>`,
+  ]
+    .filter(Boolean)
+    .join('\n        ');
+
+  const cuerpo = [
+    `<span class="fila-nom">${esc(item.titulo)}${item.faltante ? '<span class="aviso">falta</span>' : ''}</span>`,
+    pie ? `<span class="fila-pie">${esc(pie)}</span>` : null,
+    item.descripcion ? `<span class="fila-desc">${esc(item.descripcion)}</span>` : null,
+  ]
+    .filter(Boolean)
+    .join('\n          ');
 
   return `      <li${item.faltante ? ' class="falta"' : ''}><a ${attrs}>
-        ${indice != null ? `<span class="fila-n">${esc(String(indice))}</span>` : ''}
-        <span class="fila-ico">${iconoDe(item)}</span>
+        ${encabezado}
         <span class="fila-cuerpo">
-          <span class="fila-nom">${esc(item.titulo)}${item.faltante ? '<span class="aviso">falta</span>' : ''}</span>
-          ${pie ? `<span class="fila-pie">${esc(pie)}</span>` : ''}
+          ${cuerpo}
         </span>
-        <span class="fila-meta">${meta}</span>
+        <span class="fila-meta${esCuestionario ? ' clave' : ''}">${meta}</span>
       </a></li>`;
 }
 
@@ -1083,21 +1139,37 @@ function fila(item, subida, indice) {
 // Render de secciones
 // ---------------------------------------------------------------------------
 
+/**
+ * Qué tiene adentro una sección, en una línea. Lo usan la portada y el
+ * encabezado de la sección, y cada tipo se cuenta con su propia unidad:
+ * semanas el cronograma, preguntas los bancos, archivos el resto.
+ */
+function conteoDe(seccion) {
+  if (seccion.tipo === 'cronograma') return `${seccion.datos.filas.length} semanas`;
+
+  const vivos = seccion.items.filter((i) => !i.faltante);
+
+  if (seccion.tipo === 'cuestionarios') {
+    const bancos = vivos.length;
+    const preguntas = vivos.reduce((suma, i) => suma + (i.preguntas ?? 0), 0);
+    return `${bancos} banco${bancos === 1 ? '' : 's'}  ·  ${preguntas} preguntas`;
+  }
+
+  const archivos = vivos.filter((i) => i.archivo).length;
+  const enlaces = seccion.items.filter((i) => i.url).length;
+  return [
+    archivos ? `${archivos} archivo${archivos === 1 ? '' : 's'}` : null,
+    enlaces ? `${enlaces} enlace${enlaces === 1 ? '' : 's'}` : null,
+  ]
+    .filter(Boolean)
+    .join('  ·  ');
+}
+
 function encabezadoSeccion(seccion) {
   const num =
     seccion.grupo === 'unidades' ? String(seccion.orden).padStart(2, '0') : null;
 
-  const archivos = seccion.items.filter((i) => i.archivo && !i.faltante).length;
-  const enlaces = seccion.items.filter((i) => i.url).length;
-  const conteo =
-    seccion.tipo === 'cronograma'
-      ? `${seccion.datos.filas.length} semanas`
-      : [
-          archivos ? `${archivos} archivo${archivos === 1 ? '' : 's'}` : null,
-          enlaces ? `${enlaces} enlace${enlaces === 1 ? '' : 's'}` : null,
-        ]
-          .filter(Boolean)
-          .join('  ·  ');
+  const conteo = conteoDe(seccion);
 
   // El título de las unidades ya trae el número adelante: lo sacamos porque
   // el numeral gigante de la izquierda ya cumple ese rol.
@@ -1223,18 +1295,7 @@ ${cuerpo}
 
 function tarjetaSeccion(seccion, retardo) {
   const h = matizDe(seccion);
-  const archivos = seccion.items.filter((i) => i.archivo && !i.faltante).length;
-  const enlaces = seccion.items.filter((i) => i.url).length;
-
-  const meta =
-    seccion.tipo === 'cronograma'
-      ? `${seccion.datos.filas.length} semanas`
-      : [
-          archivos ? `${archivos} archivo${archivos === 1 ? '' : 's'}` : null,
-          enlaces ? `${enlaces} enlace${enlaces === 1 ? '' : 's'}` : null,
-        ]
-          .filter(Boolean)
-          .join('  ·  ') || 'vacío';
+  const meta = conteoDe(seccion) || 'vacío';
 
   const num = seccion.grupo === 'unidades' ? String(seccion.orden).padStart(2, '0') : null;
   const titulo = num ? seccion.titulo.replace(/^\s*\d+\s*[.\-–]\s*/, '') : seccion.titulo;
@@ -1270,10 +1331,15 @@ function paginaIndice(curso) {
   const inicio = por('inicio');
   const extras = por('extras');
 
+  // Los bancos son archivos en el disco, pero no material para bajar: cuentan
+  // como preguntas, no como archivos.
   const archivos = curso.secciones.flatMap((s) =>
-    s.items.filter((i) => i.archivo && !i.faltante),
+    s.items.filter((i) => i.archivo && !i.faltante && i.tipo !== 'cuestionario'),
   );
   const videos = curso.secciones.flatMap((s) => s.items.filter((i) => i.tipo === 'video'));
+  const preguntas = curso.secciones
+    .flatMap((s) => s.items.filter((i) => !i.faltante))
+    .reduce((suma, i) => suma + (i.preguntas ?? 0), 0);
   const semanas =
     curso.secciones.find((s) => s.tipo === 'cronograma')?.datos.filas.length ?? 0;
 
@@ -1281,8 +1347,10 @@ function paginaIndice(curso) {
     [String(unidades.length).padStart(2, '0'), 'Unidades'],
     [String(archivos.length), 'Archivos'],
     [String(videos.length), 'Videos'],
+    preguntas ? [String(preguntas), 'Preguntas'] : null,
     [String(semanas), 'Semanas'],
   ]
+    .filter(Boolean)
     .map(
       ([v, e]) =>
         `      <div class="lectura-celda"><div class="val">${esc(v)}</div><div class="etq">${esc(e)}</div></div>`,
@@ -1299,7 +1367,7 @@ function paginaIndice(curso) {
       html: `  <section class="hero">
     <div class="kicker">UTN FRRE · Dictado especial</div>
     <h1>Arquitectura<br><span class="brillo">de Computadoras</span></h1>
-    <p>Todo el material del cursado en un solo lugar: la planificación semana a semana, las clases en video y las ocho unidades con sus guías, presentaciones y prácticos.</p>
+    <p>Todo el material del cursado en un solo lugar: la planificación semana a semana, las clases en video, las ocho unidades con sus guías y prácticos, y los cuestionarios para practicar el parcial.</p>
     <div class="lecturas">
 ${lecturas}
     </div>
@@ -1309,7 +1377,7 @@ ${bloque('Para empezar', 'Planificación y clases', inicio, 'dos', 120)}
 
 ${bloque('Unidades', 'Material del cursado', unidades, 'tres', 240)}
 
-${bloque('Recursos Extras', 'Apuntes, finales y práctica', extras, 'tres', 420)}`,
+${bloque('Recursos Extras', 'Apuntes, finales, práctica y cuestionarios', extras, 'tres', 420)}`,
     },
   });
 }

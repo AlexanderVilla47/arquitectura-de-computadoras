@@ -577,6 +577,20 @@ a { color: inherit; text-decoration: none; }
   margin-top: 3px;
 }
 
+/* Qué entra en cada banco de preguntas: dos líneas y corta, para que la lista
+   siga siendo una lista y no un muro de texto. */
+.fila-desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 12.6px;
+  line-height: 1.5;
+  color: var(--tenue);
+  margin-top: 4px;
+  max-width: 68ch;
+}
+
 .fila-meta {
   flex: 0 0 auto;
   font-family: var(--mono);
@@ -842,6 +856,11 @@ tbody tr:hover { background: var(--elevada); }
 
 @media (max-width: 420px) {
   .fila-meta { display: none; }
+
+  /* Salvo en los bancos: cuantas preguntas tiene cada uno es lo que te hace
+     elegir cual hacer, asi que ese dato sobrevive en pantalla chica. */
+  .fila-meta.clave { display: flex; }
+  .fila-meta.clave .accion { display: none; }
 
   /* El nowrap evita el "DE" huerfano, pero abajo de 420px "DE COMPUTADORAS"
      ya no entra en la pantalla: ahi preferimos que corte antes que desbordar. */

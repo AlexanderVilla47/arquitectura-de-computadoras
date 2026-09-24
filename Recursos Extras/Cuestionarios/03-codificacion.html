@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Codificación y errores</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root{
+  --bg:#F2F4F1; --panel:#FFFFFF; --panel2:#F7F9F7; --ink:#15201B; --muted:#56675F; --line:#D3DCD7;
+  --accent:#0E6A4E; --accent-ink:#FFFFFF; --accent-soft:#E0EEE8;
+  --ok:#1C7548; --ok-soft:#E2F2E9; --bad:#AE3730; --bad-soft:#F8E4E1; --tag:#8A5C0F; --tag-soft:#F6EBD6;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --cond:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E1412; --panel:#151D1A; --panel2:#1A2420; --ink:#E4ECE8; --muted:#93A59C; --line:#2A3630;
+    --accent:#4DC196; --accent-ink:#06150F; --accent-soft:#163129;
+    --ok:#5CCB8F; --ok-soft:#15301F; --bad:#EE7B71; --bad-soft:#3A1D1A; --tag:#E2B55C; --tag-soft:#342914;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E1412; --panel:#151D1A; --panel2:#1A2420; --ink:#E4ECE8; --muted:#93A59C; --line:#2A3630;
+  --accent:#4DC196; --accent-ink:#06150F; --accent-soft:#163129;
+  --ok:#5CCB8F; --ok-soft:#15301F; --bad:#EE7B71; --bad-soft:#3A1D1A; --tag:#E2B55C; --tag-soft:#342914;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:0 64px}
+.wrap{max-width:860px;margin:0 auto}
+header.top{padding-block:28px 12px;display:grid;gap:6px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--cond);font-weight:700;font-size:clamp(26px,5vw,36px);line-height:1.1;margin:0;text-wrap:balance}
+.lead{color:var(--muted);margin:0;max-width:65ch}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);display:grid;gap:10px;margin-bottom:18px}
+.score{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums}
+.score b{font-weight:600}
+.score .okc{color:var(--ok)} .score .badc{color:var(--bad)} .score .mut{color:var(--muted)}
+.meter{flex:1 1 160px;height:6px;border-radius:3px;background:var(--line);overflow:hidden;display:flex;min-width:120px}
+.meter i{display:block;height:100%}
+.meter .m1{background:var(--ok)} .meter .m2{background:var(--bad)}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:thin}
+.chip{flex:0 0 auto;font:500 13px var(--sans);border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:5px 10px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.chip small{font-family:var(--mono);color:var(--muted);margin-left:4px}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip[aria-pressed="true"] small{color:var(--accent-ink);opacity:.8}
+select,button,input{font:inherit}
+.btn{font:500 13px var(--sans);border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:6px 12px;border-radius:7px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.fsel{font:500 13px var(--sans);border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:6px 8px;border-radius:7px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.list{display:grid;gap:14px}
+.q{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 16px 14px;display:grid;gap:12px}
+.q.is-ok{border-color:color-mix(in srgb,var(--ok) 55%,var(--line))}
+.q.is-bad{border-color:color-mix(in srgb,var(--bad) 55%,var(--line))}
+.qh{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline}
+.num{font-family:var(--mono);font-weight:600;font-size:13px;color:var(--accent)}
+.sec{font-size:12px;color:var(--muted)}
+.kind{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--tag);background:var(--tag-soft);padding:1px 6px;border-radius:4px;margin-left:auto}
+.prompt{font-weight:500;margin:0}
+.prompt code,.opt code,.expl code,td code,.ml code{font-family:var(--mono);font-size:.93em;background:var(--panel2);border:1px solid var(--line);padding:0 4px;border-radius:4px;white-space:nowrap}
+.ov{text-decoration:overline;text-decoration-thickness:1.5px}
+.opts{display:grid;gap:6px}
+.opt{display:grid;grid-template-columns:auto auto 1fr;gap:8px;align-items:start;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer;background:var(--panel)}
+.opt:hover{border-color:var(--accent)}
+.opt input{margin:3px 0 0;accent-color:var(--accent)}
+.opt .L{font-family:var(--mono);color:var(--muted);font-size:13px;padding-top:1px}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.mrows{display:grid;gap:8px}
+.mrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:8px;align-items:center;padding:6px 8px;border:1px solid var(--line);border-radius:8px}
+.ml{font-size:14px}
+.mrow select,.tbl select{width:100%;max-width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--panel2);color:var(--ink)}
+.mrow.right{border-color:var(--ok);background:var(--ok-soft)}
+.mrow.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.fix{grid-column:1/-1;font-size:13px;color:var(--ok);font-weight:500}
+.optlist{font-size:13px;color:var(--muted);margin:0;padding-left:0;list-style:none;display:grid;gap:2px}
+.optlist li span{font-family:var(--mono)}
+@media (max-width:560px){.mrow{grid-template-columns:1fr}}
+.tw{overflow-x:auto}
+.tbl{border-collapse:collapse;font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{border:1px solid var(--line);padding:5px 10px;text-align:center}
+.tbl th{background:var(--panel2);font-weight:600}
+.tbl td.blank{padding:3px 4px;min-width:64px}
+.tbl td.right{background:var(--ok-soft)} .tbl td.wrong{background:var(--bad-soft)}
+.tbl td .corr{display:block;font-size:12px;color:var(--ok);font-weight:600}
+.tin{width:100%;max-width:360px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);color:var(--ink);font-family:var(--mono)}
+.tin.right{border-color:var(--ok);background:var(--ok-soft)} .tin.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.qf{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.verdict{font-weight:600;font-size:14px}
+.verdict.ok{color:var(--ok)} .verdict.bad{color:var(--bad)}
+.expl{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px;display:grid;gap:6px}
+.expl p{margin:0}
+.expl .ans{font-weight:600}
+pre.blk,.prompt pre{font-family:var(--mono);font-size:13px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:8px 10px;overflow-x:auto;margin:8px 0 0;font-weight:400;line-height:1.45}
+.bar{}
+@media (max-width:640px){.bar{position:static}}
+.empty{color:var(--muted);text-align:center;padding:30px 0}
+footer.note{color:var(--muted);font-size:13px;margin-top:28px;max-width:65ch}
+@media (prefers-reduced-motion:no-preference){.q{transition:border-color .15s}}
+</style>
+</head>
+<body>
+<div class="wrap" style="padding-top:14px"><a href="../../site/secciones/93-cuestionarios.html" style="color:var(--accent);font:500 13px var(--sans);text-decoration:none">← Volver al aula</a></div>
+
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Arquitectura de Computadoras · C1 · U1</div>
+    <h1>Codificación y errores</h1>
+    <p class="lead">Codificación numérica y alfanumérica, sistema de comunicación, paridad, control 2 entre 3 y código de Hamming con ejercicios. Elegí, tocá <b>Corregir</b> y leé la explicación. Tus respuestas quedan guardadas en este navegador.</p>
+  </header>
+
+  <div class="bar">
+    <div class="score" id="score"></div>
+    <div class="chips" id="chips" role="toolbar" aria-label="Temas"></div>
+    <div class="controls">
+      <select class="fsel" id="filter" aria-label="Filtrar">
+        <option value="all">Todas</option>
+        <option value="todo">Sin corregir</option>
+        <option value="bad">Falladas</option>
+        <option value="ok">Correctas</option>
+      </select>
+      <button class="btn" id="shuffle" type="button">Mezclar orden</button>
+      <button class="btn" id="sim" type="button">Simulacro de 14</button>
+      <button class="btn primary" id="checkall" type="button">Corregir visibles</button>
+      <button class="btn" id="reset" type="button">Reiniciar</button>
+    </div>
+  </div>
+
+  <main class="list" id="list"></main>
+  <p class="empty" id="empty" hidden>No hay preguntas con este filtro.</p>
+  <footer class="note">Preguntas armadas a partir del apunte de Nico (U1 y U2), el apunte de cátedra y los parciales anteriores. Donde el apunte y otra bibliografía difieren, la explicación sigue al apunte.</footer>
+</div>
+
+<script>
+const DATA = {"id": "codif2", "qs": [{"t": "one", "p": "La codificación es:", "o": ["Aplicar inversamente las reglas de un código a un mensaje codificado.", "La eliminación de los bits redundantes del mensaje.", "La aplicación de un cambio de código a una información ya codificada.", "Un proceso que establece una ley de correspondencia entre dos alfabetos A y B, entre un símbolo de A y un símbolo de B."], "a": [3], "e": "A cada información le corresponde una, y generalmente solo una, configuración binaria.", "sec": "Codificación", "id": "q1"}, {"t": "match", "p": "Relacione cada proceso con su definición:", "rows": ["Codificación", "Decodificación", "Transcodificación"], "ch": ["Establecer una ley de correspondencia entre las informaciones y las configuraciones binarias", "Proceso inverso: pasa a un código con menos símbolos, pero cada uno con más información", "Cambio de código sobre información ya codificada, con un alfabeto intermedio (dos leyes de correspondencia)"], "a": [0, 1, 2], "e": "", "lt": true, "sec": "Codificación", "id": "q2"}, {"t": "many", "p": "Son tipos de codificación NO numérica. Seleccione una o más de una:", "o": ["Conversión de números en diferentes bases", "Alfanumérica", "Instrucciones", "Conversión de números en número flotante", "Redundantes (detección y corrección de errores)"], "a": [1, 2, 4], "e": "Numérica: conversión entre bases y a coma flotante. No numérica: alfanumérica, instrucciones y redundantes.", "sec": "Codificación", "id": "q3"}, {"t": "many", "p": "La cantidad de bits necesarios para representar 100 símbolos distintos se obtiene con. Seleccione una o más de una:", "o": ["7 bits como mínimo", "2 elevado a la 100", "La base elevada a la 100", "Log base dos de 100 (redondeado hacia arriba)", "Log natural de 100"], "a": [0, 3], "e": "log₂100 ≈ 6,64 → se necesitan 7 bits (2⁷ = 128 ≥ 100).", "sec": "Codificación", "id": "q4"}, {"t": "text", "p": "¿Cuántos bits como mínimo necesita cualquier código para representar los 10 dígitos del sistema decimal?", "a": ["4"], "e": "log₂10 ≈ 3,32 → 4 bits. Por eso BCD, Aiken y exceso 3 usan 4 bits.", "ph": "Ej: 3", "sec": "Codificación", "id": "q5"}, {"t": "text", "p": "¿Cuántos bits como mínimo se necesitan para representar las 26 letras mayúsculas, las 26 minúsculas y los 10 dígitos (62 símbolos)?", "a": ["6"], "e": "log₂62 ≈ 5,95 → 6 bits (2⁶ = 64).", "ph": "Ej: 5", "sec": "Codificación", "id": "q6"}, {"t": "text", "p": "¿Cuántos bits como mínimo se necesitan para 200 símbolos?", "a": ["8"], "e": "2⁷ = 128 < 200 ≤ 256 = 2⁸ → 8 bits.", "ph": "Ej: 7", "sec": "Codificación", "id": "q7"}, {"t": "one", "p": "Cuando un código utiliza más dígitos binarios que los que necesita, se lo denomina:", "o": ["Código no ponderado", "Código redundante", "Código empaquetado", "Código ponderado"], "a": [1], "e": "La redundancia sirve para verificar que el mensaje llegue sin errores; siempre se busca la mínima redundancia.", "sec": "Codificación", "id": "q8"}, {"t": "one", "p": "Con n bits se pueden representar:", "o": ["n² combinaciones", "log₂ n combinaciones", "2ⁿ combinaciones", "2n combinaciones"], "a": [2], "e": "", "sec": "Codificación", "id": "q9"}, {"t": "many", "p": "Condiciones que se deben imponer a la codificación de caracteres. Seleccione una o más de una:", "o": ["En las transmisiones, debe incluir un sistema de redundancia que permita detectar errores.", "Debe englobar la representación de las cifras (BCD, 2421, etc.) y permitir distinguirlas rápidamente de los otros caracteres.", "Dentro de un mismo sistema cada carácter puede representarse con distinta cantidad de bits.", "Debe permitir añadir nuevos caracteres específicos para una aplicación."], "a": [0, 1, 3], "e": "Dentro de un sistema todos los caracteres se representan con el mismo número de bits.", "sec": "Codificación", "id": "q10"}, {"t": "one", "p": "Se denomina código ponderado a aquel que:", "o": ["Respeta para cada dígito decimal el peso que corresponde a cada dígito binario según su posición.", "Representa el número completo en binario puro.", "Agrega un bit de paridad a cada dígito.", "Cambia un solo bit entre dígitos consecutivos."], "a": [0], "e": "Ejemplos: BCD 8421, Aiken 2421, 84-2-1. El Gray es no ponderado.", "sec": "Códigos numéricos (BCD)", "id": "q11"}, {"t": "match", "p": "Clasifique cada código:", "rows": ["BCD 8421", "AIKEN 2421", "84-2-1", "Gray", "BCD exceso 3"], "ch": ["Ponderado", "No ponderado"], "a": [0, 0, 0, 1, 1], "e": "El exceso 3 se obtiene sumando 3 a cada cifra: los bits no tienen pesos fijos que sumados den el dígito.", "lt": false, "sec": "Códigos numéricos (BCD)", "id": "q12"}, {"t": "one", "p": "En cualquiera de los códigos numéricos (ponderados y no ponderados), un número decimal de varias cifras:", "o": ["Se representa en coma flotante.", "Se codifica cada dígito decimal por separado.", "Se codifica con 8 bits por número.", "Se convierte completo a binario puro."], "a": [1], "e": "Por eso la representación codificada no tiene nada que ver con el sistema de numeración binario.", "sec": "Códigos numéricos (BCD)", "id": "q13"}, {"t": "one", "p": "La particularidad del código Gray es que:", "o": ["De un dígito decimal al siguiente cambia siempre un solo bit.", "Es autocomplementario.", "Los pesos son 2, 4, 2, 1.", "Suma 3 a cada dígito."], "a": [0], "e": "", "sec": "Códigos numéricos (BCD)", "id": "q14"}, {"t": "one", "p": "El sistema de codificación BCD AIKEN. Seleccione una:", "o": ["No permite hallar el complemento restringido de un número decimal BCD invirtiendo sus bits.", "Permite hallar el complemento restringido de un número decimal BCD invirtiendo sus bits.", "Suma 3 a cada dígito antes de codificarlo.", "Ninguna es correcta."], "a": [1], "e": "Por su simetría, invertir los bits da el complemento a 9 del dígito (igual que en exceso 3).", "sec": "Códigos numéricos (BCD)", "id": "q15"}, {"t": "one", "p": "El sistema de codificación BCD exceso 3. Seleccione una:", "o": ["Cambia un solo bit entre dígitos consecutivos.", "Es un código ponderado 8421.", "Es autocomplementario: invertir los bits de un dígito da su complemento a 9.", "Ninguna es correcta."], "a": [2], "e": "Ejemplo: 0 = 0011 y 9 = 1100; 4 = 0111 y 5 = 1000.", "sec": "Códigos numéricos (BCD)", "id": "q16"}, {"t": "many", "p": "Son códigos autocomplementarios. Seleccione una o más de una:", "o": ["BCD exceso 3", "BCD AIKEN (2421)", "BCD natural (8421)", "Gray"], "a": [0, 1], "e": "", "sec": "Códigos numéricos (BCD)", "id": "q17"}, {"t": "one", "p": "En BCD exceso 3, el complemento restringido de 0111 (que representa el 4) es:", "o": ["1001, que representa el 6", "1011, que representa el 8", "1000, que representa el 5", "0100, que representa el 1"], "a": [2], "e": "Invertir 0111 da 1000; 1000 − 3 = 5 = 9 − 4.", "sec": "Códigos numéricos (BCD)", "id": "q18"}, {"t": "text", "p": "Codifique el dígito 6 en BCD exceso 3 (4 bits).", "a": ["1001"], "e": "6 + 3 = 9 → 1001.", "ph": "Ej: 0101", "sec": "Códigos numéricos (BCD)", "id": "q19"}, {"t": "text", "p": "Codifique el dígito 2 en BCD exceso 3 (4 bits).", "a": ["0101"], "e": "2 + 3 = 5 → 0101.", "ph": "Ej: 0101", "sec": "Códigos numéricos (BCD)", "id": "q20"}, {"t": "text", "p": "Codifique el número 38 en BCD exceso 3 (dígito por dígito).", "a": ["01101011"], "e": "3 + 3 = 6 → 0110; 8 + 3 = 11 → 1011. Resultado: 0110 1011.", "ph": "Ej: 0000 0000", "sec": "Códigos numéricos (BCD)", "id": "q21"}, {"t": "text", "p": "Codifique el dígito 7 en BCD AIKEN (2421).", "a": ["1101"], "e": "Tabla Aiken simétrica: 5→1011, 6→1100, 7→1101, 8→1110, 9→1111. 7 = 1101.", "ph": "Ej: 0101", "sec": "Códigos numéricos (BCD)", "id": "q22"}, {"t": "text", "p": "Codifique el dígito 5 en BCD AIKEN (2421).", "a": ["1011"], "e": "Tabla Aiken simétrica: 5→1011, 6→1100, 7→1101, 8→1110, 9→1111. 5 = 1011.", "ph": "Ej: 0101", "sec": "Códigos numéricos (BCD)", "id": "q23"}, {"t": "one", "p": "En AIKEN, ¿cuál es el complemento restringido de 0011 (3)?", "o": ["1100, que representa el 9", "0100, que representa el 4", "1100, que representa el 6", "1011, que representa el 5"], "a": [2], "e": "Invertir 0011 → 1100 = 6 en Aiken, y 9 − 3 = 6.", "sec": "Códigos numéricos (BCD)", "id": "q24"}, {"t": "text", "p": "Codifique 947 en BCD natural (8421).", "a": ["100101000111"], "e": "9 = 1001, 4 = 0100, 7 = 0111.", "ph": "Ej: 0000 0000 0000", "sec": "Códigos numéricos (BCD)", "id": "q25"}, {"t": "text", "p": "Decodifique el BCD natural 0110 0000 1001 a decimal.", "a": ["609"], "e": "0110 = 6, 0000 = 0, 1001 = 9.", "ph": "Ej: 123", "sec": "Códigos numéricos (BCD)", "id": "q26"}, {"t": "one", "p": "¿Cuál de las siguientes combinaciones NO es válida en BCD natural (8421)?", "o": ["1010", "0000", "1001", "0111"], "a": [0], "e": "BCD solo usa 0000 a 1001; de 1010 a 1111 son combinaciones no utilizadas.", "sec": "Códigos numéricos (BCD)", "id": "q27"}, {"t": "text", "p": "Represente el número 25 en BCD empaquetado (8 bits).", "a": ["00100101"], "e": "Cada dígito en 4 bits dentro del mismo byte: 0010 | 0101.", "ph": "Ej: 0000 0000", "sec": "Códigos numéricos (BCD)", "id": "q28"}, {"t": "one", "p": "La principal diferencia entre BCD y ASCII es:", "o": ["BCD representa letras y ASCII solo números.", "No hay diferencias: son el mismo código.", "BCD está diseñado para representar números decimales de forma directa con 4 bits por dígito; ASCII es un estándar general de caracteres alfanuméricos.", "ASCII usa 4 bits por dígito y BCD 8."], "a": [2], "e": "El '9' en BCD es 1001 (4 bits); en ASCII es 0011 1001 y representa el carácter, no el valor numérico.", "sec": "Códigos numéricos (BCD)", "id": "q29"}, {"t": "match", "p": "Relacione cada código con su cantidad de bits por carácter:", "rows": ["ASCII original", "ASCII definido por ANSI (norma)", "ASCII ampliado", "EBCDIC (IBM)"], "ch": ["6 bits (64 caracteres)", "7 bits (128 caracteres)", "8 bits (256 caracteres)", "8 bits por carácter"], "a": [0, 1, 2, 3], "e": "", "lt": true, "sec": "ASCII, EBCDIC y Unicode", "id": "q30"}, {"t": "one", "p": "El código EBCDIC:", "o": ["Fue definido por ANSI con 7 bits.", "Fue diseñado y utilizado exclusivamente por IBM, usa 8 bits y sirvió como base para códigos posteriores.", "Es un código redundante para corregir errores.", "Es el estándar actual de todos los navegadores."], "a": [1], "e": "", "sec": "ASCII, EBCDIC y Unicode", "id": "q31"}, {"t": "one", "p": "En el código ASCII, la computadora puede determinar si una combinación es una función de control:", "o": ["Analizando los dos primeros bits: si ambos son cero es una función de control.", "No es posible distinguirlas.", "Analizando los últimos cuatro bits.", "Analizando el bit de paridad."], "a": [0], "e": "Los primeros 32 caracteres son funciones de control.", "sec": "ASCII, EBCDIC y Unicode", "id": "q32"}, {"t": "one", "p": "En ASCII de 7 bits, los dígitos decimales se representan con:", "o": ["Zona 010 y dígito en exceso 3", "Solo 4 bits de dígito", "Zona 1111 y dígito en BCD", "Zona 011 y dígito en BCD"], "a": [2], "e": "Nico: ASCII destinaba 3 bits a la zona, 4 al dígito y 1 a la paridad. En EBCDIC la zona de los dígitos es 1111.", "sec": "ASCII, EBCDIC y Unicode", "id": "q33"}, {"t": "text", "p": "Escriba el carácter '7' en ASCII de 7 bits.", "a": ["0110111"], "e": "Zona 011 + dígito 0111 = 011 0111.", "ph": "Ej: 0000000", "sec": "ASCII, EBCDIC y Unicode", "id": "q34"}, {"t": "text", "p": "Escriba el carácter '5' en ASCII de 8 bits (ampliado).", "a": ["00110101"], "e": "Zona 0011 + dígito 0101.", "ph": "Ej: 00000000", "sec": "ASCII, EBCDIC y Unicode", "id": "q35"}, {"t": "one", "p": "La letra 'A' en ASCII corresponde a:", "o": ["0110 0001 = 97 = 0x61", "0100 0001 = 65 = 0x41", "0011 0001 = 49 = 0x31", "1100 0001 = 193 = 0xC1"], "a": [1], "e": "0x61 es la 'a' minúscula; mayúsculas y minúsculas tienen representaciones distintas.", "sec": "ASCII, EBCDIC y Unicode", "id": "q36"}, {"t": "many", "p": "Indique cuáles de las siguientes afirmaciones son correctas. Seleccione una o más de una:", "o": ["El bit de paridad permite corregir un error en el mensaje.", "La información decodificada siempre se representa en binario.", "Empaquetar consiste en eliminar la zona y dejar cada dígito representado con 4 bits.", "En todos los códigos redundantes siempre hay más bits de información que de control.", "En el código EBCDIC el formato “zoneado” dificulta las operaciones en la ALU."], "a": [2, 4], "e": "La decodificación convierte a código de usuario (letras, números). En el control 2 entre 3 o en Hamming de pocos bits hay más bits de control que de información. La paridad solo detecta.", "sec": "ASCII, EBCDIC y Unicode", "id": "q37"}, {"t": "one", "p": "Si los datos numéricos zoneados se operaran en la ALU tal como fueron ingresados:", "o": ["La ALU los convertiría automáticamente a coma flotante.", "El resultado sería correcto y más rápido.", "Los bits de zona ocuparían un lugar innecesario y provocarían resultados incorrectos.", "Se detectaría un error de paridad."], "a": [2], "e": "Por eso se empaquetan. Empaquetar y desempaquetar se indican explícitamente en el programa.", "sec": "ASCII, EBCDIC y Unicode", "id": "q38"}, {"t": "one", "p": "En la representación interna de los números en memoria, el punto decimal (coma):", "o": ["Ocupa el nibble de signo.", "No se representa: queda implícito y el programador debe tenerlo en cuenta.", "Se guarda en el bit de paridad.", "Se guarda con un código ASCII especial."], "a": [1], "e": "", "sec": "ASCII, EBCDIC y Unicode", "id": "q39"}, {"t": "one", "p": "Un operando empaquetado con signo y con cantidad par de dígitos decimales:", "o": ["No puede representarse.", "Pierde el signo.", "Debe rellenarse con un cero en la posición más significativa.", "Ocupa un número impar de octetos."], "a": [2], "e": "Los empaquetados ocupan un número entero de octetos y el signo va en la parte sobrante del último octeto.", "sec": "ASCII, EBCDIC y Unicode", "id": "q40"}, {"t": "one", "p": "Hoy en día el estándar de codificación de caracteres más utilizado es:", "o": ["BCD", "Unicode", "EBCDIC", "ASCII de 7 bits"], "a": [1], "e": "", "sec": "ASCII, EBCDIC y Unicode", "id": "q41"}, {"t": "one", "p": "El número desempaquetado (zoneado) ocupa:", "o": ["Medio byte por dígito.", "Dos bytes por dígito.", "Un bit por dígito.", "Un byte por dígito, con los bits de orden superior de zona."], "a": [3], "e": "Se usa para el ingreso o para mostrarlo al usuario.", "sec": "ASCII, EBCDIC y Unicode", "id": "q42"}, {"t": "many", "p": "Un sistema de comunicación ideal está compuesto por. Seleccione una o más de una:", "o": ["Transmisor, remitente o fuente", "Canal o medio de almacenamiento", "Codificador", "Receptor", "Ruido"], "a": [0, 1, 3], "e": "El codificador/decodificador y el ruido aparecen en el sistema de comunicación <b>real<\/b>.", "sec": "Sistema de comunicación", "id": "q43"}, {"t": "match", "p": "Ordene los elementos de un sistema de comunicación real (posición en el esquema):", "rows": ["1°", "2°", "3°", "4°", "5°"], "ch": ["Canal (afectado por ruido)", "Codificador", "Decodificador", "Receptor", "Transmisor"], "a": [4, 1, 0, 2, 3], "e": "", "lt": false, "sec": "Sistema de comunicación", "id": "q44"}, {"t": "one", "p": "Un canal de comunicación es. Seleccione una:", "o": ["El dispositivo que elimina los bits redundantes y reconstruye el mensaje.", "Un medio de comunicación entre un emisor y un receptor que permite transmitir información de extremo a extremo, minimizando la tasa de errores del medio a través de sistemas de codificación redundante.", "Un sistema que codifica y decodifica la información a transmitir.", "Un sistema que codifica la información a transmitir."], "a": [1], "e": "Codificar/decodificar lo hacen el codificador y el decodificador; reconstruir el mensaje lo hace el receptor.", "sec": "Sistema de comunicación", "id": "q45"}, {"t": "match", "p": "Relacione cada problema del canal con su descripción:", "rows": ["Ruido", "Atenuación", "Distorsión"], "ch": ["Cualquier interferencia no deseada que distorsiona la señal original", "La señal pierde fuerza con la distancia", "Cambios en la forma de la señal debido a las características del canal"], "a": [0, 1, 2], "e": "", "lt": true, "sec": "Sistema de comunicación", "id": "q46"}, {"t": "match", "p": "Relacione cada tipo de ruido con su origen:", "rows": ["Térmico", "Interferencia electromagnética", "De cuantización"], "ch": ["Resistencia eléctrica de los materiales", "Otros dispositivos o radiación externa", "Pérdida de detalles al convertir señales analógicas a digitales"], "a": [0, 1, 2], "e": "", "lt": true, "sec": "Sistema de comunicación", "id": "q47"}, {"t": "match", "p": "Relacione cada código redundante con su característica:", "rows": ["Bit de paridad", "Código de Hamming", "CRC", "Reed-Solomon"], "ch": ["Detecta errores simples pero no los corrige", "Detecta y corrige errores de 1 bit", "Detecta errores en bloques grandes; muy usado en redes y discos", "Corrige errores en ráfagas; usado en CD, DVD e inalámbricas"], "a": [0, 1, 2, 3], "e": "", "lt": true, "sec": "Sistema de comunicación", "id": "q48"}, {"t": "one", "p": "La tasa de error es:", "o": ["La velocidad del canal en bits por segundo.", "El coeficiente que resulta de medir la cantidad de ruido que puede afectar la información; según su valor se elige el código.", "La distancia mínima de un código.", "La cantidad de bits de paridad de un código."], "a": [1], "e": "", "sec": "Sistema de comunicación", "id": "q49"}, {"t": "one", "p": "El receptor en un sistema de comunicación:", "o": ["Mide la tasa de error del canal.", "Agrega los bits redundantes.", "Comprime el mensaje.", "Toma los datos decodificados, elimina los bits redundantes y reconstruye el mensaje original para el usuario."], "a": [3], "e": "", "sec": "Sistema de comunicación", "id": "q50"}, {"t": "one", "p": "Los códigos redundantes:", "o": ["Agregan información extra que forma parte de los datos a transmitir.", "Solo sirven para almacenamiento, no para transmisión.", "Agregan información extra que no forma parte de los datos y se usa como mecanismo de verificación y protección contra fallos.", "Eliminan información repetida para comprimir."], "a": [2], "e": "", "sec": "Sistema de comunicación", "id": "q51"}, {"t": "many", "p": "En el código de paridad par. Seleccione una o más de una:", "o": ["La cantidad de ceros del mensaje debe ser par.", "La cantidad de unos que llegan al receptor (incluido el bit de paridad) debe ser par.", "La cantidad de ceros o unos que llegan al receptor debe ser par.", "Ninguna es correcta."], "a": [1], "e": "", "sec": "Paridad", "id": "q52"}, {"t": "many", "p": "En el código de paridad impar. Seleccione una o más de una:", "o": ["La cantidad de ceros del mensaje debe ser impar.", "La cantidad de unos que llegan al receptor debe ser impar.", "La cantidad de ceros o unos que llegan al receptor debe ser impar.", "Ninguna es correcta."], "a": [1], "e": "", "sec": "Paridad", "id": "q53"}, {"t": "many", "p": "Los códigos de control de paridad permiten. Seleccione una o más de una:", "o": ["Corregir un error", "Detectar dos errores en el mismo carácter", "Detectar un error de 1 bit", "Ninguna de las anteriores"], "a": [2], "e": "Con dos bits erróneos la cantidad de unos vuelve a cumplir la regla y el error pasa inadvertido.", "sec": "Paridad", "id": "q54"}, {"t": "many", "p": "El control de paridad impar permite. Seleccione una o más de una:", "o": ["Detectar y corregir más de un error", "Corregir un solo error", "Detectar solo un error", "Detectar y corregir solo un error"], "a": [2], "e": "", "sec": "Paridad", "id": "q55"}, {"t": "text", "p": "¿Qué bit de paridad par se agrega al carácter 1011001?", "a": ["0"], "e": "Tiene 4 unos. Para que el total sea par el bit vale 0.", "ph": "0 o 1", "sec": "Paridad", "id": "q56"}, {"t": "text", "p": "¿Qué bit de paridad impar se agrega al carácter 1101100?", "a": ["1"], "e": "Tiene 4 unos. Para que el total sea impar el bit vale 1.", "ph": "0 o 1", "sec": "Paridad", "id": "q57"}, {"t": "text", "p": "¿Qué bit de paridad impar se agrega al carácter 0000000?", "a": ["1"], "e": "Tiene 0 unos. Para que el total sea impar el bit vale 1.", "ph": "0 o 1", "sec": "Paridad", "id": "q58"}, {"t": "text", "p": "¿Qué bit de paridad par se agrega al carácter 1110111?", "a": ["0"], "e": "Tiene 6 unos. Para que el total sea par el bit vale 0.", "ph": "0 o 1", "sec": "Paridad", "id": "q59"}, {"t": "one", "p": "Llega al receptor la cadena 11010110 (bit de paridad impar incluido). El receptor concluye:", "o": ["No se detectó error", "Se detectó y corrigió un error", "Se detectaron exactamente dos errores", "Se detectó un error y se puede pedir retransmisión"], "a": [0], "e": "Tiene 5 unos; con paridad impar cumple la regla.", "sec": "Paridad", "id": "q60"}, {"t": "one", "p": "Llega al receptor la cadena 10110110 (bit de paridad par incluido). El receptor concluye:", "o": ["Se detectó un error y se puede pedir retransmisión", "Se detectaron exactamente dos errores", "Se detectó y corrigió un error", "No se detectó error"], "a": [0], "e": "Tiene 5 unos; con paridad par no cumple la regla.", "sec": "Paridad", "id": "q61"}, {"t": "one", "p": "Llega al receptor la cadena 01100011 (bit de paridad impar incluido). El receptor concluye:", "o": ["Se detectó un error y se puede pedir retransmisión", "No se detectó error", "Se detectaron exactamente dos errores", "Se detectó y corrigió un error"], "a": [0], "e": "Tiene 4 unos; con paridad impar no cumple la regla.", "sec": "Paridad", "id": "q62"}, {"t": "one", "p": "Llega al receptor la cadena 10000001 (bit de paridad par incluido). El receptor concluye:", "o": ["Se detectaron exactamente dos errores", "Se detectó y corrigió un error", "No se detectó error", "Se detectó un error y se puede pedir retransmisión"], "a": [2], "e": "Tiene 2 unos; con paridad par cumple la regla.", "sec": "Paridad", "id": "q63"}, {"t": "one", "p": "La paridad vertical simple (a nivel carácter) solo se utiliza si:", "o": ["Se transmiten bloques de más de 1 KB.", "La tasa de error es mayor a dos.", "La tasa de error en la cadena de bits a transmitir no es superior a uno.", "Se usa junto con Hamming."], "a": [2], "e": "Si hay dos bits erróneos no permite detectarlos. Suele acompañar la transmisión de octetos en periféricos y memoria.", "sec": "Paridad", "id": "q64"}, {"t": "one", "p": "En la paridad horizontal a nivel de bloque:", "o": ["Se envía cada bloque tres veces.", "Los bits de control se ubican en potencias de 2.", "Se agrega un bit al final de cada carácter.", "Por cada bloque de caracteres se crea un byte de paridad: el bit 0 es la paridad de los bits 0 del bloque, el bit 1 de los bits 1, etc."], "a": [3], "e": "", "sec": "Paridad", "id": "q65"}, {"t": "one", "p": "La paridad entrelazada (horizontal y vertical) permite:", "o": ["Solo detectar errores.", "Reemplazar al código de Hamming en memorias.", "Corregir cualquier cantidad de errores en una misma fila.", "Detectar y corregir un error, que se ubica en el cruce de la fila y la columna conflictivas."], "a": [3], "e": "El bit en el cruce se invierte.", "sec": "Paridad", "id": "q66"}, {"t": "one", "p": "En paridad entrelazada, si ocurren dos errores en la misma fila:", "o": ["Se puede detectar que hay un problema, pero no determinar con exactitud cuáles bits son.", "Se corrigen ambos.", "No se detecta nada.", "Se corrige solo el primero."], "a": [0], "e": "La fila vuelve a tener paridad correcta; fallan dos columnas pero no se sabe qué fila corregir.", "sec": "Paridad", "id": "q67"}, {"t": "many", "p": "Son desventajas de la paridad horizontal y vertical. Seleccione una o más de una:", "o": ["Aumenta el tamaño total de los datos, reduciendo la eficiencia en ancho de banda.", "Con volúmenes grandes consume muchos ciclos de CPU.", "No puede corregir errores de un único bit.", "Si hay múltiples errores en una misma fila o columna no puede corregirlos con precisión."], "a": [0, 1, 3], "e": "", "sec": "Paridad", "id": "q68"}, {"t": "one", "p": "En la paridad entrelazada se emplea adicionalmente un bit de paridad cruzada que:", "o": ["Indica la cantidad de caracteres del bloque.", "Es siempre 1.", "Reemplaza a la paridad horizontal.", "Se calcula a partir de los bits de paridad de filas y columnas."], "a": [3], "e": "", "sec": "Paridad", "id": "q69"}, {"t": "one", "p": "Se recibe el siguiente bloque ASCII de 7 bits con paridad entrelazada <b>par<\/b> (PH = paridad horizontal de cada carácter, PV = paridad vertical de cada columna). ¿Dónde está el error?<pre>      b6 b5 b4 b3 b2 b1 b0 | PH\nCar 1  1  0  0  1  0  0  0 |  0\nCar 2  1  0  0  1  1  1  1 |  1\nCar 3  1  0  0  0  1  0  0 |  1\nCar 4  1  0  0  0  0  0  1 |  0\nPV     0  0  0  1  0  1  0 |  0<\/pre>", "o": ["Carácter 3, bit b4", "No hay error", "Carácter 2, bit b3", "Carácter 3, bit b3"], "a": [3], "e": "La fila del carácter 3 tiene cantidad impar de unos y la columna b3 (contando PV) también. El cruce es el bit erróneo: se invierte.", "sec": "Paridad", "id": "q70"}, {"t": "text", "p": "Con paridad entrelazada <b>par<\/b>, se recibe el bloque siguiente. Escriba el carácter 1 corregido (los 7 bits de datos, sin PH).<pre>      b6 b5 b4 b3 b2 b1 b0 | PH\nCar 1  1  0  0  0  0  1  1 |  0\nCar 2  1  0  0  1  0  0  1 |  1\nCar 3  1  0  1  0  1  0  0 |  1\nCar 4  0  1  0  0  0  0  1 |  0\nPV     1  1  1  1  1  1  0 |  0<\/pre>", "a": ["1000010"], "e": "Fila conflictiva: carácter 1. Columna conflictiva: b0. Se invierte ese bit → 1000010 (la letra 'B').", "ph": "Ej: 1000001", "sec": "Paridad", "id": "q71"}, {"t": "match", "p": "En el control dos entre tres, relacione cada situación del receptor con su resultado:", "rows": ["Las tres transmisiones son idénticas", "Dos son iguales y una distinta", "Las tres son distintas"], "ch": ["La información se toma como correcta", "Actúa como autocorrector: toma una de las dos iguales", "Actúa como autodetector: detecta el error pero no puede determinar la información correcta"], "a": [0, 1, 2], "e": "", "lt": true, "sec": "Control 2 entre 3", "id": "q72"}, {"t": "one", "p": "Con control 2 entre 3 se reciben: 1011 / 1011 / 1001. El receptor:", "o": ["Toma 1011 como correcta", "Pide retransmisión porque no puede decidir", "Invierte el tercer bit de las tres", "Toma 1001 como correcta"], "a": [0], "e": "", "sec": "Control 2 entre 3", "id": "q73"}, {"t": "one", "p": "Con control 2 entre 3 se reciben: 0110 / 0111 / 1110. El receptor:", "o": ["Toma 0111", "Toma 1110", "Toma 0110", "Detecta el error pero no puede determinar la información correcta (pide retransmisión)"], "a": [3], "e": "", "sec": "Control 2 entre 3", "id": "q74"}, {"t": "one", "p": "Para transmitir una información de n bits con control 2 entre 3 se envían:", "o": ["2n bits", "n + log₂n bits", "n + 1 bits", "3n bits (los n bits tres veces en forma sucesiva)"], "a": [3], "e": "De esos 3n, 2n son redundantes: hay más bits de control que de información.", "sec": "Control 2 entre 3", "id": "q75"}, {"t": "text", "p": "¿Cuál es la distancia entre 10110 y 11100?", "a": ["2"], "e": "Se comparan bit a bit (o XOR sin acarreo): 01010 → dos unos.", "ph": "Ej: 3", "sec": "Hamming: conceptos", "id": "q76"}, {"t": "text", "p": "¿Cuál es la distancia entre 1001 1100 y 0101 0110?", "a": ["4"], "e": "XOR = 1100 1010 → cuatro unos.", "ph": "Ej: 3", "sec": "Hamming: conceptos", "id": "q77"}, {"t": "one", "p": "La distancia mínima de un código es:", "o": ["El número máximo de bits en que difieren dos combinaciones válidas.", "La longitud de la palabra.", "La cantidad de bits de paridad.", "La menor de las distancias entre dos combinaciones binarias cualesquiera pertenecientes al código."], "a": [3], "e": "", "sec": "Hamming: conceptos", "id": "q78"}, {"t": "match", "p": "Relacione la distancia mínima del código con su capacidad:", "rows": ["Dm = 1", "Dm = 2", "Dm = 3"], "ch": ["Un error convierte una combinación válida en otra válida: no se detecta", "Detecta un error pero no puede corregirlo", "Detecta y corrige un error"], "a": [0, 1, 2], "e": "", "lt": true, "sec": "Hamming: conceptos", "id": "q79"}, {"t": "one", "p": "La distancia mínima de un código para permitir la corrección de datos está dada por:", "o": ["Dm = 2ˣ", "Dm = x + 1", "Dm = x²", "Dm = 2x + 1"], "a": [3], "e": "Con x = 1 error a corregir, Dm = 3. Por eso Hamming parte de distancia mínima 3.", "sec": "Hamming: conceptos", "id": "q80"}, {"t": "text", "p": "Según Dm = 2x + 1, ¿qué distancia mínima se necesita para corregir 2 errores?", "a": ["5"], "e": "2·2 + 1 = 5.", "ph": "Ej: 3", "sec": "Hamming: conceptos", "id": "q81"}, {"t": "one", "p": "El código de Hamming se genera a partir de una distancia mínima de:", "o": ["4", "3", "1", "2"], "a": [1], "e": "Con 1 no se sabe si hay error; con 2 puede haber datos erróneos que pasan como correctos o no se pueden corregir.", "sec": "Hamming: conceptos", "id": "q82"}, {"t": "one", "p": "Si i es la cantidad de bits de información y p la de bits de paridad, Hamming exige que:", "o": ["p = i / 2", "2ᵖ ≥ i + p + 1", "2ⁱ ≥ p + 1", "2ᵖ = i"], "a": [1], "e": "Las p combinaciones de control deben identificar i + p posiciones de error más el caso “sin error”.", "sec": "Hamming: conceptos", "id": "q83"}, {"t": "text", "p": "¿Cuántos bits de paridad necesita Hamming para 4 bits de información?", "a": ["3"], "e": "Menor p con 2ᵖ ≥ 4 + p + 1 → p = 3 (2^3 = 8 ≥ 8). Palabra total: 7 bits.", "ph": "Ej: 3", "sec": "Hamming: conceptos", "id": "q84"}, {"t": "text", "p": "¿Cuántos bits de paridad necesita Hamming para 8 bits de información?", "a": ["4"], "e": "Menor p con 2ᵖ ≥ 8 + p + 1 → p = 4 (2^4 = 16 ≥ 13). Palabra total: 12 bits.", "ph": "Ej: 3", "sec": "Hamming: conceptos", "id": "q85"}, {"t": "text", "p": "¿Cuántos bits de paridad necesita Hamming para 11 bits de información?", "a": ["4"], "e": "Menor p con 2ᵖ ≥ 11 + p + 1 → p = 4 (2^4 = 16 ≥ 16). Palabra total: 15 bits.", "ph": "Ej: 3", "sec": "Hamming: conceptos", "id": "q86"}, {"t": "text", "p": "¿Cuántos bits de paridad necesita Hamming para 16 bits de información?", "a": ["5"], "e": "Menor p con 2ᵖ ≥ 16 + p + 1 → p = 5 (2^5 = 32 ≥ 22). Palabra total: 21 bits.", "ph": "Ej: 3", "sec": "Hamming: conceptos", "id": "q87"}, {"t": "text", "p": "¿Cuántos bits de paridad necesita Hamming para 26 bits de información?", "a": ["5"], "e": "Menor p con 2ᵖ ≥ 26 + p + 1 → p = 5 (2^5 = 32 ≥ 32). Palabra total: 31 bits.", "ph": "Ej: 3", "sec": "Hamming: conceptos", "id": "q88"}, {"t": "one", "p": "En Hamming, los bits de control se colocan en las posiciones:", "o": ["Múltiplos de 3", "Impares", "Finales del mensaje", "Que son potencia de 2 (1, 2, 4, 8…)"], "a": [3], "e": "", "sec": "Hamming: conceptos", "id": "q89"}, {"t": "match", "p": "Para una palabra Hamming de 7 posiciones, relacione cada bit de paridad con las posiciones que verifica:", "rows": ["p0 (posición 1)", "p1 (posición 2)", "p2 (posición 4)"], "ch": ["1, 3, 5, 7", "2, 3, 6, 7", "4, 5, 6, 7", "1, 2, 4"], "a": [0, 1, 2], "e": "Cada p verifica las posiciones cuyo número binario tiene un 1 en el bit correspondiente.", "lt": false, "sec": "Hamming: conceptos", "id": "q90"}, {"t": "one", "p": "En el receptor se recalculan los bits de control y se obtiene c2 c1 c0 = 101. Esto indica:", "o": ["Que no hay error", "Un error en la posición 5", "Un error en la posición 3", "Dos errores"], "a": [1], "e": "La posición se lee con los bits de control en orden decreciente: 101₂ = 5. Si todos son 0 no se detectó error.", "sec": "Hamming: conceptos", "id": "q91"}, {"t": "one", "p": "El código de Hamming permite:", "o": ["Detectar y corregir errores de un solo bit", "Corregir errores en ráfagas", "Solo detectar errores", "Corregir dos errores simultáneos"], "a": [0], "e": "", "sec": "Hamming: conceptos", "id": "q92"}, {"t": "one", "p": "Si la información en el transmisor es 10110011 y no hay error, el receptor recibirá la siguiente información con los bits de control del código de Hamming para detectar y corregir un error. Seleccione una:", "o": ["101100011110", "101110010100", "101110010101", "101110011101"], "a": [2], "e": "Palabra de 12 bits (8 info + 4 control). Convención del parcial: posiciones numeradas de derecha (1) a izquierda, bits de control en las potencias de 2, bits de información en el resto (el más significativo en la posición más alta), paridad par. p0 (pos 1) cubre 3,5,7,9,11 → 1; p1 (pos 2) cubre 3,6,7,10,11 → 0; p2 (pos 4) cubre 5,6,7,12 → 0; p3 (pos 8) cubre 9,10,11,12 → 1. Resultado: 101110010101.", "sec": "Hamming: ejercicios", "id": "q93"}, {"t": "one", "p": "Si la información en el transmisor es 01101100 y no hay error, el receptor recibirá la siguiente información con los bits de control del código de Hamming para detectar y corregir un error. Seleccione una:", "o": ["011011101011", "011001100000", "011001101000", "011001100001"], "a": [1], "e": "Palabra de 12 bits (8 info + 4 control). Convención del parcial: posiciones numeradas de derecha (1) a izquierda, bits de control en las potencias de 2, bits de información en el resto (el más significativo en la posición más alta), paridad par. p0 (pos 1) cubre 3,5,7,9,11 → 0; p1 (pos 2) cubre 3,6,7,10,11 → 0; p2 (pos 4) cubre 5,6,7,12 → 0; p3 (pos 8) cubre 9,10,11,12 → 0. Resultado: 011001100000.", "sec": "Hamming: ejercicios", "id": "q94"}, {"t": "one", "p": "Si la información en el transmisor es 11001010 y no hay error, el receptor recibirá la siguiente información con los bits de control del código de Hamming para detectar y corregir un error. Seleccione una:", "o": ["110001011001", "110001011000", "110011010010", "110001010001"], "a": [0], "e": "Palabra de 12 bits (8 info + 4 control). Convención del parcial: posiciones numeradas de derecha (1) a izquierda, bits de control en las potencias de 2, bits de información en el resto (el más significativo en la posición más alta), paridad par. p0 (pos 1) cubre 3,5,7,9,11 → 1; p1 (pos 2) cubre 3,6,7,10,11 → 0; p2 (pos 4) cubre 5,6,7,12 → 1; p3 (pos 8) cubre 9,10,11,12 → 0. Resultado: 110001011001.", "sec": "Hamming: ejercicios", "id": "q95"}, {"t": "one", "p": "Si la información en el transmisor es 00111101 y no hay error, el receptor recibirá la siguiente información con los bits de control del código de Hamming para detectar y corregir un error. Seleccione una:", "o": ["001101100101", "001101100100", "001101101101", "001111101110"], "a": [0], "e": "Palabra de 12 bits (8 info + 4 control). Convención del parcial: posiciones numeradas de derecha (1) a izquierda, bits de control en las potencias de 2, bits de información en el resto (el más significativo en la posición más alta), paridad par. p0 (pos 1) cubre 3,5,7,9,11 → 1; p1 (pos 2) cubre 3,6,7,10,11 → 0; p2 (pos 4) cubre 5,6,7,12 → 0; p3 (pos 8) cubre 9,10,11,12 → 0. Resultado: 001101100101.", "sec": "Hamming: ejercicios", "id": "q96"}, {"t": "text", "p": "Codifique la información 1011 con Hamming (paridad par). Escriba la palabra de 7 bits.", "a": ["1010101"], "e": "Convención del parcial: posiciones numeradas de derecha (1) a izquierda, bits de control en las potencias de 2, bits de información en el resto (el más significativo en la posición más alta), paridad par. p0 (pos 1) cubre 3,5,7 → 1; p1 (pos 2) cubre 3,6,7 → 0; p2 (pos 4) cubre 5,6,7 → 0. Resultado: 1010101.", "ph": "Ej: 0000000", "sec": "Hamming: ejercicios", "id": "q97"}, {"t": "text", "p": "Codifique la información 0110 con Hamming (paridad par). Escriba la palabra de 7 bits.", "a": ["0110011"], "e": "Convención del parcial: posiciones numeradas de derecha (1) a izquierda, bits de control en las potencias de 2, bits de información en el resto (el más significativo en la posición más alta), paridad par. p0 (pos 1) cubre 3,5,7 → 1; p1 (pos 2) cubre 3,6,7 → 1; p2 (pos 4) cubre 5,6,7 → 0. Resultado: 0110011.", "ph": "Ej: 0000000", "sec": "Hamming: ejercicios", "id": "q98"}, {"t": "text", "p": "Codifique la información 1100 con Hamming (paridad par). Escriba la palabra de 7 bits.", "a": ["1100001"], "e": "Convención del parcial: posiciones numeradas de derecha (1) a izquierda, bits de control en las potencias de 2, bits de información en el resto (el más significativo en la posición más alta), paridad par. p0 (pos 1) cubre 3,5,7 → 1; p1 (pos 2) cubre 3,6,7 → 0; p2 (pos 4) cubre 5,6,7 → 0. Resultado: 1100001.", "ph": "Ej: 0000000", "sec": "Hamming: ejercicios", "id": "q99"}, {"t": "text", "p": "Codifique la información 0011 con Hamming (paridad par). Escriba la palabra de 7 bits.", "a": ["0011110"], "e": "Convención del parcial: posiciones numeradas de derecha (1) a izquierda, bits de control en las potencias de 2, bits de información en el resto (el más significativo en la posición más alta), paridad par. p0 (pos 1) cubre 3,5,7 → 0; p1 (pos 2) cubre 3,6,7 → 1; p2 (pos 4) cubre 5,6,7 → 1. Resultado: 0011110.", "ph": "Ej: 0000000", "sec": "Hamming: ejercicios", "id": "q100"}, {"t": "text", "p": "Se recibe la palabra Hamming de 7 bits 1110101 (paridad par, posiciones numeradas de derecha a izquierda). ¿En qué posición está el error?", "a": ["6"], "e": "c0 = 0, c1 = 1, c2 = 1 → c2c1c0 = 110 = 6.", "ph": "Ej: 4", "sec": "Hamming: ejercicios", "id": "q101"}, {"t": "text", "p": "Se recibe 1110101 codificado en Hamming de 7 bits (paridad par). Escriba la palabra corregida.", "a": ["1010101"], "e": "El síndrome c2c1c0 = 110 indica la posición 6; se invierte ese bit → 1010101.", "ph": "Ej: 0000000", "sec": "Hamming: ejercicios", "id": "q102"}, {"t": "text", "p": "Se recibe la palabra Hamming de 7 bits 0110111 (paridad par, posiciones numeradas de derecha a izquierda). ¿En qué posición está el error?", "a": ["3"], "e": "c0 = 1, c1 = 1, c2 = 0 → c2c1c0 = 011 = 3.", "ph": "Ej: 4", "sec": "Hamming: ejercicios", "id": "q103"}, {"t": "text", "p": "Se recibe 0110111 codificado en Hamming de 7 bits (paridad par). Escriba la palabra corregida.", "a": ["0110011"], "e": "El síndrome c2c1c0 = 011 indica la posición 3; se invierte ese bit → 0110011.", "ph": "Ej: 0000000", "sec": "Hamming: ejercicios", "id": "q104"}, {"t": "text", "p": "Se recibe la palabra Hamming de 7 bits 1011100 (paridad par, posiciones numeradas de derecha a izquierda). ¿En qué posición está el error?", "a": ["5"], "e": "c0 = 1, c1 = 0, c2 = 1 → c2c1c0 = 101 = 5.", "ph": "Ej: 4", "sec": "Hamming: ejercicios", "id": "q105"}, {"t": "text", "p": "Se recibe 1011100 codificado en Hamming de 7 bits (paridad par). Escriba la palabra corregida.", "a": ["1001100"], "e": "El síndrome c2c1c0 = 101 indica la posición 5; se invierte ese bit → 1001100.", "ph": "Ej: 0000000", "sec": "Hamming: ejercicios", "id": "q106"}, {"t": "one", "p": "Se recibe la palabra Hamming de 12 bits 100110010101 (8 info + 4 control, paridad par). ¿Qué indica el control?", "o": ["No hay error", "Error en la posición 5", "Error en la posición 10", "Error en la posición 12"], "a": [2], "e": "c3c2c1c0 = 1010 = 10. Se invierte ese bit y se obtiene 101110010101.", "sec": "Hamming: ejercicios", "id": "q107"}], "secs": ["Codificación", "Códigos numéricos (BCD)", "ASCII, EBCDIC y Unicode", "Sistema de comunicación", "Paridad", "Control 2 entre 3", "Hamming: conceptos", "Hamming: ejercicios"]};
+const KEY = "arqui-bank-" + DATA.id;
+const KIND = {one:"Seleccione una", many:"Seleccione una o más", match:"Relacione", table:"Complete la tabla", text:"Complete"};
+const L = "abcdefghijklmnopqrstuvwxyz";
+let st = {a:{}, r:{}};
+try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.a) st = s; } catch(e) {}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(st)); } catch(e) {} }
+let view = {sec:"all", filter:"all", sim:null};
+const byId = {}; DATA.qs.forEach(q => byId[q.id] = q);
+const list = document.getElementById("list");
+
+function el(tag, cls, html){ const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+function norm(s){ return String(s).toLowerCase().replace(/\s+/g,"").replace(/,/g,".").replace(/%$/,""); }
+function stripTags(h){ const d = document.createElement("div"); d.innerHTML = h; return d.textContent; }
+
+function build(q, i){
+  const card = el("article","q"); card.id = q.id;
+  const h = el("div","qh");
+  h.append(el("span","num", String(i+1).padStart(2,"0")), el("span","sec", q.sec), el("span","kind", KIND[q.t]));
+  card.append(h, el("p","prompt", q.p));
+  const body = el("div","body"); card.append(body);
+  const ans = st.a[q.id];
+  if (q.t === "one" || q.t === "many"){
+    const box = el("div","opts");
+    q.o.forEach((o, k) => {
+      const lab = el("label","opt");
+      const inp = document.createElement("input");
+      inp.type = q.t === "one" ? "radio" : "checkbox"; inp.name = q.id; inp.value = k; inp.id = q.id + "-o" + k;
+      if (ans && ans.includes(k)) { inp.checked = true; lab.classList.add("sel"); }
+      inp.addEventListener("change", () => {
+        const v = [...box.querySelectorAll("input")].filter(x => x.checked).map(x => +x.value);
+        st.a[q.id] = v; delete st.r[q.id]; save(); paint(q); score();
+      });
+      lab.append(inp, el("span","L", L[k] + "."), el("span","", o));
+      box.append(lab);
+    });
+    body.append(box);
+  } else if (q.t === "match"){
+    if (q.lt){
+      const ol = el("ul","optlist");
+      q.ch.forEach((c,k) => ol.append(el("li","", `<span>${L[k]}.</span> ${c}`)));
+      body.append(el("p","sec","Opciones:"), ol);
+    }
+    const box = el("div","mrows");
+    q.rows.forEach((r, k) => {
+      const row = el("div","mrow");
+      const s = document.createElement("select"); s.id = q.id + "-m" + k;
+      s.append(new Option("Elegir…", ""));
+      q.ch.forEach((c, j) => s.append(new Option(q.lt ? L[j] + ". " + stripTags(c) : stripTags(c), j)));
+      if (ans && ans[k] != null && ans[k] !== "") s.value = ans[k];
+      s.addEventListener("change", () => {
+        const v = [...box.querySelectorAll("select")].map(x => x.value === "" ? "" : +x.value);
+        st.a[q.id] = v; delete st.r[q.id]; save(); paint(q); score();
+      });
+      row.append(el("div","ml", r), s);
+      box.append(row);
+    });
+    body.append(box);
+  } else if (q.t === "table"){
+    const w = el("div","tw"); const t = el("table","tbl");
+    const thead = el("thead"); const tr = el("tr");
+    q.h.forEach(x => tr.append(el("th","", x))); thead.append(tr); t.append(thead);
+    const tb = el("tbody");
+    q.rows.forEach(r => {
+      const row = el("tr");
+      r.forEach(c => {
+        if (c.b != null){
+          const td = el("td","blank");
+          const s = document.createElement("select"); s.id = q.id + "-t" + c.b; s.dataset.b = c.b;
+          s.append(new Option("·", ""));
+          q.ch.forEach(v => s.append(new Option(v, v)));
+          if (ans && ans[c.b]) s.value = ans[c.b];
+          s.addEventListener("change", () => {
+            const v = []; t.querySelectorAll("select").forEach(x => v[+x.dataset.b] = x.value);
+            st.a[q.id] = v; delete st.r[q.id]; save(); paint(q); score();
+          });
+          td.append(s); row.append(td);
+        } else row.append(el("td","", c.v));
+      });
+      tb.append(row);
+    });
+    t.append(tb); w.append(t); body.append(w);
+  } else if (q.t === "text"){
+    const inp = document.createElement("input"); inp.className = "tin"; inp.id = q.id + "-txt";
+    inp.placeholder = q.ph; inp.autocomplete = "off"; inp.spellcheck = false;
+    if (ans) inp.value = ans;
+    inp.addEventListener("input", () => { st.a[q.id] = inp.value; delete st.r[q.id]; save(); paint(q); score(); });
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") check(q); });
+    body.append(inp);
+  }
+  const f = el("div","qf");
+  const b1 = el("button","btn primary","Corregir"); b1.type = "button"; b1.addEventListener("click", () => check(q));
+  const b2 = el("button","btn","Borrar"); b2.type = "button"; b2.addEventListener("click", () => clearQ(q));
+  const v = el("span","verdict");
+  f.append(b1, b2, v);
+  card.append(f);
+  const ex = el("div","expl"); ex.hidden = true; card.append(ex);
+  return card;
+}
+
+function grade(q){
+  const a = st.a[q.id];
+  if (q.t === "one" || q.t === "many"){
+    const s = (a || []).slice().sort((x,y)=>x-y);
+    return s.length === q.a.length && s.every((x,i) => x === q.a[i]);
+  }
+  if (q.t === "match") return !!a && q.a.every((x,i) => a[i] === x);
+  if (q.t === "table") return !!a && q.a.every((x,i) => a[i] === x);
+  if (q.t === "text") return !!a && q.a.some(x => norm(x) === norm(a));
+}
+function answered(q){
+  const a = st.a[q.id];
+  if (a == null) return false;
+  if (q.t === "text") return a.trim() !== "";
+  return Array.isArray(a) && a.some(x => x !== "" && x != null);
+}
+function check(q){ st.r[q.id] = grade(q) ? 1 : 0; save(); paint(q); score(); }
+function clearQ(q){
+  delete st.a[q.id]; delete st.r[q.id]; save();
+  const old = document.getElementById(q.id);
+  const idx = DATA.qs.indexOf(q);
+  const n = build(q, idx); old.replaceWith(n); paint(q); score(); applyView();
+}
+function correctText(q){
+  if (q.t === "one" || q.t === "many") return q.a.map(k => L[k]).join(", ");
+  if (q.t === "text") return q.a[0];
+  return "";
+}
+function paint(q){
+  const card = document.getElementById(q.id); if (!card) return;
+  const r = st.r[q.id]; const done = r === 0 || r === 1;
+  card.classList.toggle("is-ok", r === 1); card.classList.toggle("is-bad", r === 0);
+  const a = st.a[q.id];
+  if (q.t === "one" || q.t === "many"){
+    card.querySelectorAll(".opt").forEach((lab, k) => {
+      const chosen = !!(a && a.includes(k));
+      lab.classList.toggle("sel", chosen && !done);
+      lab.classList.toggle("right", done && q.a.includes(k));
+      lab.classList.toggle("wrong", done && chosen && !q.a.includes(k));
+    });
+  } else if (q.t === "match"){
+    card.querySelectorAll(".mrow").forEach((row, k) => {
+      row.querySelectorAll(".fix").forEach(x => x.remove());
+      const ok = a && a[k] === q.a[k];
+      row.classList.toggle("right", done && ok); row.classList.toggle("wrong", done && !ok);
+      if (done && !ok) row.append(el("div","fix","Correcta: " + (q.lt ? L[q.a[k]] + ". " : "") + q.ch[q.a[k]]));
+    });
+  } else if (q.t === "table"){
+    card.querySelectorAll("td.blank").forEach(td => {
+      const s = td.querySelector("select"); const b = +s.dataset.b;
+      td.querySelectorAll(".corr").forEach(x => x.remove());
+      const ok = a && a[b] === q.a[b];
+      td.classList.toggle("right", done && ok); td.classList.toggle("wrong", done && !ok);
+      if (done && !ok) td.append(el("span","corr", q.a[b]));
+    });
+  } else if (q.t === "text"){
+    const inp = card.querySelector(".tin");
+    inp.classList.toggle("right", r === 1); inp.classList.toggle("wrong", r === 0);
+  }
+  const v = card.querySelector(".verdict");
+  v.className = "verdict" + (r === 1 ? " ok" : r === 0 ? " bad" : "");
+  v.textContent = r === 1 ? "Correcta" : r === 0 ? "Incorrecta" : "";
+  const ex = card.querySelector(".expl");
+  ex.hidden = !done;
+  if (done){
+    const ct = correctText(q);
+    ex.innerHTML = (ct ? `<p class="ans">Respuesta: ${ct}</p>` : "") + (q.e ? `<p>${q.e}</p>` : "");
+    if (!ex.innerHTML) ex.hidden = true;
+  }
+}
+function score(){
+  const n = DATA.qs.length;
+  let ok = 0, bad = 0;
+  DATA.qs.forEach(q => { if (st.r[q.id] === 1) ok++; else if (st.r[q.id] === 0) bad++; });
+  const pend = n - ok - bad;
+  document.getElementById("score").innerHTML =
+    `<span class="okc"><b>${ok}</b> correctas</span><span class="badc"><b>${bad}</b> incorrectas</span><span class="mut"><b>${pend}</b> sin corregir · ${n} en total</span>` +
+    `<span class="meter" aria-hidden="true"><i class="m1" style="width:${ok/n*100}%"></i><i class="m2" style="width:${bad/n*100}%"></i></span>`;
+  if (view.filter !== "all") applyView();
+}
+function applyView(){
+  let shown = 0;
+  DATA.qs.forEach(q => {
+    const c = document.getElementById(q.id);
+    let vis = view.sec === "all" || q.sec === view.sec;
+    if (view.sim) vis = view.sim.includes(q.id);
+    const r = st.r[q.id];
+    if (view.filter === "todo") vis = vis && r == null;
+    if (view.filter === "bad") vis = vis && r === 0;
+    if (view.filter === "ok") vis = vis && r === 1;
+    c.hidden = !vis; if (vis) shown++;
+  });
+  document.getElementById("empty").hidden = shown > 0;
+}
+function chips(){
+  const box = document.getElementById("chips"); box.innerHTML = "";
+  const mk = (label, key, n) => {
+    const b = el("button","chip", `${label}<small>${n}</small>`); b.type = "button";
+    b.setAttribute("aria-pressed", String(view.sec === key && !view.sim));
+    b.addEventListener("click", () => { view.sec = key; view.sim = null; chips(); applyView(); });
+    box.append(b);
+  };
+  mk("Todas", "all", DATA.qs.length);
+  DATA.secs.forEach(s => mk(s, s, DATA.qs.filter(q => q.sec === s).length));
+  if (view.sim){ const b = el("button","chip","Simulacro<small>14</small>"); b.type="button"; b.setAttribute("aria-pressed","true"); box.append(b); }
+}
+function shuffleArr(a){ for (let i = a.length-1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; } return a; }
+
+DATA.qs.forEach((q,i) => { list.append(build(q,i)); });
+DATA.qs.forEach(paint);
+chips(); score(); applyView();
+
+document.getElementById("filter").addEventListener("change", e => { view.filter = e.target.value; applyView(); });
+document.getElementById("shuffle").addEventListener("click", () => {
+  const cards = shuffleArr([...list.children]); cards.forEach(c => list.append(c));
+});
+document.getElementById("sim").addEventListener("click", () => {
+  const pick = shuffleArr(DATA.qs.map(q => q.id)).slice(0, 14);
+  pick.forEach(id => { delete st.a[id]; delete st.r[id]; const q = byId[id]; const old = document.getElementById(id); old.replaceWith(build(q, DATA.qs.indexOf(q))); paint(q); });
+  save();
+  view.sim = pick; view.filter = "all"; document.getElementById("filter").value = "all";
+  pick.forEach(id => list.append(document.getElementById(id)));
+  chips(); score(); applyView(); window.scrollTo({top:0});
+});
+document.getElementById("checkall").addEventListener("click", () => {
+  DATA.qs.forEach(q => { const c = document.getElementById(q.id); if (!c.hidden && answered(q)) { st.r[q.id] = grade(q) ? 1 : 0; paint(q); } });
+  save(); score();
+});
+let armed = false;
+const rb = document.getElementById("reset");
+rb.addEventListener("click", () => {
+  if (!armed){ armed = true; rb.textContent = "¿Borrar todo? Tocá de nuevo"; setTimeout(() => { armed = false; rb.textContent = "Reiniciar"; }, 3000); return; }
+  st = {a:{}, r:{}}; save(); list.innerHTML = ""; view = {sec:"all", filter:"all", sim:null};
+  document.getElementById("filter").value = "all";
+  DATA.qs.forEach((q,i) => list.append(build(q,i))); DATA.qs.forEach(paint);
+  armed = false; rb.textContent = "Reiniciar"; chips(); score(); applyView();
+});
+</script>
+
+</body>
+</html>

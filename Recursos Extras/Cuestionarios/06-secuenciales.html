@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Circuitos secuenciales</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root{
+  --bg:#F2F4F1; --panel:#FFFFFF; --panel2:#F7F9F7; --ink:#15201B; --muted:#56675F; --line:#D3DCD7;
+  --accent:#0E6A4E; --accent-ink:#FFFFFF; --accent-soft:#E0EEE8;
+  --ok:#1C7548; --ok-soft:#E2F2E9; --bad:#AE3730; --bad-soft:#F8E4E1; --tag:#8A5C0F; --tag-soft:#F6EBD6;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --cond:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E1412; --panel:#151D1A; --panel2:#1A2420; --ink:#E4ECE8; --muted:#93A59C; --line:#2A3630;
+    --accent:#4DC196; --accent-ink:#06150F; --accent-soft:#163129;
+    --ok:#5CCB8F; --ok-soft:#15301F; --bad:#EE7B71; --bad-soft:#3A1D1A; --tag:#E2B55C; --tag-soft:#342914;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E1412; --panel:#151D1A; --panel2:#1A2420; --ink:#E4ECE8; --muted:#93A59C; --line:#2A3630;
+  --accent:#4DC196; --accent-ink:#06150F; --accent-soft:#163129;
+  --ok:#5CCB8F; --ok-soft:#15301F; --bad:#EE7B71; --bad-soft:#3A1D1A; --tag:#E2B55C; --tag-soft:#342914;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:0 64px}
+.wrap{max-width:860px;margin:0 auto}
+header.top{padding-block:28px 12px;display:grid;gap:6px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--cond);font-weight:700;font-size:clamp(26px,5vw,36px);line-height:1.1;margin:0;text-wrap:balance}
+.lead{color:var(--muted);margin:0;max-width:65ch}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);display:grid;gap:10px;margin-bottom:18px}
+.score{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums}
+.score b{font-weight:600}
+.score .okc{color:var(--ok)} .score .badc{color:var(--bad)} .score .mut{color:var(--muted)}
+.meter{flex:1 1 160px;height:6px;border-radius:3px;background:var(--line);overflow:hidden;display:flex;min-width:120px}
+.meter i{display:block;height:100%}
+.meter .m1{background:var(--ok)} .meter .m2{background:var(--bad)}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:thin}
+.chip{flex:0 0 auto;font:500 13px var(--sans);border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:5px 10px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.chip small{font-family:var(--mono);color:var(--muted);margin-left:4px}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip[aria-pressed="true"] small{color:var(--accent-ink);opacity:.8}
+select,button,input{font:inherit}
+.btn{font:500 13px var(--sans);border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:6px 12px;border-radius:7px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.fsel{font:500 13px var(--sans);border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:6px 8px;border-radius:7px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.list{display:grid;gap:14px}
+.q{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 16px 14px;display:grid;gap:12px}
+.q.is-ok{border-color:color-mix(in srgb,var(--ok) 55%,var(--line))}
+.q.is-bad{border-color:color-mix(in srgb,var(--bad) 55%,var(--line))}
+.qh{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline}
+.num{font-family:var(--mono);font-weight:600;font-size:13px;color:var(--accent)}
+.sec{font-size:12px;color:var(--muted)}
+.kind{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--tag);background:var(--tag-soft);padding:1px 6px;border-radius:4px;margin-left:auto}
+.prompt{font-weight:500;margin:0}
+.prompt code,.opt code,.expl code,td code,.ml code{font-family:var(--mono);font-size:.93em;background:var(--panel2);border:1px solid var(--line);padding:0 4px;border-radius:4px;white-space:nowrap}
+.ov{text-decoration:overline;text-decoration-thickness:1.5px}
+.opts{display:grid;gap:6px}
+.opt{display:grid;grid-template-columns:auto auto 1fr;gap:8px;align-items:start;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer;background:var(--panel)}
+.opt:hover{border-color:var(--accent)}
+.opt input{margin:3px 0 0;accent-color:var(--accent)}
+.opt .L{font-family:var(--mono);color:var(--muted);font-size:13px;padding-top:1px}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.mrows{display:grid;gap:8px}
+.mrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:8px;align-items:center;padding:6px 8px;border:1px solid var(--line);border-radius:8px}
+.ml{font-size:14px}
+.mrow select,.tbl select{width:100%;max-width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--panel2);color:var(--ink)}
+.mrow.right{border-color:var(--ok);background:var(--ok-soft)}
+.mrow.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.fix{grid-column:1/-1;font-size:13px;color:var(--ok);font-weight:500}
+.optlist{font-size:13px;color:var(--muted);margin:0;padding-left:0;list-style:none;display:grid;gap:2px}
+.optlist li span{font-family:var(--mono)}
+@media (max-width:560px){.mrow{grid-template-columns:1fr}}
+.tw{overflow-x:auto}
+.tbl{border-collapse:collapse;font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{border:1px solid var(--line);padding:5px 10px;text-align:center}
+.tbl th{background:var(--panel2);font-weight:600}
+.tbl td.blank{padding:3px 4px;min-width:64px}
+.tbl td.right{background:var(--ok-soft)} .tbl td.wrong{background:var(--bad-soft)}
+.tbl td .corr{display:block;font-size:12px;color:var(--ok);font-weight:600}
+.tin{width:100%;max-width:360px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);color:var(--ink);font-family:var(--mono)}
+.tin.right{border-color:var(--ok);background:var(--ok-soft)} .tin.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.qf{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.verdict{font-weight:600;font-size:14px}
+.verdict.ok{color:var(--ok)} .verdict.bad{color:var(--bad)}
+.expl{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px;display:grid;gap:6px}
+.expl p{margin:0}
+.expl .ans{font-weight:600}
+pre.blk,.prompt pre{font-family:var(--mono);font-size:13px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:8px 10px;overflow-x:auto;margin:8px 0 0;font-weight:400;line-height:1.45}
+.bar{}
+@media (max-width:640px){.bar{position:static}}
+.empty{color:var(--muted);text-align:center;padding:30px 0}
+footer.note{color:var(--muted);font-size:13px;margin-top:28px;max-width:65ch}
+@media (prefers-reduced-motion:no-preference){.q{transition:border-color .15s}}
+</style>
+</head>
+<body>
+<div class="wrap" style="padding-top:14px"><a href="../../site/secciones/93-cuestionarios.html" style="color:var(--accent);font:500 13px var(--sans);text-decoration:none">← Volver al aula</a></div>
+
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Arquitectura de Computadoras · C1 · U2</div>
+    <h1>Circuitos secuenciales</h1>
+    <p class="lead">Autómatas, tablas y diagramas de estado, biestables, monoestable y astable, detectores de secuencia, registros, contadores, buses y Abacus. Elegí, tocá <b>Corregir</b> y leé la explicación. Tus respuestas quedan guardadas en este navegador.</p>
+  </header>
+
+  <div class="bar">
+    <div class="score" id="score"></div>
+    <div class="chips" id="chips" role="toolbar" aria-label="Temas"></div>
+    <div class="controls">
+      <select class="fsel" id="filter" aria-label="Filtrar">
+        <option value="all">Todas</option>
+        <option value="todo">Sin corregir</option>
+        <option value="bad">Falladas</option>
+        <option value="ok">Correctas</option>
+      </select>
+      <button class="btn" id="shuffle" type="button">Mezclar orden</button>
+      <button class="btn" id="sim" type="button">Simulacro de 14</button>
+      <button class="btn primary" id="checkall" type="button">Corregir visibles</button>
+      <button class="btn" id="reset" type="button">Reiniciar</button>
+    </div>
+  </div>
+
+  <main class="list" id="list"></main>
+  <p class="empty" id="empty" hidden>No hay preguntas con este filtro.</p>
+  <footer class="note">Preguntas armadas a partir del apunte de Nico (U1 y U2), el apunte de cátedra y los parciales anteriores. Donde el apunte y otra bibliografía difieren, la explicación sigue al apunte.</footer>
+</div>
+
+<script>
+const DATA = {"id": "sec", "qs": [{"t": "one", "p": "Un sistema digital secuencial es aquel donde:", "o": ["Sus salidas dependen de las entradas presentes y del estado anterior (historia) del circuito.", "Sus salidas solo dependen de las entradas presentes.", "Sus salidas solo dependen de las entradas futuras.", "Sus salidas son siempre constantes."], "a": [0], "e": "", "sec": "Autómatas y estados", "id": "q1"}, {"t": "one", "p": "Elija la definición de circuitos secuenciales que más se ajuste a lo estudiado. Seleccione una:", "o": ["Son aquellos cuyas salidas en instante t+1 dependen de sus entradas en instante t y su último estado en t.", "Son aquellos que pueden o no tener salidas en t+1.", "Son aquellos en los que sus salidas en instante t dependen de sus entradas en instante t−1 y su último estado en t.", "Son aquellos en los que sus salidas en instante t+1 dependen de sus entradas en instante t y sus estados."], "a": [0], "e": "Coincide con la función de salida S(t+1) = F[Q(t), E(t)].", "sec": "Autómatas y estados", "id": "q2"}, {"t": "one", "p": "Elija la función de transición correcta para circuitos secuenciales. Seleccione una:", "o": ["Q(t) = G(Q(t), E(t))", "Q(t+1) = G(Q(t+1), E(t+1))", "Q(t+1) = G(Q(t), E(t))", "Q(t+1) = G(Q(t−1), E(t))"], "a": [2], "e": "El próximo estado depende del estado actual y de las entradas actuales.", "sec": "Autómatas y estados", "id": "q3"}, {"t": "one", "p": "Elija la función de salida correcta para circuitos secuenciales según el apunte. Seleccione una:", "o": ["S(t+1) = F(Q(t), E(t))", "S(t−1) = F(Q(t−1), E(t−1))", "S(t+1) = F(Q(t+1), E(t+1))", "S(t) = F(Q(t+1), E(t))"], "a": [0], "e": "", "sec": "Autómatas y estados", "id": "q4"}, {"t": "match", "p": "Relacione cada función del autómata con su expresión:", "rows": ["Función de transición de estado", "Función de salida"], "ch": ["Q(t+1) = G[Q(t), E(t)]", "S(t+1) = F[Q(t), E(t)]", "Q(t) = G[Q(t+1), E(t+1)]", "S(t) = F[E(t−1)]"], "a": [0, 1], "e": "", "lt": true, "sec": "Autómatas y estados", "id": "q5"}, {"t": "one", "p": "Un circuito secuencial se representa como:", "o": ["Un decodificador de n a 2ⁿ líneas.", "Una tabla de verdad sin estados.", "Un conjunto de compuertas sin realimentación.", "Un circuito combinacional al que se le conectan elementos de memoria formando un camino de realimentación."], "a": [3], "e": "La información almacenada en los elementos de memoria define el estado del circuito.", "sec": "Autómatas y estados", "id": "q6"}, {"t": "match", "p": "Relacione cada tipo de circuito secuencial con su característica:", "rows": ["Sincrónico", "Asincrónico"], "ch": ["Su comportamiento se define en instantes discretos de tiempo marcados por pulsos de reloj", "Depende del orden en que cambian las entradas y puede verse afectado en cualquier instante"], "a": [0, 1], "e": "", "lt": true, "sec": "Autómatas y estados", "id": "q7"}, {"t": "one", "p": "La sincronización de los circuitos secuenciales sincrónicos se logra mediante:", "o": ["Compuertas XOR en cascada.", "El sistema operativo.", "Mecanismos retardadores de tiempo.", "Un generador maestro de tiempo que genera un tren periódico de pulsos de reloj."], "a": [3], "e": "Los elementos de memoria de los asincrónicos suelen ser mecanismos retardadores de tiempo.", "sec": "Autómatas y estados", "id": "q8"}, {"t": "match", "p": "Relacione cada herramienta con su definición:", "rows": ["Diagrama de transición", "Tabla de estados", "Tabla de excitación", "Ecuación de estado"], "ch": ["Grafo orientado: cada círculo es un estado y cada flecha una transición etiquetada con entrada/salida", "Matriz con estado presente, entradas, estado siguiente y salida", "Indica qué entradas se necesitan para pasar de Q(t) a Q(t+1)", "Expresión algebraica que especifica las condiciones para la transición de estado"], "a": [0, 1, 2, 3], "e": "", "lt": true, "sec": "Autómatas y estados", "id": "q9"}, {"t": "one", "p": "En un diagrama de estado, una flecha etiquetada “1/0” indica:", "o": ["Que el estado pasa de 1 a 0.", "Que hay dos transiciones.", "Que la salida es 1 y la entrada 0.", "Que la entrada que causa la transición es 1 y la salida durante el estado presente es 0."], "a": [3], "e": "Primero la entrada y después de la barra la salida. Una flecha que vuelve al mismo círculo indica que no cambia el estado.", "sec": "Autómatas y estados", "id": "q10"}, {"t": "text", "p": "Un circuito secuencial tiene 3 flip-flops y 1 entrada. ¿Cuántas filas (estados) tiene su tabla de estado?", "a": ["8"], "e": "2ᵐ con m = 3 flip-flops → 8 estados.", "ph": "Ej: 4", "sec": "Autómatas y estados", "id": "q11"}, {"t": "one", "p": "La diferencia entre tabla de funcionamiento y tabla de excitación es que:", "o": ["En la de excitación Q(t) y Q(t+1) son datos de entrada y las señales de control del biestable son lo que se busca.", "Son la misma tabla con otro nombre.", "En la de excitación las entradas del biestable son datos y se busca Q(t+1).", "La de funcionamiento solo se usa en combinacionales."], "a": [0], "e": "", "sec": "Autómatas y estados", "id": "q12"}, {"t": "one", "p": "El símbolo X en las tablas de excitación representa:", "o": ["El complemento de Q", "Un error de diseño", "La condición de “no importa” (puede ser 0 o 1)", "Un estado indeterminado"], "a": [2], "e": "", "sec": "Autómatas y estados", "id": "q13"}, {"t": "one", "p": "Una tabla de estado de un circuito con m flip-flops y n variables de entrada tiene:", "o": ["m filas y n columnas.", "2ᵐ filas (una por estado) y 2ⁿ columnas en las secciones de estado siguiente y de salida.", "2ⁿ filas y 2ᵐ columnas.", "2^(m+n) filas y una sola columna."], "a": [1], "e": "", "sec": "Autómatas y estados", "id": "q14"}, {"t": "one", "p": "El circuito para el funcionamiento de un ascensor es un ejemplo de máquina de estados finitos porque:", "o": ["Toma una entrada y un estado actual para generar una salida y un nuevo estado; la historia de las entradas influye.", "Su salida depende solo de la entrada presente.", "No necesita memoria.", "Es un decodificador."], "a": [0], "e": "", "sec": "Autómatas y estados", "id": "q15"}, {"t": "match", "p": "Relacione cada biestable con su ecuación de estado:", "rows": ["D", "T", "JK", "RS (con S·R = 0)"], "ch": ["Q(t+1) = D", "Q(t+1) = T ⊕ Q(t)", "Q(t+1) = J·Q̄(t) + K̄·Q(t)", "Q(t+1) = S + R̄·Q(t)"], "a": [0, 1, 2, 3], "e": "", "lt": false, "sec": "Autómatas y estados", "id": "q16"}, {"t": "text", "p": "Dada la tabla de estados (celda: estado siguiente / salida), partiendo del estado A se aplican las entradas 1, 0, 1. ¿En qué estado queda el circuito?<pre>Estado | E=0      | E=1\n  A    | A / 0    | B / 0\n  B    | C / 0    | B / 0\n  C    | A / 0    | B / 1<\/pre>", "a": ["B"], "e": "A –1→ B, B –0→ C, C –1→ B.", "ph": "Ej: A", "sec": "Autómatas y estados", "id": "q17"}, {"t": "text", "p": "Con la misma tabla, partiendo de A se aplica la secuencia 1 0 1 0 1 1 0 1. Escriba la secuencia de salidas (8 bits).<pre>Estado | E=0      | E=1\n  A    | A / 0    | B / 0\n  B    | C / 0    | B / 0\n  C    | A / 0    | B / 1<\/pre>", "a": ["00101001"], "e": "La salida vale 1 cada vez que se recibe la secuencia 1 0 1: es un detector continuo de 101. Salidas: 00101001.", "ph": "Ej: 00000000", "sec": "Autómatas y estados", "id": "q18"}, {"t": "one", "p": "Un detector de secuencia es:", "o": ["Un circuito secuencial (máquina de estados) cuya salida vale 1 cuando reconoce una secuencia de bits determinada en su entrada.", "Un código de detección de errores.", "Un decodificador de n a 2ⁿ líneas.", "Un contador descendente."], "a": [0], "e": "", "sec": "Detectores de secuencia", "id": "q19"}, {"t": "match", "p": "Relacione cada tipo de detector con su comportamiento:", "rows": ["Detector fijo", "Detector continuo"], "ch": ["Debe recibir todos los bits de la secuencia; al detectarla vuelve al inicio y no reutiliza bits", "Se solapa: reutiliza el último o los últimos bits recibidos para empezar una nueva detección"], "a": [0, 1], "e": "", "lt": true, "sec": "Detectores de secuencia", "id": "q20"}, {"t": "one", "p": "Sobre el diseño de detectores de secuencia:", "o": ["El detector paralelo necesita más estados que el serie.", "El detector serie es un circuito combinacional.", "Ambos se diseñan siempre desde una tabla de verdad.", "El detector serie recibe un bit por pulso de reloj y se diseña desde el diagrama de transición; el paralelo recibe todos los bits juntos y puede resolverse desde una tabla."], "a": [3], "e": "", "sec": "Detectores de secuencia", "id": "q21"}, {"t": "text", "p": "Un detector <b>continuo<\/b> de la secuencia 101 recibe 10101. ¿Cuántas veces pone la salida en 1?", "a": ["2"], "e": "Se reutilizan bits: la secuencia aparece solapada 2 veces.", "ph": "Ej: 2", "sec": "Detectores de secuencia", "id": "q22"}, {"t": "text", "p": "Un detector <b>fijo<\/b> de la secuencia 101 recibe 10101. ¿Cuántas veces pone la salida en 1?", "a": ["1"], "e": "Después de cada detección vuelve al estado inicial sin reutilizar bits: 1 detecciones.", "ph": "Ej: 2", "sec": "Detectores de secuencia", "id": "q23"}, {"t": "text", "p": "Un detector <b>continuo<\/b> de la secuencia 1011 recibe 1011011011. ¿Cuántas veces pone la salida en 1?", "a": ["3"], "e": "Se reutilizan bits: la secuencia aparece solapada 3 veces.", "ph": "Ej: 2", "sec": "Detectores de secuencia", "id": "q24"}, {"t": "text", "p": "Un detector <b>fijo<\/b> de la secuencia 1011 recibe 1011011011. ¿Cuántas veces pone la salida en 1?", "a": ["2"], "e": "Después de cada detección vuelve al estado inicial sin reutilizar bits: 2 detecciones.", "ph": "Ej: 2", "sec": "Detectores de secuencia", "id": "q25"}, {"t": "text", "p": "Un detector <b>continuo<\/b> de la secuencia 110 recibe 1101101100. ¿Cuántas veces pone la salida en 1?", "a": ["3"], "e": "Se reutilizan bits: la secuencia aparece solapada 3 veces.", "ph": "Ej: 2", "sec": "Detectores de secuencia", "id": "q26"}, {"t": "text", "p": "Un detector <b>fijo<\/b> de la secuencia 110 recibe 1101101100. ¿Cuántas veces pone la salida en 1?", "a": ["3"], "e": "Después de cada detección vuelve al estado inicial sin reutilizar bits: 3 detecciones.", "ph": "Ej: 2", "sec": "Detectores de secuencia", "id": "q27"}, {"t": "text", "p": "Un detector <b>continuo<\/b> de la secuencia 0110 recibe 0110110110. ¿Cuántas veces pone la salida en 1?", "a": ["3"], "e": "Se reutilizan bits: la secuencia aparece solapada 3 veces.", "ph": "Ej: 2", "sec": "Detectores de secuencia", "id": "q28"}, {"t": "text", "p": "Un detector <b>fijo<\/b> de la secuencia 0110 recibe 0110110110. ¿Cuántas veces pone la salida en 1?", "a": ["2"], "e": "Después de cada detección vuelve al estado inicial sin reutilizar bits: 2 detecciones.", "ph": "Ej: 2", "sec": "Detectores de secuencia", "id": "q29"}, {"t": "one", "p": "Un biestable es:", "o": ["Un circuito con un solo estado estable.", "Un oscilador de onda cuadrada.", "Un circuito combinacional sin memoria.", "Una celda binaria capaz de almacenar un bit, con dos salidas complementarias, que mantiene su estado mientras no se lo excite."], "a": [3], "e": "Funciona por realimentación. Base de memorias, registros y contadores.", "sec": "Biestables", "id": "q30"}, {"t": "many", "p": "Son propiedades de todos los biestables. Seleccione una o más de una:", "o": ["Tienen dos estados y recuerdan el último en ausencia de entrada.", "Pueden funcionar como una memoria de un bit.", "Tienen dos salidas siempre complementarias (Q y Q̄).", "Su salida depende solo de las entradas presentes."], "a": [0, 1, 2], "e": "", "sec": "Biestables", "id": "q31"}, {"t": "one", "p": "La mayoría de los flip-flops tienen:", "o": ["Solo salidas de impulso", "Entradas de nivel y salidas de impulso", "Entradas de impulso y salidas de nivel", "Solo entradas de nivel"], "a": [2], "e": "", "sec": "Biestables", "id": "q32"}, {"t": "one", "p": "Un biestable básico puede representarse conceptualmente con:", "o": ["Una compuerta AND y una OR", "Una XOR", "Un decodificador", "Dos compuertas NOT conectadas en realimentación"], "a": [3], "e": "", "sec": "Biestables", "id": "q33"}, {"t": "match", "p": "Relacione según el instante en que actúan las entradas:", "rows": ["Flip-flop asincrónico", "Flip-flop sincrónico"], "ch": ["Sus entradas pueden actuar en cualquier instante", "Sus entradas actúan solo en instantes definidos por los pulsos de reloj (CLK)"], "a": [0, 1], "e": "", "lt": true, "sec": "Biestables", "id": "q34"}, {"t": "table", "p": "Construya la tabla con los estados válidos para el biestable RS (símbolo ? para estados indeterminados):", "h": ["S", "R", "Q(t)", "Q(t+1)"], "rows": [[{"v": "0"}, {"v": "0"}, {"v": "0"}, {"b": 0}], [{"v": "0"}, {"v": "0"}, {"v": "1"}, {"b": 1}], [{"v": "0"}, {"v": "1"}, {"v": "0"}, {"b": 2}], [{"v": "0"}, {"v": "1"}, {"v": "1"}, {"b": 3}], [{"v": "1"}, {"v": "0"}, {"v": "0"}, {"b": 4}], [{"v": "1"}, {"v": "0"}, {"v": "1"}, {"b": 5}], [{"v": "1"}, {"v": "1"}, {"v": "0"}, {"b": 6}], [{"v": "1"}, {"v": "1"}, {"v": "1"}, {"b": 7}]], "ch": ["0", "1", "?"], "a": ["0", "1", "0", "0", "1", "1", "?", "?"], "e": "S = R = 0 mantiene; R = 1 resetea (0); S = 1 setea (1); S = R = 1 indeterminado.", "sec": "Biestables", "id": "q35"}, {"t": "table", "p": "Construya la tabla de excitación válida para el biestable RS:", "h": ["Q(t)", "Q(t+1)", "S", "R"], "rows": [[{"v": "0"}, {"v": "0"}, {"b": 0}, {"b": 1}], [{"v": "0"}, {"v": "1"}, {"b": 2}, {"b": 3}], [{"v": "1"}, {"v": "0"}, {"b": 4}, {"b": 5}], [{"v": "1"}, {"v": "1"}, {"b": 6}, {"b": 7}]], "ch": ["0", "1", "X"], "a": ["0", "X", "1", "0", "0", "1", "X", "0"], "e": "0→0: no setear (S=0), R da igual. 0→1: set. 1→0: reset. 1→1: no resetear (R=0), S da igual.", "sec": "Biestables", "id": "q36"}, {"t": "table", "p": "Construya la tabla con los estados válidos para el biestable JK:", "h": ["J", "K", "Q(t)", "Q(t+1)"], "rows": [[{"v": "0"}, {"v": "0"}, {"v": "0"}, {"b": 0}], [{"v": "0"}, {"v": "0"}, {"v": "1"}, {"b": 1}], [{"v": "0"}, {"v": "1"}, {"v": "0"}, {"b": 2}], [{"v": "0"}, {"v": "1"}, {"v": "1"}, {"b": 3}], [{"v": "1"}, {"v": "0"}, {"v": "0"}, {"b": 4}], [{"v": "1"}, {"v": "0"}, {"v": "1"}, {"b": 5}], [{"v": "1"}, {"v": "1"}, {"v": "0"}, {"b": 6}], [{"v": "1"}, {"v": "1"}, {"v": "1"}, {"b": 7}]], "ch": ["0", "1", "?"], "a": ["0", "1", "0", "0", "1", "1", "1", "0"], "e": "Igual que RS pero con J = K = 1 complementa: Q(t+1) = Q̄(t). No hay estados indeterminados.", "sec": "Biestables", "id": "q37"}, {"t": "table", "p": "Construya la tabla de excitación válida para el biestable JK:", "h": ["Q(t)", "Q(t+1)", "J", "K"], "rows": [[{"v": "0"}, {"v": "0"}, {"b": 0}, {"b": 1}], [{"v": "0"}, {"v": "1"}, {"b": 2}, {"b": 3}], [{"v": "1"}, {"v": "0"}, {"b": 4}, {"b": 5}], [{"v": "1"}, {"v": "1"}, {"b": 6}, {"b": 7}]], "ch": ["0", "1", "X"], "a": ["0", "X", "1", "X", "X", "1", "X", "0"], "e": "0→1 se logra con J=1 (K=0 setea o K=1 complementa); 1→0 con K=1 (J=0 resetea o J=1 complementa).", "sec": "Biestables", "id": "q38"}, {"t": "table", "p": "Complete la tabla de funcionamiento y de excitación del biestable D:", "h": ["D", "Q(t)", "Q(t+1)"], "rows": [[{"v": "0"}, {"v": "0"}, {"b": 0}], [{"v": "0"}, {"v": "1"}, {"b": 1}], [{"v": "1"}, {"v": "0"}, {"b": 2}], [{"v": "1"}, {"v": "1"}, {"b": 3}]], "ch": ["0", "1", "X"], "a": ["0", "0", "1", "1"], "e": "Q(t+1) = D. Para la excitación: D = Q(t+1).", "sec": "Biestables", "id": "q39"}, {"t": "table", "p": "Construya la tabla de excitación del biestable T:", "h": ["Q(t)", "Q(t+1)", "T"], "rows": [[{"v": "0"}, {"v": "0"}, {"b": 0}], [{"v": "0"}, {"v": "1"}, {"b": 1}], [{"v": "1"}, {"v": "0"}, {"b": 2}], [{"v": "1"}, {"v": "1"}, {"b": 3}]], "ch": ["0", "1", "X"], "a": ["0", "1", "1", "0"], "e": "T = 1 cuando hay que cambiar el estado; T = 0 para mantenerlo.", "sec": "Biestables", "id": "q40"}, {"t": "one", "p": "En el biestable RS con compuertas NOR, la condición indeterminada se produce cuando:", "o": ["S = 1, R = 0", "S = R = 1", "S = R = 0", "S = 0, R = 1"], "a": [1], "e": "", "sec": "Biestables", "id": "q41"}, {"t": "one", "p": "En el latch básico con compuertas NAND:", "o": ["No existe condición indefinida.", "Normalmente funciona con ambas entradas en 0 y la condición indefinida es con ambas en 1.", "Normalmente funciona con ambas entradas en 1 y la condición indefinida se da cuando ambas son 0.", "Funciona igual que el NOR."], "a": [2], "e": "Para cambiar el estado se envía un 0 por la entrada correspondiente.", "sec": "Biestables", "id": "q42"}, {"t": "one", "p": "En el RS sincrónico con NOR y dos compuertas AND, mientras el pulso de reloj CP vale 0:", "o": ["El flip-flop copia S en Q.", "Las salidas de las AND permanecen en 0 independientemente de S y R.", "Se produce la indeterminación.", "El flip-flop se complementa."], "a": [1], "e": "Con S = R = 1 y CP = 1, al quitar el pulso el estado queda impredecible; por eso el RS se usa rara vez en la práctica.", "sec": "Biestables", "id": "q43"}, {"t": "one", "p": "El biestable D elimina el estado indeterminado del RS porque:", "o": ["Usa compuertas XOR.", "Tiene tres entradas.", "La entrada D se conecta a S y, a través de una compuerta NOT, a R: S y R nunca valen 1 al mismo tiempo.", "No tiene reloj."], "a": [2], "e": "", "sec": "Biestables", "id": "q44"}, {"t": "one", "p": "El biestable D debe ser sincrónico porque:", "o": ["No puede tener salida Q̄.", "La ausencia de señal en D se interpreta como un cero lógico, lo que activa R y produciría un reset espontáneo.", "Así se complementa en cada pulso.", "Si no, entraría en estado indeterminado."], "a": [1], "e": "La entrada Ck se interpreta como carga en bancos de memoria.", "sec": "Biestables", "id": "q45"}, {"t": "one", "p": "El biestable D también se conoce como:", "o": ["De disparo", "Toggle", "Astable", "De datos o de retardo"], "a": [3], "e": "Recuerda y produce la última entrada; retrasa un 0 o un 1 durante un pulso de reloj.", "sec": "Biestables", "id": "q46"}, {"t": "one", "p": "En el biestable JK, cuando J = K = 1:", "o": ["Se pone a 1", "Se pone a 0", "Se complementa la salida", "Queda indeterminado"], "a": [2], "e": "", "sec": "Biestables", "id": "q47"}, {"t": "one", "p": "El biestable T se obtiene:", "o": ["Con un NOR y un NAND", "Con dos RS en cascada", "Uniendo las entradas J y K de un JK", "Negando la entrada D"], "a": [2], "e": "Con T = 1 conmuta en cada pulso; con T = 0 mantiene. Es útil para diseñar contadores binarios.", "sec": "Biestables", "id": "q48"}, {"t": "one", "p": "El clock es:", "o": ["Una señal periódica que oscila entre 0 y 1 y define en qué momento los elementos del circuito actualizan su estado.", "Un temporizador del monoestable.", "Una señal de nivel que habilita el bus.", "Un contador de instrucciones."], "a": [0], "e": "El flip-flop actualiza su estado en el flanco de subida o de bajada.", "sec": "Biestables", "id": "q49"}, {"t": "one", "p": "El tiempo de estabilización de un flip-flop es:", "o": ["El tiempo que dura el estado inestable del monoestable.", "El tiempo que necesita el circuito para que sus salidas alcancen un estado confiable y estable después de un cambio en las entradas.", "El tiempo de llenado del bus.", "El período del reloj."], "a": [1], "e": "", "sec": "Biestables", "id": "q50"}, {"t": "one", "p": "Un astable es. Seleccione una:", "o": ["Un biestable con una sola posición estable y otra inestable.", "Un biestable con dos posiciones no estables.", "Un biestable con dos posiciones estables.", "Ninguna de las respuestas."], "a": [1], "e": "", "sec": "Monoestable y astable", "id": "q51"}, {"t": "one", "p": "Un sistema monoestable es. Seleccione una:", "o": ["Un biestable con una sola posición estable.", "Un biestable que siempre se estabiliza en uno.", "Un biestable con dos posiciones inestables.", "Ninguna de las respuestas."], "a": [0], "e": "", "sec": "Monoestable y astable", "id": "q52"}, {"t": "match", "p": "Relacione cada circuito con su cantidad de estados estables:", "rows": ["Biestable", "Monoestable", "Astable (báscula)"], "ch": ["Dos estados estables", "Un estado estable y otro inestable", "Ningún estado estable"], "a": [0, 1, 2], "e": "", "lt": true, "sec": "Monoestable y astable", "id": "q53"}, {"t": "one", "p": "En un monoestable, si el pulso de entrada S sigue activo después de que se cumple el tiempo θ del temporizador:", "o": ["Queda indeterminado.", "Pasa a oscilar.", "El circuito igual vuelve al estado estable; no se mantiene más que el tiempo θ.", "El circuito permanece en el estado inestable mientras dure S."], "a": [2], "e": "La duración del estado inestable la fija el temporizador (resistencias y capacitores).", "sec": "Monoestable y astable", "id": "q54"}, {"t": "one", "p": "Un astable (báscula) puede construirse:", "o": ["Con un decodificador.", "Uniendo las dos entradas de un JK en 1 (J = K = 1), o con un temporizador como el 555.", "Con un D sin reloj.", "Con un RS con S = R = 0."], "a": [1], "e": "", "sec": "Monoestable y astable", "id": "q55"}, {"t": "text", "p": "Una báscula permanece θ1 = 2 ms en Q = 1 y θ2 = 3 ms en Q = 0. ¿Cuál es su ciclo de trabajo en %?", "a": ["40", "40%"], "e": "θ1 / (θ1 + θ2) · 100 = 2 / 5 · 100 = 40 %.", "ph": "Ej: 50", "sec": "Monoestable y astable", "id": "q56"}, {"t": "text", "p": "Para la misma báscula (θ1 = 2 ms, θ2 = 3 ms), ¿cuál es el período total en ms?", "a": ["5", "5ms"], "e": "Período = θ1 + θ2 = 5 ms.", "ph": "Ej: 4", "sec": "Monoestable y astable", "id": "q57"}, {"t": "text", "p": "Si θ2 = 2·θ1, ¿qué ciclo de trabajo tiene la báscula (en %, con dos decimales)?", "a": ["33.33", "33,33", "33.33%"], "e": "1 / (1 + 2) · 100 = 33,33 %.", "ph": "Ej: 25.00", "sec": "Monoestable y astable", "id": "q58"}, {"t": "one", "p": "Si en una báscula θ1 = θ2, la señal es:", "o": ["Indeterminada", "Constante en 1", "Asimétrica, con ciclo de trabajo 33 %", "Simétrica, con ciclo de trabajo del 50 %"], "a": [3], "e": "", "sec": "Monoestable y astable", "id": "q59"}, {"t": "one", "p": "Indique la opción que más se ajuste a la definición de registros en el ámbito del nivel de lógica digital. Seleccione una:", "o": ["Arreglo de flip-flops que permite, a través de una lógica combinacional/secuencial, realizar cálculos de punto flotante, desplazamientos y/o cuenta/descuento.", "Colección ordenada de flip-flops que permite realizar operaciones hexadecimales específicas sobre la información contenida.", "Arreglo de flip-flops que permite mantener una palabra de ceros y unos, y que organizados a través de una lógica combinacional/secuencial lo capacita para realizar operaciones específicas sobre la información contenida.", "Arreglo de flip-flops que permite mantener una palabra de ceros y unos y que lo capacita para realizar solo desplazamientos o contadores."], "a": [2], "e": "Las otras limitan o inventan las operaciones posibles.", "sec": "Registros", "id": "q60"}, {"t": "one", "p": "Un registro formado por 16 flip-flops puede almacenar:", "o": ["Una palabra de 4 bits", "16 palabras de 1 byte", "Una palabra de 16 bits", "2¹⁶ bits"], "a": [2], "e": "Cada flip-flop almacena un bit.", "sec": "Registros", "id": "q61"}, {"t": "many", "p": "Son operaciones elementales sobre un registro. Seleccione una o más de una:", "o": ["Desplazamiento a izquierda o derecha", "Complementación", "Puesta a cero", "Multiplicación en coma flotante sin lógica adicional", "Incremento o decremento"], "a": [0, 1, 2, 4], "e": "Entre registros: transferencia y suma o resta del contenido de uno con otro.", "sec": "Registros", "id": "q62"}, {"t": "match", "p": "Relacione cada tipo de registro con su descripción:", "rows": ["Registros de datos", "Registros de memoria", "Registros de propósito general", "Registros de coma flotante", "Registros constantes", "Registros de propósito específico"], "ch": ["Guardan números enteros o resultados; antiguamente había uno solo, el acumulador", "Guardan exclusivamente direcciones de memoria (muy usados en arquitectura Harvard)", "Guardan tanto datos como direcciones; fundamentales en Von Neumann", "Guardan datos en formato de coma flotante", "No editables, solo lectura, con valores generados por hardware", "Guardan información del estado del sistema (puntero de pila, registro de estado)"], "a": [0, 1, 2, 3, 4, 5], "e": "", "lt": true, "sec": "Registros", "id": "q63"}, {"t": "match", "p": "Para cada ejemplo, seleccione la categoría de registro a la que pertenece:", "rows": ["Registro acumulador AC", "Registro en formato mantisa-exponente", "Registro de solo lectura con un valor fijo", "Puntero de pila (stack pointer)", "Registro de estado (status register)", "Registro que guarda datos y direcciones indistintamente", "Registro que guarda solo direcciones de memoria"], "ch": ["Registros de datos", "Registros de memoria", "Registros de propósito general", "Registros de coma flotante", "Registros constantes", "Registros de propósito específico"], "a": [0, 3, 4, 5, 5, 2, 1], "e": "", "lt": true, "sec": "Registros", "id": "q64"}, {"t": "match", "p": "Relacione cada parte de la estructura básica de un registro con su función:", "rows": ["Celdas de almacenamiento (flip-flops)", "Gobierno de las entradas/salidas", "Gobierno de las operaciones", "Lógica combinacional y secuencial asociada"], "ch": ["Almacenar cada bit de la palabra", "Controlar cómo los datos ingresan y salen del registro", "Controlar qué operación se realiza (escritura, lectura, desplazamiento, complemento)", "Coordinar las acciones según señales externas (reloj, comandos)"], "a": [0, 1, 2, 3], "e": "", "lt": true, "sec": "Registros", "id": "q65"}, {"t": "one", "p": "Se dice que la carga de un registro se efectúa en paralelo cuando:", "o": ["Los bits entran de a uno por cada pulso.", "La carga no necesita reloj.", "Se usan dos registros a la vez.", "Todos los bits se cargan simultáneamente con un pulso de reloj común."], "a": [3], "e": "La señal de control que habilita la escritura se llama validación de dato de entrada.", "sec": "Registros", "id": "q66"}, {"t": "one", "p": "La información de un registro B puede transferirse a otro A:", "o": ["Complementando ambos registros.", "Solo a través de la memoria central.", "Solo por desplazamiento serie.", "Por dos impulsos sucesivos (puesta a cero y transferencia) o por introducción forzada de los 1 y 0."], "a": [3], "e": "", "sec": "Registros", "id": "q67"}, {"t": "one", "p": "En la transferencia con puesta a cero previa:", "o": ["Se limpia el registro de origen.", "No se usa reloj.", "Primero se limpia el registro de destino y luego se copian bit a bit los datos del origen.", "Se complementa el destino."], "a": [2], "e": "En la transferencia forzada, cada flip-flop del destino adopta directamente el valor del origen en un solo ciclo.", "sec": "Registros", "id": "q68"}, {"t": "one", "p": "En un registro de desplazamiento a derecha construido con flip-flops RS:", "o": ["Todos los flip-flops reciben relojes distintos.", "La salida Q de cada flip-flop se conecta a la entrada S y Q̄ a la entrada R del flip-flop de la derecha.", "Se usan compuertas XOR entre cada etapa.", "Q se conecta a R y Q̄ a S del flip-flop de la izquierda."], "a": [1], "e": "Con flip-flops D, la salida Q va a la entrada D del siguiente. Todos reciben un pulso de reloj común.", "sec": "Registros", "id": "q69"}, {"t": "text", "p": "Un registro contiene 1011. ¿Qué contiene después de un desplazamiento a la derecha rellenando con 0?", "a": ["0101"], "e": "Sale el bit de la derecha y entra un 0 por la izquierda.", "ph": "Ej: 0000", "sec": "Registros", "id": "q70"}, {"t": "text", "p": "Un registro contiene 1011. ¿Qué contiene después de un desplazamiento a la izquierda rellenando con 0?", "a": ["0110"], "e": "Sale el bit de la izquierda y entra un 0 por la derecha.", "ph": "Ej: 0000", "sec": "Registros", "id": "q71"}, {"t": "text", "p": "Un registro contiene 1011. ¿Qué contiene después de un desplazamiento cíclico a la derecha?", "a": ["1101"], "e": "El bit que sale por la derecha entra por la izquierda.", "ph": "Ej: 0000", "sec": "Registros", "id": "q72"}, {"t": "text", "p": "Un contador de n = 5 bits, ¿hasta qué valor decimal puede contar?", "a": ["31"], "e": "De 0 a 2ⁿ − 1 = 31.", "ph": "Ej: 15", "sec": "Registros", "id": "q73"}, {"t": "text", "p": "Un contador ascendente de 4 bits está en 0110. ¿Qué valor tiene después de 3 impulsos de cuenta?", "a": ["1001"], "e": "6 + 3 = 9 = 1001.", "ph": "Ej: 0000", "sec": "Registros", "id": "q74"}, {"t": "text", "p": "Un descontador de 4 bits arranca en 1111. ¿Qué valor tiene después de 4 impulsos?", "a": ["1011"], "e": "15 − 4 = 11 = 1011.", "ph": "Ej: 0000", "sec": "Registros", "id": "q75"}, {"t": "one", "p": "La diferencia clave entre un contador y un descontador asincrónicos es que el descontador:", "o": ["Empieza siempre en 0000.", "No usa reloj.", "Usa flip-flops D.", "Usa las salidas negadas Q̄ para controlar los flip-flops siguientes."], "a": [3], "e": "", "sec": "Registros", "id": "q76"}, {"t": "one", "p": "En un contador de impulsos, el impulso se propaga al biestable siguiente:", "o": ["Solo cuando el biestable estaba en 1 antes de complementarse (condición de arrastre).", "Solo cuando el biestable estaba en 0.", "Siempre.", "Nunca: todos reciben el impulso a la vez."], "a": [0], "e": "El biestable de menor peso se complementa en todos los casos.", "sec": "Registros", "id": "q77"}, {"t": "one", "p": "En un contador binario sincrónico creciente, un flip-flop que no es el de menor orden se complementa cuando:", "o": ["El bit de mayor orden vale 1.", "Todos los bits de menor orden valen 0.", "Todos los bits de menor orden valen 1.", "En cada pulso."], "a": [2], "e": "En el decreciente, cuando todos los de menor orden valen 0 (se usan las salidas Q̄).", "sec": "Registros", "id": "q78"}, {"t": "one", "p": "Un arreglo de registros con la lógica de decodificación de direcciones puede verse como:", "o": ["Una memoria", "Un canal", "Una ALU", "Un bus"], "a": [0], "e": "", "sec": "Registros", "id": "q79"}, {"t": "one", "p": "Un bus es:", "o": ["Un decodificador de direcciones.", "Un arreglo de líneas lógicas dedicadas a interconectar órganos del computador para transportar las configuraciones binarias de sus registros.", "Un tipo de memoria caché.", "Un registro de gran capacidad."], "a": [1], "e": "En la práctica son pistas metálicas impresas en la placa madre.", "sec": "Buses", "id": "q80"}, {"t": "many", "p": "Las líneas de un bus transportan. Seleccione una o más de una:", "o": ["Señales de control", "Datos binarios", "La alimentación de la CPU", "Direcciones"], "a": [0, 1, 3], "e": "", "sec": "Buses", "id": "q81"}, {"t": "one", "p": "Un bus consta de:", "o": ["Un hilo por registro", "Un único hilo para todos los bits", "Tres hilos por bit", "Uno o dos hilos por bit (magnitud cierta y complementada)"], "a": [3], "e": "", "sec": "Buses", "id": "q82"}, {"t": "one", "p": "El caudal del bus es:", "o": ["La longitud física de las pistas.", "La cantidad de registros conectados.", "El grado de paralelismo del bus unido a la velocidad que admite para la transferencia.", "El tiempo de llenado."], "a": [2], "e": "", "sec": "Buses", "id": "q83"}, {"t": "match", "p": "Relacione el tipo de transferencia con quién controla el ciclo del bus:", "rows": ["Transferencia sincrónica", "Transferencia asincrónica"], "ch": ["El reloj del sistema", "Los dispositivos conectados al bus"], "a": [0, 1], "e": "", "lt": true, "sec": "Buses", "id": "q84"}, {"t": "one", "p": "El tiempo de llenado del bus es:", "o": ["El tiempo de acceso a memoria.", "El período del reloj.", "El tiempo de un ciclo de instrucción.", "El tiempo que le lleva al bus para que las señales estén presentes a lo largo de todos los hilos antes de que puedan ser capturadas."], "a": [3], "e": "", "sec": "Buses", "id": "q85"}, {"t": "one", "p": "¿Quién decide cuándo y cómo los componentes acceden a los buses?", "o": ["Los periféricos", "La memoria central", "La ALU", "La unidad de control, mediante señales de gobierno"], "a": [3], "e": "", "sec": "Buses", "id": "q86"}, {"t": "match", "p": "Relacione cada tipo de señal de gobierno con su función en una transferencia por bus:", "rows": ["Señal de nivel (SRF)", "Señal impulsional (ENA / ENB)"], "ch": ["Actúa sobre el emisor y mantiene estables los datos en el bus durante toda la transferencia", "Activa al receptor en un instante puntual para capturar los datos (señal de muestreo)"], "a": [0, 1], "e": "", "lt": true, "sec": "Buses", "id": "q87"}, {"t": "match", "p": "Ordene la secuencia de una transferencia del registro F al registro B por el bus:", "rows": ["1°", "2°", "3°", "4°"], "ch": ["Los niveles se estabilizan en el bus", "La señal SRF puede volver a cero", "Se activa la señal de nivel SRF y se establecen en el bus los niveles del registro F", "Un impulso ENB abre las entradas del registro B y captura la información"], "a": [2, 0, 3, 1], "e": "", "lt": false, "sec": "Buses", "id": "q88"}, {"t": "one", "p": "En un sistema digital sincrónico, las señales impulsionales:", "o": ["Reemplazan al reloj.", "Duran varios ciclos.", "Pueden ocurrir en cualquier momento entre impulsos de reloj.", "Deben alinearse estrictamente con los impulsos del reloj, porque entre impulsos podrían desestabilizar el sistema o perder datos."], "a": [3], "e": "", "sec": "Buses", "id": "q89"}, {"t": "one", "p": "La arquitectura Abacus de Meinadier es:", "o": ["Una máquina asincrónica de tres direcciones.", "Una máquina sincrónica de una dirección, con fines académicos, que calcula contra el valor del acumulador.", "Un microprocesador comercial de 8 bits.", "Una máquina de pila sin dirección."], "a": [1], "e": "", "sec": "Abacus", "id": "q90"}, {"t": "one", "p": "En Abacus el reloj produce un batido cada θ segundos. El ciclo base de memoria es:", "o": ["θ/2", "2θ", "θ", "4θ"], "a": [1], "e": "", "sec": "Abacus", "id": "q91"}, {"t": "match", "p": "Relacione cada bus de Abacus con su función:", "rows": ["Bus S (m bits)", "Bus M (n bits)"], "ch": ["Transporta direcciones: de P o del campo D hacia el registro de selección", "Transporta datos e instrucciones entre memoria, registro I, UAL y acumulador"], "a": [0, 1], "e": "", "lt": true, "sec": "Abacus", "id": "q92"}, {"t": "match", "p": "Relacione cada registro de Abacus con su función:", "rows": ["Registro P (contador de programa)", "Registro S (selección de memoria)", "Registro M (palabra de memoria)", "Registro I (instrucción)", "Registro AC (acumulador)"], "ch": ["Contiene la dirección de la próxima instrucción", "Selecciona la posición de memoria a leer o escribir", "Intercambia la palabra leída o a escribir con la memoria", "Contiene el código de operación y la dirección del operando", "Contiene el primer operando y recibe el resultado"], "a": [0, 1, 2, 3, 4], "e": "", "lt": true, "sec": "Abacus", "id": "q93"}, {"t": "text", "p": "Una Abacus tiene una memoria de 2¹² palabras de 16 bits. ¿Cuántos bits tiene el bus S?", "a": ["12"], "e": "El bus S transporta direcciones: m = 12 para direccionar 2¹² palabras.", "ph": "Ej: 8", "sec": "Abacus", "id": "q94"}, {"t": "text", "p": "En la misma Abacus (2¹² palabras de 16 bits), ¿cuántos bits tiene el bus M?", "a": ["16"], "e": "El bus M transporta palabras completas: n = 16.", "ph": "Ej: 8", "sec": "Abacus", "id": "q95"}, {"t": "text", "p": "En la misma Abacus, si la instrucción ocupa una palabra (n = p + m), ¿cuántos bits tiene el código de operación?", "a": ["4"], "e": "p = n − m = 16 − 12 = 4.", "ph": "Ej: 2", "sec": "Abacus", "id": "q96"}, {"t": "text", "p": "Con un código de operación de 4 bits, ¿cuántas operaciones distintas puede tener Abacus?", "a": ["16"], "e": "2⁴ = 16.", "ph": "Ej: 8", "sec": "Abacus", "id": "q97"}, {"t": "text", "p": "Si la memoria tiene 64 K palabras, ¿cuántos bits necesitan el registro P, el registro S y el bus S?", "a": ["16"], "e": "64 K = 2¹⁶ → 16 bits.", "ph": "Ej: 10", "sec": "Abacus", "id": "q98"}, {"t": "many", "p": "¿Qué elementos de Abacus dependen del tamaño de palabra (n)? Seleccione una o más de una:", "o": ["UAL y registro AC", "Bus S", "Registro M y memoria", "Bus M", "Registro S y registro P"], "a": [0, 2, 3], "e": "Registro S, registro P y bus S dependen de la cantidad de palabras (m bits para 2ᵐ palabras).", "sec": "Abacus", "id": "q99"}, {"t": "match", "p": "Ordene las fases del flujo de una instrucción en Abacus:", "rows": ["1°", "2°", "3°", "4°", "5°"], "ch": ["Búsqueda del operando", "Ejecución en la UAL", "Búsqueda de la instrucción", "Incremento del contador de programa", "Decodificación de la instrucción"], "a": [2, 4, 0, 1, 3], "e": "", "lt": false, "sec": "Abacus", "id": "q100"}, {"t": "match", "p": "Clasifique cada señal de gobierno de Abacus:", "rows": ["SRP", "SRD", "SRM", "LEC", "ESC", "SUM / SUS / CAR", "ENS", "ENI", "ENP", "INCP", "EAC", "ICM", "ENM", "PACM"], "ch": ["Nivel", "Impulsional"], "a": [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1], "e": "Regla práctica: las S… (salida al bus), lectura/escritura y operaciones de la UAL son de nivel; las EN… (entrada a un registro), EAC, INCP, ICM y PACM son impulsionales. Según Nico, SAC (salida del AC) y ENA también son de nivel.", "lt": false, "sec": "Abacus", "id": "q101"}, {"t": "match", "p": "Relacione cada señal de Abacus con su función:", "rows": ["SRP", "ENS", "ICM", "SRM", "ENI", "SRD", "EAC", "INCP", "ENP", "PACM", "ENM"], "ch": ["Estabiliza el contenido del contador de programa sobre el bus S", "Carga el contenido del bus S en el registro de selección", "Activa el decodificador de direcciones y marca el inicio del ciclo de memoria", "Pone la palabra leída del registro M sobre el bus M", "Copia el contenido del bus M al registro de instrucción", "Pone el campo D del registro de instrucción sobre el bus S", "Mueve el resultado de la UAL al acumulador", "Incrementa en uno el contador de programa", "Copia el bus S en el contador de programa (saltos)", "Pone a cero el registro M", "Copia el bus M en el registro M para guardar un resultado en memoria"], "a": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "e": "", "lt": true, "sec": "Abacus", "id": "q102"}, {"t": "one", "p": "Las señales SUM, CAR y SUS son de nivel porque:", "o": ["No les alcanza un impulso para propagar el cálculo completo dentro de la UAL.", "Deben actuar en el flanco del reloj.", "Solo duran un instante.", "Actúan sobre el bus S."], "a": [0], "e": "", "sec": "Abacus", "id": "q103"}, {"t": "one", "p": "LEC y ESC son señales de nivel porque:", "o": ["Solo marcan el inicio del ciclo de memoria.", "Son generadas por el acumulador.", "Actúan sobre la UAL.", "Deben mantenerse activas durante varios ciclos de reloj para que el acceso a memoria se complete correctamente."], "a": [3], "e": "", "sec": "Abacus", "id": "q104"}, {"t": "one", "p": "Para ejecutar una instrucción de salto en Abacus:", "o": ["SRD pone la dirección D en el bus S y ENP la copia en el contador de programa.", "EAC mueve la dirección al acumulador.", "SRP pone P en el bus M y ENI lo copia.", "INCP suma D al contador."], "a": [0], "e": "En el salto condicional (según el signo del AC), si la condición no se cumple se incrementa P normalmente.", "sec": "Abacus", "id": "q105"}, {"t": "one", "p": "La secuencia correcta de señales para la búsqueda de la instrucción es:", "o": ["EAC → SUM → ENA → SRM", "SRP → ENS → ICM + LEC → SRM → ENI", "ENI → SRM → LEC → ENS → SRP", "SRD → ENS → ICM + ESC → SAC → ENM"], "a": [1], "e": "P al bus S, bus S al registro S, inicio de ciclo y lectura, palabra al bus M, bus M al registro I. Después INCP.", "sec": "Abacus", "id": "q106"}, {"t": "one", "p": "La secuencia correcta para buscar un operando y sumarlo al acumulador es:", "o": ["SRD → ENS → ICM + LEC → SRM → ENA + SUM → EAC", "SRP → ENS → ICM + LEC → SRM → ENI", "SAC → ENM → SRD → ENS → ICM + ESC", "SRD → ENP"], "a": [0], "e": "La tercera es el almacenamiento del resultado (AC a memoria) y la cuarta un salto.", "sec": "Abacus", "id": "q107"}, {"t": "one", "p": "Abacus es una máquina de una dirección. Para realizar una SUMA completa (A + B guardado en C) necesita:", "o": ["Dos instrucciones", "Una instrucción", "Tres instrucciones: carga, adición y almacenamiento", "Cuatro accesos a memoria en una instrucción"], "a": [2], "e": "", "sec": "Abacus", "id": "q108"}, {"t": "match", "p": "Relacione cada formato de instrucción con su característica:", "rows": ["4 direcciones", "3 direcciones", "2 direcciones", "1 dirección", "Sin dirección"], "ch": ["Incluye dirección de ambos operandos, del resultado y de la siguiente instrucción", "La siguiente instrucción está en la dirección siguiente; una suma requiere 4 accesos a memoria", "El resultado se guarda en la dirección del primer operando, que se pierde", "El acumulador contiene el primer operando y el resultado (caso Abacus)", "La palabra se ocupa con el código de operación; el operando está en las direcciones siguientes o en la pila"], "a": [0, 1, 2, 3, 4], "e": "", "lt": true, "sec": "Abacus", "id": "q109"}, {"t": "one", "p": "La unidad de control consta básicamente de:", "o": ["El contador de instrucciones (contador ordinal), el registro de instrucción y el secuenciador que distribuye las microórdenes.", "La memoria central y los canales.", "La UAL y los registros de coma flotante.", "El acumulador y el registro M."], "a": [0], "e": "", "sec": "Abacus", "id": "q110"}], "secs": ["Autómatas y estados", "Detectores de secuencia", "Biestables", "Monoestable y astable", "Registros", "Buses", "Abacus"]};
+const KEY = "arqui-bank-" + DATA.id;
+const KIND = {one:"Seleccione una", many:"Seleccione una o más", match:"Relacione", table:"Complete la tabla", text:"Complete"};
+const L = "abcdefghijklmnopqrstuvwxyz";
+let st = {a:{}, r:{}};
+try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.a) st = s; } catch(e) {}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(st)); } catch(e) {} }
+let view = {sec:"all", filter:"all", sim:null};
+const byId = {}; DATA.qs.forEach(q => byId[q.id] = q);
+const list = document.getElementById("list");
+
+function el(tag, cls, html){ const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+function norm(s){ return String(s).toLowerCase().replace(/\s+/g,"").replace(/,/g,".").replace(/%$/,""); }
+function stripTags(h){ const d = document.createElement("div"); d.innerHTML = h; return d.textContent; }
+
+function build(q, i){
+  const card = el("article","q"); card.id = q.id;
+  const h = el("div","qh");
+  h.append(el("span","num", String(i+1).padStart(2,"0")), el("span","sec", q.sec), el("span","kind", KIND[q.t]));
+  card.append(h, el("p","prompt", q.p));
+  const body = el("div","body"); card.append(body);
+  const ans = st.a[q.id];
+  if (q.t === "one" || q.t === "many"){
+    const box = el("div","opts");
+    q.o.forEach((o, k) => {
+      const lab = el("label","opt");
+      const inp = document.createElement("input");
+      inp.type = q.t === "one" ? "radio" : "checkbox"; inp.name = q.id; inp.value = k; inp.id = q.id + "-o" + k;
+      if (ans && ans.includes(k)) { inp.checked = true; lab.classList.add("sel"); }
+      inp.addEventListener("change", () => {
+        const v = [...box.querySelectorAll("input")].filter(x => x.checked).map(x => +x.value);
+        st.a[q.id] = v; delete st.r[q.id]; save(); paint(q); score();
+      });
+      lab.append(inp, el("span","L", L[k] + "."), el("span","", o));
+      box.append(lab);
+    });
+    body.append(box);
+  } else if (q.t === "match"){
+    if (q.lt){
+      const ol = el("ul","optlist");
+      q.ch.forEach((c,k) => ol.append(el("li","", `<span>${L[k]}.</span> ${c}`)));
+      body.append(el("p","sec","Opciones:"), ol);
+    }
+    const box = el("div","mrows");
+    q.rows.forEach((r, k) => {
+      const row = el("div","mrow");
+      const s = document.createElement("select"); s.id = q.id + "-m" + k;
+      s.append(new Option("Elegir…", ""));
+      q.ch.forEach((c, j) => s.append(new Option(q.lt ? L[j] + ". " + stripTags(c) : stripTags(c), j)));
+      if (ans && ans[k] != null && ans[k] !== "") s.value = ans[k];
+      s.addEventListener("change", () => {
+        const v = [...box.querySelectorAll("select")].map(x => x.value === "" ? "" : +x.value);
+        st.a[q.id] = v; delete st.r[q.id]; save(); paint(q); score();
+      });
+      row.append(el("div","ml", r), s);
+      box.append(row);
+    });
+    body.append(box);
+  } else if (q.t === "table"){
+    const w = el("div","tw"); const t = el("table","tbl");
+    const thead = el("thead"); const tr = el("tr");
+    q.h.forEach(x => tr.append(el("th","", x))); thead.append(tr); t.append(thead);
+    const tb = el("tbody");
+    q.rows.forEach(r => {
+      const row = el("tr");
+      r.forEach(c => {
+        if (c.b != null){
+          const td = el("td","blank");
+          const s = document.createElement("select"); s.id = q.id + "-t" + c.b; s.dataset.b = c.b;
+          s.append(new Option("·", ""));
+          q.ch.forEach(v => s.append(new Option(v, v)));
+          if (ans && ans[c.b]) s.value = ans[c.b];
+          s.addEventListener("change", () => {
+            const v = []; t.querySelectorAll("select").forEach(x => v[+x.dataset.b] = x.value);
+            st.a[q.id] = v; delete st.r[q.id]; save(); paint(q); score();
+          });
+          td.append(s); row.append(td);
+        } else row.append(el("td","", c.v));
+      });
+      tb.append(row);
+    });
+    t.append(tb); w.append(t); body.append(w);
+  } else if (q.t === "text"){
+    const inp = document.createElement("input"); inp.className = "tin"; inp.id = q.id + "-txt";
+    inp.placeholder = q.ph; inp.autocomplete = "off"; inp.spellcheck = false;
+    if (ans) inp.value = ans;
+    inp.addEventListener("input", () => { st.a[q.id] = inp.value; delete st.r[q.id]; save(); paint(q); score(); });
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") check(q); });
+    body.append(inp);
+  }
+  const f = el("div","qf");
+  const b1 = el("button","btn primary","Corregir"); b1.type = "button"; b1.addEventListener("click", () => check(q));
+  const b2 = el("button","btn","Borrar"); b2.type = "button"; b2.addEventListener("click", () => clearQ(q));
+  const v = el("span","verdict");
+  f.append(b1, b2, v);
+  card.append(f);
+  const ex = el("div","expl"); ex.hidden = true; card.append(ex);
+  return card;
+}
+
+function grade(q){
+  const a = st.a[q.id];
+  if (q.t === "one" || q.t === "many"){
+    const s = (a || []).slice().sort((x,y)=>x-y);
+    return s.length === q.a.length && s.every((x,i) => x === q.a[i]);
+  }
+  if (q.t === "match") return !!a && q.a.every((x,i) => a[i] === x);
+  if (q.t === "table") return !!a && q.a.every((x,i) => a[i] === x);
+  if (q.t === "text") return !!a && q.a.some(x => norm(x) === norm(a));
+}
+function answered(q){
+  const a = st.a[q.id];
+  if (a == null) return false;
+  if (q.t === "text") return a.trim() !== "";
+  return Array.isArray(a) && a.some(x => x !== "" && x != null);
+}
+function check(q){ st.r[q.id] = grade(q) ? 1 : 0; save(); paint(q); score(); }
+function clearQ(q){
+  delete st.a[q.id]; delete st.r[q.id]; save();
+  const old = document.getElementById(q.id);
+  const idx = DATA.qs.indexOf(q);
+  const n = build(q, idx); old.replaceWith(n); paint(q); score(); applyView();
+}
+function correctText(q){
+  if (q.t === "one" || q.t === "many") return q.a.map(k => L[k]).join(", ");
+  if (q.t === "text") return q.a[0];
+  return "";
+}
+function paint(q){
+  const card = document.getElementById(q.id); if (!card) return;
+  const r = st.r[q.id]; const done = r === 0 || r === 1;
+  card.classList.toggle("is-ok", r === 1); card.classList.toggle("is-bad", r === 0);
+  const a = st.a[q.id];
+  if (q.t === "one" || q.t === "many"){
+    card.querySelectorAll(".opt").forEach((lab, k) => {
+      const chosen = !!(a && a.includes(k));
+      lab.classList.toggle("sel", chosen && !done);
+      lab.classList.toggle("right", done && q.a.includes(k));
+      lab.classList.toggle("wrong", done && chosen && !q.a.includes(k));
+    });
+  } else if (q.t === "match"){
+    card.querySelectorAll(".mrow").forEach((row, k) => {
+      row.querySelectorAll(".fix").forEach(x => x.remove());
+      const ok = a && a[k] === q.a[k];
+      row.classList.toggle("right", done && ok); row.classList.toggle("wrong", done && !ok);
+      if (done && !ok) row.append(el("div","fix","Correcta: " + (q.lt ? L[q.a[k]] + ". " : "") + q.ch[q.a[k]]));
+    });
+  } else if (q.t === "table"){
+    card.querySelectorAll("td.blank").forEach(td => {
+      const s = td.querySelector("select"); const b = +s.dataset.b;
+      td.querySelectorAll(".corr").forEach(x => x.remove());
+      const ok = a && a[b] === q.a[b];
+      td.classList.toggle("right", done && ok); td.classList.toggle("wrong", done && !ok);
+      if (done && !ok) td.append(el("span","corr", q.a[b]));
+    });
+  } else if (q.t === "text"){
+    const inp = card.querySelector(".tin");
+    inp.classList.toggle("right", r === 1); inp.classList.toggle("wrong", r === 0);
+  }
+  const v = card.querySelector(".verdict");
+  v.className = "verdict" + (r === 1 ? " ok" : r === 0 ? " bad" : "");
+  v.textContent = r === 1 ? "Correcta" : r === 0 ? "Incorrecta" : "";
+  const ex = card.querySelector(".expl");
+  ex.hidden = !done;
+  if (done){
+    const ct = correctText(q);
+    ex.innerHTML = (ct ? `<p class="ans">Respuesta: ${ct}</p>` : "") + (q.e ? `<p>${q.e}</p>` : "");
+    if (!ex.innerHTML) ex.hidden = true;
+  }
+}
+function score(){
+  const n = DATA.qs.length;
+  let ok = 0, bad = 0;
+  DATA.qs.forEach(q => { if (st.r[q.id] === 1) ok++; else if (st.r[q.id] === 0) bad++; });
+  const pend = n - ok - bad;
+  document.getElementById("score").innerHTML =
+    `<span class="okc"><b>${ok}</b> correctas</span><span class="badc"><b>${bad}</b> incorrectas</span><span class="mut"><b>${pend}</b> sin corregir · ${n} en total</span>` +
+    `<span class="meter" aria-hidden="true"><i class="m1" style="width:${ok/n*100}%"></i><i class="m2" style="width:${bad/n*100}%"></i></span>`;
+  if (view.filter !== "all") applyView();
+}
+function applyView(){
+  let shown = 0;
+  DATA.qs.forEach(q => {
+    const c = document.getElementById(q.id);
+    let vis = view.sec === "all" || q.sec === view.sec;
+    if (view.sim) vis = view.sim.includes(q.id);
+    const r = st.r[q.id];
+    if (view.filter === "todo") vis = vis && r == null;
+    if (view.filter === "bad") vis = vis && r === 0;
+    if (view.filter === "ok") vis = vis && r === 1;
+    c.hidden = !vis; if (vis) shown++;
+  });
+  document.getElementById("empty").hidden = shown > 0;
+}
+function chips(){
+  const box = document.getElementById("chips"); box.innerHTML = "";
+  const mk = (label, key, n) => {
+    const b = el("button","chip", `${label}<small>${n}</small>`); b.type = "button";
+    b.setAttribute("aria-pressed", String(view.sec === key && !view.sim));
+    b.addEventListener("click", () => { view.sec = key; view.sim = null; chips(); applyView(); });
+    box.append(b);
+  };
+  mk("Todas", "all", DATA.qs.length);
+  DATA.secs.forEach(s => mk(s, s, DATA.qs.filter(q => q.sec === s).length));
+  if (view.sim){ const b = el("button","chip","Simulacro<small>14</small>"); b.type="button"; b.setAttribute("aria-pressed","true"); box.append(b); }
+}
+function shuffleArr(a){ for (let i = a.length-1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; } return a; }
+
+DATA.qs.forEach((q,i) => { list.append(build(q,i)); });
+DATA.qs.forEach(paint);
+chips(); score(); applyView();
+
+document.getElementById("filter").addEventListener("change", e => { view.filter = e.target.value; applyView(); });
+document.getElementById("shuffle").addEventListener("click", () => {
+  const cards = shuffleArr([...list.children]); cards.forEach(c => list.append(c));
+});
+document.getElementById("sim").addEventListener("click", () => {
+  const pick = shuffleArr(DATA.qs.map(q => q.id)).slice(0, 14);
+  pick.forEach(id => { delete st.a[id]; delete st.r[id]; const q = byId[id]; const old = document.getElementById(id); old.replaceWith(build(q, DATA.qs.indexOf(q))); paint(q); });
+  save();
+  view.sim = pick; view.filter = "all"; document.getElementById("filter").value = "all";
+  pick.forEach(id => list.append(document.getElementById(id)));
+  chips(); score(); applyView(); window.scrollTo({top:0});
+});
+document.getElementById("checkall").addEventListener("click", () => {
+  DATA.qs.forEach(q => { const c = document.getElementById(q.id); if (!c.hidden && answered(q)) { st.r[q.id] = grade(q) ? 1 : 0; paint(q); } });
+  save(); score();
+});
+let armed = false;
+const rb = document.getElementById("reset");
+rb.addEventListener("click", () => {
+  if (!armed){ armed = true; rb.textContent = "¿Borrar todo? Tocá de nuevo"; setTimeout(() => { armed = false; rb.textContent = "Reiniciar"; }, 3000); return; }
+  st = {a:{}, r:{}}; save(); list.innerHTML = ""; view = {sec:"all", filter:"all", sim:null};
+  document.getElementById("filter").value = "all";
+  DATA.qs.forEach((q,i) => list.append(build(q,i))); DATA.qs.forEach(paint);
+  armed = false; rb.textContent = "Reiniciar"; chips(); score(); applyView();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Álgebra de Boole</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root{
+  --bg:#F2F4F1; --panel:#FFFFFF; --panel2:#F7F9F7; --ink:#15201B; --muted:#56675F; --line:#D3DCD7;
+  --accent:#0E6A4E; --accent-ink:#FFFFFF; --accent-soft:#E0EEE8;
+  --ok:#1C7548; --ok-soft:#E2F2E9; --bad:#AE3730; --bad-soft:#F8E4E1; --tag:#8A5C0F; --tag-soft:#F6EBD6;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --cond:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E1412; --panel:#151D1A; --panel2:#1A2420; --ink:#E4ECE8; --muted:#93A59C; --line:#2A3630;
+    --accent:#4DC196; --accent-ink:#06150F; --accent-soft:#163129;
+    --ok:#5CCB8F; --ok-soft:#15301F; --bad:#EE7B71; --bad-soft:#3A1D1A; --tag:#E2B55C; --tag-soft:#342914;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E1412; --panel:#151D1A; --panel2:#1A2420; --ink:#E4ECE8; --muted:#93A59C; --line:#2A3630;
+  --accent:#4DC196; --accent-ink:#06150F; --accent-soft:#163129;
+  --ok:#5CCB8F; --ok-soft:#15301F; --bad:#EE7B71; --bad-soft:#3A1D1A; --tag:#E2B55C; --tag-soft:#342914;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:0 64px}
+.wrap{max-width:860px;margin:0 auto}
+header.top{padding-block:28px 12px;display:grid;gap:6px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--cond);font-weight:700;font-size:clamp(26px,5vw,36px);line-height:1.1;margin:0;text-wrap:balance}
+.lead{color:var(--muted);margin:0;max-width:65ch}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);display:grid;gap:10px;margin-bottom:18px}
+.score{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums}
+.score b{font-weight:600}
+.score .okc{color:var(--ok)} .score .badc{color:var(--bad)} .score .mut{color:var(--muted)}
+.meter{flex:1 1 160px;height:6px;border-radius:3px;background:var(--line);overflow:hidden;display:flex;min-width:120px}
+.meter i{display:block;height:100%}
+.meter .m1{background:var(--ok)} .meter .m2{background:var(--bad)}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:thin}
+.chip{flex:0 0 auto;font:500 13px var(--sans);border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:5px 10px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.chip small{font-family:var(--mono);color:var(--muted);margin-left:4px}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip[aria-pressed="true"] small{color:var(--accent-ink);opacity:.8}
+select,button,input{font:inherit}
+.btn{font:500 13px var(--sans);border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:6px 12px;border-radius:7px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.fsel{font:500 13px var(--sans);border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:6px 8px;border-radius:7px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.list{display:grid;gap:14px}
+.q{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 16px 14px;display:grid;gap:12px}
+.q.is-ok{border-color:color-mix(in srgb,var(--ok) 55%,var(--line))}
+.q.is-bad{border-color:color-mix(in srgb,var(--bad) 55%,var(--line))}
+.qh{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline}
+.num{font-family:var(--mono);font-weight:600;font-size:13px;color:var(--accent)}
+.sec{font-size:12px;color:var(--muted)}
+.kind{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--tag);background:var(--tag-soft);padding:1px 6px;border-radius:4px;margin-left:auto}
+.prompt{font-weight:500;margin:0}
+.prompt code,.opt code,.expl code,td code,.ml code{font-family:var(--mono);font-size:.93em;background:var(--panel2);border:1px solid var(--line);padding:0 4px;border-radius:4px;white-space:nowrap}
+.ov{text-decoration:overline;text-decoration-thickness:1.5px}
+.opts{display:grid;gap:6px}
+.opt{display:grid;grid-template-columns:auto auto 1fr;gap:8px;align-items:start;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer;background:var(--panel)}
+.opt:hover{border-color:var(--accent)}
+.opt input{margin:3px 0 0;accent-color:var(--accent)}
+.opt .L{font-family:var(--mono);color:var(--muted);font-size:13px;padding-top:1px}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.mrows{display:grid;gap:8px}
+.mrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:8px;align-items:center;padding:6px 8px;border:1px solid var(--line);border-radius:8px}
+.ml{font-size:14px}
+.mrow select,.tbl select{width:100%;max-width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--panel2);color:var(--ink)}
+.mrow.right{border-color:var(--ok);background:var(--ok-soft)}
+.mrow.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.fix{grid-column:1/-1;font-size:13px;color:var(--ok);font-weight:500}
+.optlist{font-size:13px;color:var(--muted);margin:0;padding-left:0;list-style:none;display:grid;gap:2px}
+.optlist li span{font-family:var(--mono)}
+@media (max-width:560px){.mrow{grid-template-columns:1fr}}
+.tw{overflow-x:auto}
+.tbl{border-collapse:collapse;font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{border:1px solid var(--line);padding:5px 10px;text-align:center}
+.tbl th{background:var(--panel2);font-weight:600}
+.tbl td.blank{padding:3px 4px;min-width:64px}
+.tbl td.right{background:var(--ok-soft)} .tbl td.wrong{background:var(--bad-soft)}
+.tbl td .corr{display:block;font-size:12px;color:var(--ok);font-weight:600}
+.tin{width:100%;max-width:360px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);color:var(--ink);font-family:var(--mono)}
+.tin.right{border-color:var(--ok);background:var(--ok-soft)} .tin.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.qf{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.verdict{font-weight:600;font-size:14px}
+.verdict.ok{color:var(--ok)} .verdict.bad{color:var(--bad)}
+.expl{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px;display:grid;gap:6px}
+.expl p{margin:0}
+.expl .ans{font-weight:600}
+pre.blk,.prompt pre{font-family:var(--mono);font-size:13px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:8px 10px;overflow-x:auto;margin:8px 0 0;font-weight:400;line-height:1.45}
+.bar{}
+@media (max-width:640px){.bar{position:static}}
+.empty{color:var(--muted);text-align:center;padding:30px 0}
+footer.note{color:var(--muted);font-size:13px;margin-top:28px;max-width:65ch}
+@media (prefers-reduced-motion:no-preference){.q{transition:border-color .15s}}
+</style>
+</head>
+<body>
+<div class="wrap" style="padding-top:14px"><a href="../../site/secciones/93-cuestionarios.html" style="color:var(--accent);font:500 13px var(--sans);text-decoration:none">← Volver al aula</a></div>
+
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Arquitectura de Computadoras · C1 · U2</div>
+    <h1>Álgebra de Boole</h1>
+    <p class="lead">Sistemas digitales, álgebra de Boole, compuertas, formas normales, simplificación por leyes, Karnaugh y NAND/NOR. Elegí, tocá <b>Corregir</b> y leé la explicación. Tus respuestas quedan guardadas en este navegador.</p>
+  </header>
+
+  <div class="bar">
+    <div class="score" id="score"></div>
+    <div class="chips" id="chips" role="toolbar" aria-label="Temas"></div>
+    <div class="controls">
+      <select class="fsel" id="filter" aria-label="Filtrar">
+        <option value="all">Todas</option>
+        <option value="todo">Sin corregir</option>
+        <option value="bad">Falladas</option>
+        <option value="ok">Correctas</option>
+      </select>
+      <button class="btn" id="shuffle" type="button">Mezclar orden</button>
+      <button class="btn" id="sim" type="button">Simulacro de 14</button>
+      <button class="btn primary" id="checkall" type="button">Corregir visibles</button>
+      <button class="btn" id="reset" type="button">Reiniciar</button>
+    </div>
+  </div>
+
+  <main class="list" id="list"></main>
+  <p class="empty" id="empty" hidden>No hay preguntas con este filtro.</p>
+  <footer class="note">Preguntas armadas a partir del apunte de Nico (U1 y U2), el apunte de cátedra y los parciales anteriores. Donde el apunte y otra bibliografía difieren, la explicación sigue al apunte.</footer>
+</div>
+
+<script>
+const DATA = {"id": "boole", "qs": [{"t": "one", "p": "Un sistema digital es cualquier dispositivo destinado a. Seleccione una:", "o": ["La generación, transmisión y procesamiento de señales digitales.", "La generación, transmisión, procesamiento y almacenamiento de señales analógicas y digitales.", "La generación, transmisión, procesamiento y almacenamiento de señales digitales.", "La generación de señales electrónicas.", "La generación, transmisión, procesamiento y almacenamiento de señales analógicas."], "a": [2], "e": "Las cuatro acciones (generar, transmitir, procesar, almacenar) y solo señales digitales. La (a) omite el almacenamiento.", "sec": "Sistemas y señales", "id": "q1"}, {"t": "one", "p": "Según el apunte, un sistema digital es cualquier sistema que:", "o": ["Trabaje exclusivamente con señales analógicas convertidas.", "Pueda generar, procesar, transmitir o almacenar señales mediante dígitos y que solo admite valores discretos.", "Admita infinitos valores entre dos niveles de tensión.", "Procese señales continuas en el tiempo."], "a": [1], "e": "", "sec": "Sistemas y señales", "id": "q2"}, {"t": "one", "p": "Una señal digital corresponde a magnitudes físicas limitadas a tomar solo unos determinados valores:", "o": ["Continuos", "Eléctricos", "Continuos y discretos", "Discretos"], "a": [3], "e": "", "sec": "Sistemas y señales", "id": "q3"}, {"t": "one", "p": "Una señal analógica corresponde a magnitudes físicas que pueden tomar valores:", "o": ["Continuos", "Discretos", "Solo eléctricos", "Solo binarios"], "a": [0], "e": "", "sec": "Sistemas y señales", "id": "q4"}, {"t": "one", "p": "El diseñador de sistemas digitales está restringido al uso de señales binarias debido a:", "o": ["Una norma de la ANSI.", "La baja confiabilidad de los circuitos electrónicos de muchos valores.", "Que las señales binarias son más rápidas que cualquier otra.", "Que el álgebra de Boole no admite más de dos variables."], "a": [1], "e": "También porque la lógica humana tiende a ser binaria.", "sec": "Sistemas y señales", "id": "q5"}, {"t": "one", "p": "Según el apunte, un nombre más adecuado para un computador digital sería:", "o": ["Calculadora electrónica programable", "Sistema de procesamiento de información discreta", "Procesador de señales continuas", "Sistema de conmutación analógica"], "a": [1], "e": "", "sec": "Sistemas y señales", "id": "q6"}, {"t": "one", "p": "Las computadoras interpretan un 0 o un 1 como:", "o": ["Rangos de niveles de voltaje; las zonas intermedias son indeterminadas y los circuitos filtran ese ruido.", "Frecuencias de reloj distintas.", "Números almacenados en decimal.", "Polarizaciones ópticas."], "a": [0], "e": "", "sec": "Sistemas y señales", "id": "q7"}, {"t": "match", "p": "Relacione cada ley del álgebra booleana considerando compuertas del tipo OR:", "rows": ["A + (B + C) = (A + B) + C", "A + B·C = (A + B)·(A + C)", "A + A = A", "A + <span class=\"ov\">A<\/span>·B = A + B", "A + B = B + A", "A + A·B = A", "A + <span class=\"ov\">A<\/span> = 1", "A + 0 = A", "<span class=\"ov\">A + B<\/span> = <span class=\"ov\">A<\/span>·<span class=\"ov\">B<\/span>", "A + 1 = 1"], "ch": ["Asociativa", "Distributiva", "Idempotencia", "Teorema de la simplificación", "Conmutativa", "Absorción", "Complemento", "Elementos neutros (identidad)", "De Morgan", "Dominación"], "a": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], "e": "", "lt": false, "sec": "Álgebra de Boole", "id": "q8"}, {"t": "match", "p": "Relacione cada ley del álgebra booleana considerando compuertas del tipo AND:", "rows": ["A·(B·C) = (A·B)·C", "A·(B + C) = A·B + A·C", "A·A = A", "A·(<span class=\"ov\">A<\/span> + B) = A·B", "A·B = B·A", "A·(A + B) = A", "A·<span class=\"ov\">A<\/span> = 0", "A·1 = A", "<span class=\"ov\">A·B<\/span> = <span class=\"ov\">A<\/span> + <span class=\"ov\">B<\/span>", "A·0 = 0", "<span class=\"ov\"><span class=\"ov\">A<\/span><\/span> = A"], "ch": ["Asociativa", "Distributiva", "Idempotencia", "Teorema de la simplificación", "Conmutativa", "Absorción", "Complemento", "Elementos neutros (identidad)", "De Morgan", "Dominación", "Involutiva"], "a": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "e": "", "lt": false, "sec": "Álgebra de Boole", "id": "q9"}, {"t": "one", "p": "La expresión A + <span class=\"ov\">A<\/span>·B se simplifica a:", "o": ["1", "A·B", "A + B", "A"], "a": [2], "e": "A + <span class=\"ov\">A<\/span>B = (A + <span class=\"ov\">A<\/span>)(A + B) [distributiva] = 1·(A + B) [complemento] = A + B [identidad].", "sec": "Álgebra de Boole", "id": "q10"}, {"t": "one", "p": "La expresión A·B + A·<span class=\"ov\">B<\/span> se simplifica a:", "o": ["A", "B", "A·B", "1"], "a": [0], "e": "A(B + <span class=\"ov\">B<\/span>) [distributiva] = A·1 [complemento] = A [identidad].", "sec": "Álgebra de Boole", "id": "q11"}, {"t": "one", "p": "La expresión (A + B)·(A + <span class=\"ov\">B<\/span>) se simplifica a:", "o": ["A", "B", "0", "A + B"], "a": [0], "e": "A + B·<span class=\"ov\">B<\/span> [distributiva] = A + 0 [complemento] = A [identidad].", "sec": "Álgebra de Boole", "id": "q12"}, {"t": "one", "p": "Aplicando De Morgan, <span class=\"ov\">A·B·C<\/span> es igual a:", "o": ["A + B + C", "<span class=\"ov\">A<\/span>·<span class=\"ov\">B<\/span>·<span class=\"ov\">C<\/span>", "<span class=\"ov\">A + B + C<\/span>", "<span class=\"ov\">A<\/span> + <span class=\"ov\">B<\/span> + <span class=\"ov\">C<\/span>"], "a": [3], "e": "", "sec": "Álgebra de Boole", "id": "q13"}, {"t": "match", "p": "Relacione cada compuerta con su comportamiento:", "rows": ["AND", "OR", "NOT", "NAND", "NOR", "XOR", "XNOR (equivalencia)", "Buffer (separador)"], "ch": ["Salida 1 si y solo si todas las entradas son 1", "Salida 0 si y solo si todas las entradas son 0", "Entrega el complemento; único operador de una sola entrada", "Complemento de cada resultado de la AND", "Complemento de cada resultado de la OR", "Salida 1 si al menos una y a lo sumo una entrada es 1", "Salida 1 cuando ambas entradas son iguales", "Salida igual a la entrada; solo amplifica potencia"], "a": [0, 1, 2, 3, 4, 5, 6, 7], "e": "", "lt": true, "sec": "Álgebra de Boole", "id": "q14"}, {"t": "one", "p": "Un circuito separador (buffer) es equivalente a:", "o": ["Una AND de una entrada con 1", "Dos inversores conectados en cascada", "Una XOR con 0", "Una compuerta NOT"], "a": [1], "e": "", "sec": "Álgebra de Boole", "id": "q15"}, {"t": "table", "p": "Complete la tabla de verdad de las compuertas:", "h": ["A", "B", "AND", "OR", "XOR", "NAND", "NOR"], "rows": [[{"v": "0"}, {"v": "0"}, {"b": 0}, {"b": 1}, {"b": 2}, {"b": 3}, {"b": 4}], [{"v": "0"}, {"v": "1"}, {"b": 5}, {"b": 6}, {"b": 7}, {"b": 8}, {"b": 9}], [{"v": "1"}, {"v": "0"}, {"b": 10}, {"b": 11}, {"b": 12}, {"b": 13}, {"b": 14}], [{"v": "1"}, {"v": "1"}, {"b": 15}, {"b": 16}, {"b": 17}, {"b": 18}, {"b": 19}]], "ch": ["0", "1"], "a": ["0", "0", "0", "1", "1", "0", "1", "1", "1", "0", "0", "1", "1", "1", "0", "1", "1", "0", "0", "0"], "e": "", "sec": "Álgebra de Boole", "id": "q16"}, {"t": "text", "p": "¿Cuántas filas tiene la tabla de verdad de una función de 4 variables?", "a": ["16"], "e": "2ⁿ = 2⁴ = 16 filas.", "ph": "Ej: 8", "sec": "Álgebra de Boole", "id": "q17"}, {"t": "one", "p": "La cantidad de funciones booleanas distintas que pueden formarse con n variables es:", "o": ["2^(2ⁿ)", "2ⁿ", "2n", "n²"], "a": [0], "e": "Hay 2ⁿ minitérminos y cada uno puede estar o no: 2^(2ⁿ). Con 2 variables: 16 funciones.", "sec": "Álgebra de Boole", "id": "q18"}, {"t": "text", "p": "¿Cuántas funciones booleanas distintas existen de 2 variables?", "a": ["16"], "e": "2^(2²) = 2⁴ = 16.", "ph": "Ej: 4", "sec": "Álgebra de Boole", "id": "q19"}, {"t": "many", "p": "Son aplicaciones del álgebra de Boole en conmutación. Seleccione una o más de una:", "o": ["Determinar la frecuencia del reloj del sistema", "Análisis y síntesis de circuitos combinacionales", "Herramienta auxiliar para analizar y sintetizar circuitos secuenciales", "Minimización del número de cables y dispositivos", "Expresión algebraica de los requerimientos de un circuito lógico"], "a": [1, 2, 3, 4], "e": "También comparación de realizaciones circuitales y codificación de información digital.", "sec": "Álgebra de Boole", "id": "q20"}, {"t": "one", "p": "Los mapas de Karnaugh son una forma conveniente de simplificar funciones booleanas con:", "o": ["Solo dos variables", "Pocas variables (de cuatro a seis)", "Más de diez variables", "Cualquier cantidad de variables"], "a": [1], "e": "El mapa tiene 2ⁿ cuadrículas.", "sec": "Álgebra de Boole", "id": "q21"}, {"t": "one", "p": "La forma normal disyuntiva de una función (FND) es. Seleccione una:", "o": ["La conjunción de conjunciones de literales: (L11 y L12 y … y L1n) y (L21 y L22 y … y L2n) y … (Lm1 y … y Lmn)", "La disyunción de conjunciones de literales: (L11 y L12 y … y L1n) o (L21 y L22 y … y L2n) o … (Lm1 y … y Lmn)", "La conjunción de disyunciones de literales: (L11 o L12 o … o L1n) y (L21 o L22 o … o L2n) y … (Lm1 o … o Lmn)", "La disyunción de disyunciones de literales: (L11 o L12 o … o L1n) o (L21 o L22 o … o L2n) o … (Lm1 o … o Lmn)"], "a": [1], "e": "FND = OR de ANDs = suma de productos (suma de minitérminos).", "sec": "Formas normales", "id": "q22"}, {"t": "one", "p": "La forma normal conjuntiva de una función (FNC) es. Seleccione una:", "o": ["La disyunción de conjunciones de literales: (L11 y L12 y … y L1n) o (L21 y L22 y … y L2n) o … ", "La conjunción de disyunciones de literales: (L11 o L12 o … o L1n) y (L21 o L22 o … o L2n) y … (Lm1 o … o Lmn)", "La conjunción de conjunciones de literales: (L11 y L12 y … y L1n) y (L21 o L22 o … o L2n) y …", "La disyunción de disyunciones de literales: (L11 o L12 o … o L1n) o (L21 y L22 o … o L2n) o …"], "a": [1], "e": "FNC = AND de ORs = producto de sumas (producto de maxitérminos).", "sec": "Formas normales", "id": "q23"}, {"t": "match", "p": "Relacione cada forma con su expresión equivalente:", "rows": ["Forma normal disyuntiva (FND)", "Forma normal conjuntiva (FNC)"], "ch": ["Suma de productos (suma de minitérminos)", "Producto de sumas (producto de maxitérminos)", "Producto de productos", "Suma de sumas"], "a": [0, 1], "e": "Cuidado: el apunte de Nico tiene un error de tipeo y dice “suma de productos (forma normal conjuntiva)”. La suma de productos es la disyuntiva.", "lt": true, "sec": "Formas normales", "id": "q24"}, {"t": "one", "p": "Minitérmino es. Seleccione una:", "o": ["La suma de las variables en juego negadas que hacen que el producto valga uno.", "El producto de las variables en juego o sus negaciones individuales que hacen que el producto valga uno.", "La suma de las variables en juego o sus negaciones individuales que hacen que el producto valga uno.", "Ninguna de las anteriores."], "a": [1], "e": "", "sec": "Formas normales", "id": "q25"}, {"t": "one", "p": "Maxitérmino es. Seleccione una:", "o": ["Es la suma de las variables en juego o sus negaciones individuales, que hacen que la suma valga uno.", "Es la suma de las variables en juego o sus negaciones individuales, que hacen que la suma valga cero.", "Es el producto de las variables en juego sin negar, que hacen que la suma valga uno.", "Ninguna de las anteriores."], "a": [1], "e": "", "sec": "Formas normales", "id": "q26"}, {"t": "one", "p": "La relación entre minitérminos y maxitérminos es:", "o": ["Cada maxitérmino es el complemento de su correspondiente minitérmino y viceversa.", "Son idénticos.", "No tienen relación.", "Un maxitérmino es la suma de dos minitérminos."], "a": [0], "e": "Ejemplo: m5 = x<span class=\"ov\">y<\/span>z y M5 = <span class=\"ov\">x<\/span> + y + <span class=\"ov\">z<\/span> = <span class=\"ov\">m5<\/span>.", "sec": "Formas normales", "id": "q27"}, {"t": "one", "p": "Se llama término canónico de una función lógica a:", "o": ["El término más corto de una expresión simplificada.", "Cualquier producto de dos variables.", "El término que contiene solo variables negadas.", "Todo producto o toda suma en los que aparecen todas las variables de la función, en su forma directa o inversa."], "a": [3], "e": "", "sec": "Formas normales", "id": "q28"}, {"t": "one", "p": "Con variables x, y, z (x la más significativa), el minitérmino m5 es:", "o": ["<span class=\"ov\">x<\/span> + y + <span class=\"ov\">z<\/span>", "<span class=\"ov\">x<\/span>·y·<span class=\"ov\">z<\/span>", "x + <span class=\"ov\">y<\/span> + z", "x·<span class=\"ov\">y<\/span>·z"], "a": [3], "e": "5 = 101 → x=1, y=0, z=1 → en el minitérmino el 0 va negado: x·ȳ·z.", "sec": "Formas normales", "id": "q29"}, {"t": "one", "p": "Con variables x, y, z, el maxitérmino M3 es:", "o": ["<span class=\"ov\">x<\/span>·y·z", "x + <span class=\"ov\">y<\/span> + <span class=\"ov\">z<\/span>", "x·<span class=\"ov\">y<\/span>·<span class=\"ov\">z<\/span>", "<span class=\"ov\">x<\/span> + y + z"], "a": [1], "e": "3 = 011 → en el maxitérmino los 1 van negados y los 0 sin negar: x + ȳ + z̄.", "sec": "Formas normales", "id": "q30"}, {"t": "one", "p": "La FND se obtiene a partir de la tabla de verdad:", "o": ["En las filas donde la función vale 1, sumando las variables con los 1 negados.", "En las filas donde la función vale 0, sumando las variables con los 1 negados.", "Sumando todas las filas de la tabla.", "En las filas donde la función vale 1, multiplicando las variables con los 0 negados, y sumando esos minitérminos."], "a": [3], "e": "", "sec": "Formas normales", "id": "q31"}, {"t": "one", "p": "La FNC se obtiene a partir de la tabla de verdad:", "o": ["En las filas donde la función vale 1, formando productos con los 0 negados.", "En las filas donde la función vale 0, formando productos con los 0 negados.", "En las filas donde la función vale 0, formando sumas con los 1 negados y los 0 sin negar, y multiplicando esos maxitérminos.", "Multiplicando todas las filas."], "a": [2], "e": "", "sec": "Formas normales", "id": "q32"}, {"t": "one", "p": "Dada la tabla de verdad, la FND de F es:<pre>A B | F\n0 0 | 0\n0 1 | 1\n1 0 | 1\n1 1 | 0<\/pre>", "o": ["(<span class=\"ov\">A<\/span> + B)·(A + <span class=\"ov\">B<\/span>)", "(A + B)·(<span class=\"ov\">A<\/span> + <span class=\"ov\">B<\/span>)", "A·B + <span class=\"ov\">A<\/span>·<span class=\"ov\">B<\/span>", "<span class=\"ov\">A<\/span>·B + A·<span class=\"ov\">B<\/span>"], "a": [3], "e": "F vale 1 en 01 y 10: Ā·B + A·B̄ (es la XOR).", "sec": "Formas normales", "id": "q33"}, {"t": "one", "p": "Para la misma tabla, la FNC de F es:<pre>A B | F\n0 0 | 0\n0 1 | 1\n1 0 | 1\n1 1 | 0<\/pre>", "o": ["(A + B)·(<span class=\"ov\">A<\/span> + <span class=\"ov\">B<\/span>)", "(<span class=\"ov\">A<\/span> + <span class=\"ov\">B<\/span>)·(A·B)", "(A + <span class=\"ov\">B<\/span>)·(<span class=\"ov\">A<\/span> + B)", "<span class=\"ov\">A<\/span>·B + A·<span class=\"ov\">B<\/span>"], "a": [0], "e": "F vale 0 en 00 → (A + B) y en 11 → (Ā + B̄).", "sec": "Formas normales", "id": "q34"}, {"t": "one", "p": "F(x, y, z) = Σm(1, 3, 6). Su forma normal disyuntiva es:", "o": ["<span class=\"ov\">x<\/span><span class=\"ov\">y<\/span>z + <span class=\"ov\">x<\/span>yz + xy<span class=\"ov\">z<\/span>", "x y <span class=\"ov\">z<\/span> + <span class=\"ov\">x<\/span><span class=\"ov\">y<\/span><span class=\"ov\">z<\/span> + xyz", "<span class=\"ov\">x<\/span><span class=\"ov\">y<\/span>z + x<span class=\"ov\">y<\/span>z + xyz", "(<span class=\"ov\">x<\/span>+y+z)(<span class=\"ov\">x<\/span>+<span class=\"ov\">y<\/span>+z)(x+<span class=\"ov\">y<\/span>+z)"], "a": [0], "e": "1 = 001, 3 = 011, 6 = 110.", "sec": "Formas normales", "id": "q35"}, {"t": "one", "p": "F(x, y, z) = Σm(0, 2, 5, 7) también puede escribirse como:", "o": ["ΠM(0, 2, 5, 7)", "ΠM(1, 3, 5, 7)", "Σm(1, 3, 4, 6)", "ΠM(1, 3, 4, 6)"], "a": [3], "e": "Los maxitérminos son las filas donde F vale 0: las que no están en la suma.", "sec": "Formas normales", "id": "q36"}, {"t": "text", "p": "¿Cuántos minitérminos existen para una función de 3 variables?", "a": ["8"], "e": "2³ = 8.", "ph": "Ej: 6", "sec": "Formas normales", "id": "q37"}, {"t": "one", "p": "Simplifique F = A·B + A·<span class=\"ov\">B<\/span>·C + A·<span class=\"ov\">B<\/span>·<span class=\"ov\">C<\/span>.", "o": ["A", "A + C", "A·B", "A·<span class=\"ov\">B<\/span>"], "a": [0], "e": "A·<span class=\"ov\">B<\/span>·C + A·<span class=\"ov\">B<\/span>·<span class=\"ov\">C<\/span> = A·<span class=\"ov\">B<\/span>·(C + <span class=\"ov\">C<\/span>) = A·<span class=\"ov\">B<\/span> [distributiva, complemento, identidad]. Luego A·B + A·<span class=\"ov\">B<\/span> = A·(B + <span class=\"ov\">B<\/span>) = A.", "sec": "Simplificación", "id": "q38"}, {"t": "one", "p": "Simplifique F = (A + B)·(A + C).", "o": ["A·B + C", "A + B·C", "B + C", "A·B·C"], "a": [1], "e": "Es la distributiva de la suma en forma inversa: (A + B)(A + C) = A + B·C.", "sec": "Simplificación", "id": "q39"}, {"t": "one", "p": "Simplifique F = <span class=\"ov\">A<\/span>·<span class=\"ov\">B<\/span> + <span class=\"ov\">A<\/span>·B + A·B.", "o": ["<span class=\"ov\">A<\/span>·B", "B", "A + <span class=\"ov\">B<\/span>", "<span class=\"ov\">A<\/span> + B"], "a": [3], "e": "<span class=\"ov\">A<\/span>·<span class=\"ov\">B<\/span> + <span class=\"ov\">A<\/span>·B = <span class=\"ov\">A<\/span>·(<span class=\"ov\">B<\/span> + B) = <span class=\"ov\">A<\/span>. Queda <span class=\"ov\">A<\/span> + A·B = <span class=\"ov\">A<\/span> + B [teorema de la simplificación].", "sec": "Simplificación", "id": "q40"}, {"t": "one", "p": "Simplifique F = <span class=\"ov\">A + <span class=\"ov\">B<\/span><\/span>·B.", "o": ["A·B", "<span class=\"ov\">A<\/span>·B", "B", "0"], "a": [1], "e": "De Morgan: <span class=\"ov\">A + <span class=\"ov\">B<\/span><\/span> = <span class=\"ov\">A<\/span>·B. Luego <span class=\"ov\">A<\/span>·B·B = <span class=\"ov\">A<\/span>·B [idempotencia].", "sec": "Simplificación", "id": "q41"}, {"t": "one", "p": "Simplifique F = A·B·C + A·B·<span class=\"ov\">C<\/span> + A·<span class=\"ov\">B<\/span>·C.", "o": ["A + B + C", "A·B + A·C", "B·C", "A·B·C"], "a": [1], "e": "A·B·C + A·B·<span class=\"ov\">C<\/span> = A·B. Para agrupar también A·B·C con A·<span class=\"ov\">B<\/span>·C se usa idempotencia (A·B·C + A·B·C): A·C. F = A·B + A·C = A·(B + C).", "sec": "Simplificación", "id": "q42"}, {"t": "one", "p": "Simplifique F = (A + <span class=\"ov\">B<\/span> + C)·(A + <span class=\"ov\">B<\/span> + <span class=\"ov\">C<\/span>).", "o": ["A + <span class=\"ov\">B<\/span>", "A + <span class=\"ov\">B<\/span> + C", "C", "A·<span class=\"ov\">B<\/span>"], "a": [0], "e": "Sacando factor común (A + <span class=\"ov\">B<\/span>) por distributiva: (A + <span class=\"ov\">B<\/span>) + C·<span class=\"ov\">C<\/span> = (A + <span class=\"ov\">B<\/span>) + 0 = A + <span class=\"ov\">B<\/span>.", "sec": "Simplificación", "id": "q43"}, {"t": "one", "p": "Simplifique F = <span class=\"ov\">A<\/span><span class=\"ov\">B<\/span><span class=\"ov\">C<\/span> + <span class=\"ov\">A<\/span><span class=\"ov\">B<\/span>C + A<span class=\"ov\">B<\/span><span class=\"ov\">C<\/span> + A<span class=\"ov\">B<\/span>C.", "o": ["1", "<span class=\"ov\">B<\/span>", "<span class=\"ov\">A<\/span>·<span class=\"ov\">B<\/span>", "A·<span class=\"ov\">B<\/span>"], "a": [1], "e": "<span class=\"ov\">A<\/span><span class=\"ov\">B<\/span>(<span class=\"ov\">C<\/span> + C) + A<span class=\"ov\">B<\/span>(<span class=\"ov\">C<\/span> + C) = <span class=\"ov\">A<\/span><span class=\"ov\">B<\/span> + A<span class=\"ov\">B<\/span> = <span class=\"ov\">B<\/span>(<span class=\"ov\">A<\/span> + A) = <span class=\"ov\">B<\/span>.", "sec": "Simplificación", "id": "q44"}, {"t": "one", "p": "Aplicando De Morgan e involutiva, <span class=\"ov\"><span class=\"ov\">A<\/span>·<span class=\"ov\">B<\/span><\/span> es igual a:", "o": ["A + B", "<span class=\"ov\">A<\/span>·<span class=\"ov\">B<\/span>", "<span class=\"ov\">A<\/span> + <span class=\"ov\">B<\/span>", "A·B"], "a": [0], "e": "De Morgan: <span class=\"ov\"><span class=\"ov\">A<\/span>·<span class=\"ov\">B<\/span><\/span> = <span class=\"ov\"><span class=\"ov\">A<\/span><\/span> + <span class=\"ov\"><span class=\"ov\">B<\/span><\/span> = A + B [involutiva].", "sec": "Simplificación", "id": "q45"}, {"t": "one", "p": "Simplifique F = A·B + <span class=\"ov\">A<\/span>·C + B·C.", "o": ["A·B + <span class=\"ov\">A<\/span>·C", "A + C", "B + C", "A·B + C"], "a": [0], "e": "B·C = B·C·(A + <span class=\"ov\">A<\/span>) = A·B·C + <span class=\"ov\">A<\/span>·B·C. A·B·C se absorbe en A·B y <span class=\"ov\">A<\/span>·B·C en <span class=\"ov\">A<\/span>·C [absorción]. Queda A·B + <span class=\"ov\">A<\/span>·C.", "sec": "Simplificación", "id": "q46"}, {"t": "one", "p": "Simplifique F = A + <span class=\"ov\">A<\/span>·B + <span class=\"ov\">A<\/span>·<span class=\"ov\">B<\/span>·C.", "o": ["A·B·C", "A + B", "A + B + C", "A"], "a": [2], "e": "A + <span class=\"ov\">A<\/span>·B = A + B [simplificación]. Luego (A + B) + <span class=\"ov\">A<\/span><span class=\"ov\">B<\/span>C: <span class=\"ov\">A<\/span><span class=\"ov\">B<\/span> = <span class=\"ov\">A + B<\/span> [De Morgan], y X + <span class=\"ov\">X<\/span>·C = X + C. Resultado A + B + C.", "sec": "Simplificación", "id": "q47"}, {"t": "one", "p": "Simplifique por Karnaugh F(A, B, C) = Σm(0, 1, 2, 3, 7). La expresión mínima es:", "o": ["A + B·C", "<span class=\"ov\">A<\/span>·B·C", "<span class=\"ov\">A<\/span> + B·C", "<span class=\"ov\">A<\/span> + C"], "a": [2], "e": "Grupo de 4 con A = 0 (m0–m3) → Ā; grupo de 2 m3–m7 → B·C.", "sec": "Karnaugh", "id": "q48"}, {"t": "one", "p": "Simplifique por Karnaugh F(A, B, C) = Σm(0, 2, 4, 6). La expresión mínima es:", "o": ["<span class=\"ov\">A<\/span>·<span class=\"ov\">C<\/span>", "<span class=\"ov\">C<\/span>", "C", "A·<span class=\"ov\">C<\/span>"], "a": [1], "e": "Las cuatro celdas con C = 0 forman un grupo de 4 → C̄.", "sec": "Karnaugh", "id": "q49"}, {"t": "one", "p": "Simplifique por Karnaugh F(A, B, C, D) = Σm(0, 2, 8, 10). La expresión mínima es:", "o": ["<span class=\"ov\">B<\/span>·<span class=\"ov\">D<\/span>", "<span class=\"ov\">B<\/span>·D", "<span class=\"ov\">A<\/span>·<span class=\"ov\">D<\/span>", "<span class=\"ov\">A<\/span>·<span class=\"ov\">B<\/span>"], "a": [0], "e": "Las cuatro esquinas del mapa son adyacentes: B = 0 y D = 0 → B̄·D̄.", "sec": "Karnaugh", "id": "q50"}, {"t": "one", "p": "Simplifique por Karnaugh F(A, B, C, D) = Σm(1, 3, 5, 7, 9, 11, 13, 15). La expresión mínima es:", "o": ["C·D", "D", "A·D", "<span class=\"ov\">D<\/span>"], "a": [1], "e": "Grupo de 8: todas las celdas con D = 1.", "sec": "Karnaugh", "id": "q51"}, {"t": "one", "p": "Simplifique por Karnaugh F(A, B, C, D) = Σm(5, 7, 13, 15). La expresión mínima es:", "o": ["B + D", "A·B·D", "B·<span class=\"ov\">D<\/span>", "B·D"], "a": [3], "e": "Grupo de 4 en el centro del mapa: B = 1 y D = 1.", "sec": "Karnaugh", "id": "q52"}, {"t": "one", "p": "Simplifique por Karnaugh F(A, B, C, D) = Σm(0, 1, 2, 3, 4, 5, 6, 7, 8, 9). La expresión mínima es:", "o": ["<span class=\"ov\">A<\/span> + <span class=\"ov\">C<\/span>", "<span class=\"ov\">A<\/span>·<span class=\"ov\">B<\/span>", "<span class=\"ov\">A<\/span> + <span class=\"ov\">B<\/span>·<span class=\"ov\">C<\/span>", "A + <span class=\"ov\">B<\/span>·<span class=\"ov\">C<\/span>"], "a": [2], "e": "Grupo de 8 (A = 0) → Ā; grupo de 4 m0, m1, m8, m9 → B̄·C̄.", "sec": "Karnaugh", "id": "q53"}, {"t": "one", "p": "Simplifique por Karnaugh F(A, B, C, D) = Σm(2, 3, 6, 7) + d(10, 11, 14, 15). La expresión mínima es:", "o": ["B·C", "C·D", "C", "A + C"], "a": [2], "e": "Sin las X el grupo sería Ā·C (m2, m3, m6, m7). Usando las X de m10, m11, m14 y m15 se forma un grupo de 8 con C = 1 → F = C.", "sec": "Karnaugh", "id": "q54"}, {"t": "many", "p": "Sobre los mapas de Karnaugh. Seleccione una o más de una:", "o": ["Conviene formar los grupos lo más grandes posible.", "Los grupos deben tener 1, 2, 4, 8… celdas (potencias de 2).", "Los bordes opuestos del mapa también son adyacentes.", "Las condiciones de no importa (X) deben incluirse siempre en algún grupo.", "Celdas adyacentes difieren en un solo bit, por eso los ejes se ordenan 00, 01, 11, 10 (Gray)."], "a": [0, 1, 2, 4], "e": "Las X se usan solo si ayudan a agrandar un grupo.", "sec": "Karnaugh", "id": "q55"}, {"t": "text", "p": "En un mapa de Karnaugh de 4 variables, ¿cuántas variables elimina un grupo de 4 celdas?", "a": ["2"], "e": "Un grupo de 2ᵏ celdas elimina k variables: 4 = 2² → quedan 2 literales.", "ph": "Ej: 1", "sec": "Karnaugh", "id": "q56"}, {"t": "text", "p": "¿Cuántas celdas tiene un mapa de Karnaugh de 4 variables?", "a": ["16"], "e": "2⁴ = 16.", "ph": "Ej: 8", "sec": "Karnaugh", "id": "q57"}, {"t": "many", "p": "¿Cuáles son compuertas universales (con ellas solas se implementa cualquier función)? Seleccione una o más de una:", "o": ["XOR", "NOR", "AND", "NAND"], "a": [1, 3], "e": "", "sec": "NAND, NOR y tablas", "id": "q58"}, {"t": "one", "p": "Para obtener un inversor (NOT) con una compuerta NAND:", "o": ["Se necesitan dos NAND", "Se conecta una entrada a 0", "Se unen sus dos entradas", "No es posible"], "a": [2], "e": "<span class=\"ov\">A·A<\/span> = <span class=\"ov\">A<\/span> [idempotencia].", "sec": "NAND, NOR y tablas", "id": "q59"}, {"t": "text", "p": "¿Cuántas compuertas NAND de 2 entradas se necesitan para implementar una OR de 2 entradas?", "a": ["3"], "e": "A + B = <span class=\"ov\"><span class=\"ov\">A<\/span>·<span class=\"ov\">B<\/span><\/span>: dos NAND como inversores (para <span class=\"ov\">A<\/span> y <span class=\"ov\">B<\/span>) y una NAND final.", "ph": "Ej: 2", "sec": "NAND, NOR y tablas", "id": "q60"}, {"t": "text", "p": "¿Cuántas compuertas NAND de 2 entradas se necesitan para implementar una AND?", "a": ["2"], "e": "A·B = <span class=\"ov\"><span class=\"ov\">A·B<\/span><\/span>: una NAND y otra NAND como inversor.", "ph": "Ej: 1", "sec": "NAND, NOR y tablas", "id": "q61"}, {"t": "one", "p": "F = A·B + C·D implementada solo con NAND es:", "o": ["<span class=\"ov\"><span class=\"ov\">A·B<\/span>·<span class=\"ov\">C·D<\/span><\/span>", "<span class=\"ov\">A·B·C·D<\/span>", "<span class=\"ov\">A·B<\/span> + <span class=\"ov\">C·D<\/span>", "<span class=\"ov\"><span class=\"ov\">A+B<\/span>+<span class=\"ov\">C+D<\/span><\/span>"], "a": [0], "e": "Doble negación y De Morgan: A·B + C·D = <span class=\"ov\"><span class=\"ov\">A·B + C·D<\/span><\/span> = <span class=\"ov\"><span class=\"ov\">A·B<\/span>·<span class=\"ov\">C·D<\/span><\/span>. Suma de productos → NAND–NAND.", "sec": "NAND, NOR y tablas", "id": "q62"}, {"t": "one", "p": "F = (A + B)·(C + D) implementada solo con NOR es:", "o": ["<span class=\"ov\">A+B<\/span>·<span class=\"ov\">C+D<\/span>", "<span class=\"ov\"><span class=\"ov\">A·B<\/span>·<span class=\"ov\">C·D<\/span><\/span>", "<span class=\"ov\"><span class=\"ov\">A+B<\/span> + <span class=\"ov\">C+D<\/span><\/span>", "<span class=\"ov\">A+B+C+D<\/span>"], "a": [2], "e": "Producto de sumas → NOR–NOR, por la misma idea de doble negación y De Morgan.", "sec": "NAND, NOR y tablas", "id": "q63"}, {"t": "one", "p": "Una compuerta NAND tiene como entradas A y la salida de una NOR de B y C. Su salida es:", "o": ["<span class=\"ov\">A<\/span> + B + C", "A + <span class=\"ov\">B<\/span>·<span class=\"ov\">C<\/span>", "A·<span class=\"ov\">B + C<\/span>", "<span class=\"ov\">A<\/span>·(B + C)"], "a": [0], "e": "<span class=\"ov\">A·<span class=\"ov\">B + C<\/span><\/span> = <span class=\"ov\">A<\/span> + <span class=\"ov\"><span class=\"ov\">B + C<\/span><\/span> = <span class=\"ov\">A<\/span> + B + C [De Morgan e involutiva].", "sec": "NAND, NOR y tablas", "id": "q64"}, {"t": "table", "p": "Complete la tabla de verdad de F = A·<span class=\"ov\">B<\/span> + C:", "h": ["A", "B", "C", "F"], "rows": [[{"v": "0"}, {"v": "0"}, {"v": "0"}, {"b": 0}], [{"v": "0"}, {"v": "0"}, {"v": "1"}, {"b": 1}], [{"v": "0"}, {"v": "1"}, {"v": "0"}, {"b": 2}], [{"v": "0"}, {"v": "1"}, {"v": "1"}, {"b": 3}], [{"v": "1"}, {"v": "0"}, {"v": "0"}, {"b": 4}], [{"v": "1"}, {"v": "0"}, {"v": "1"}, {"b": 5}], [{"v": "1"}, {"v": "1"}, {"v": "0"}, {"b": 6}], [{"v": "1"}, {"v": "1"}, {"v": "1"}, {"b": 7}]], "ch": ["0", "1"], "a": ["0", "1", "0", "1", "1", "1", "0", "1"], "e": "F = 1 cuando C = 1, o cuando A = 1 y B = 0.", "sec": "NAND, NOR y tablas", "id": "q65"}, {"t": "table", "p": "Complete la tabla de verdad de F = A ⊕ B ⊕ C:", "h": ["A", "B", "C", "F"], "rows": [[{"v": "0"}, {"v": "0"}, {"v": "0"}, {"b": 0}], [{"v": "0"}, {"v": "0"}, {"v": "1"}, {"b": 1}], [{"v": "0"}, {"v": "1"}, {"v": "0"}, {"b": 2}], [{"v": "0"}, {"v": "1"}, {"v": "1"}, {"b": 3}], [{"v": "1"}, {"v": "0"}, {"v": "0"}, {"b": 4}], [{"v": "1"}, {"v": "0"}, {"v": "1"}, {"b": 5}], [{"v": "1"}, {"v": "1"}, {"v": "0"}, {"b": 6}], [{"v": "1"}, {"v": "1"}, {"v": "1"}, {"b": 7}]], "ch": ["0", "1"], "a": ["0", "1", "1", "0", "1", "0", "0", "1"], "e": "Vale 1 cuando la cantidad de unos es impar: es el generador de paridad par.", "sec": "NAND, NOR y tablas", "id": "q66"}], "secs": ["Sistemas y señales", "Álgebra de Boole", "Formas normales", "Simplificación", "Karnaugh", "NAND, NOR y tablas"]};
+const KEY = "arqui-bank-" + DATA.id;
+const KIND = {one:"Seleccione una", many:"Seleccione una o más", match:"Relacione", table:"Complete la tabla", text:"Complete"};
+const L = "abcdefghijklmnopqrstuvwxyz";
+let st = {a:{}, r:{}};
+try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.a) st = s; } catch(e) {}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(st)); } catch(e) {} }
+let view = {sec:"all", filter:"all", sim:null};
+const byId = {}; DATA.qs.forEach(q => byId[q.id] = q);
+const list = document.getElementById("list");
+
+function el(tag, cls, html){ const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+function norm(s){ return String(s).toLowerCase().replace(/\s+/g,"").replace(/,/g,".").replace(/%$/,""); }
+function stripTags(h){ const d = document.createElement("div"); d.innerHTML = h; return d.textContent; }
+
+function build(q, i){
+  const card = el("article","q"); card.id = q.id;
+  const h = el("div","qh");
+  h.append(el("span","num", String(i+1).padStart(2,"0")), el("span","sec", q.sec), el("span","kind", KIND[q.t]));
+  card.append(h, el("p","prompt", q.p));
+  const body = el("div","body"); card.append(body);
+  const ans = st.a[q.id];
+  if (q.t === "one" || q.t === "many"){
+    const box = el("div","opts");
+    q.o.forEach((o, k) => {
+      const lab = el("label","opt");
+      const inp = document.createElement("input");
+      inp.type = q.t === "one" ? "radio" : "checkbox"; inp.name = q.id; inp.value = k; inp.id = q.id + "-o" + k;
+      if (ans && ans.includes(k)) { inp.checked = true; lab.classList.add("sel"); }
+      inp.addEventListener("change", () => {
+        const v = [...box.querySelectorAll("input")].filter(x => x.checked).map(x => +x.value);
+        st.a[q.id] = v; delete st.r[q.id]; save(); paint(q); score();
+      });
+      lab.append(inp, el("span","L", L[k] + "."), el("span","", o));
+      box.append(lab);
+    });
+    body.append(box);
+  } else if (q.t === "match"){
+    if (q.lt){
+      const ol = el("ul","optlist");
+      q.ch.forEach((c,k) => ol.append(el("li","", `<span>${L[k]}.</span> ${c}`)));
+      body.append(el("p","sec","Opciones:"), ol);
+    }
+    const box = el("div","mrows");
+    q.rows.forEach((r, k) => {
+      const row = el("div","mrow");
+      const s = document.createElement("select"); s.id = q.id + "-m" + k;
+      s.append(new Option("Elegir…", ""));
+      q.ch.forEach((c, j) => s.append(new Option(q.lt ? L[j] + ". " + stripTags(c) : stripTags(c), j)));
+      if (ans && ans[k] != null && ans[k] !== "") s.value = ans[k];
+      s.addEventListener("change", () => {
+        const v = [...box.querySelectorAll("select")].map(x => x.value === "" ? "" : +x.value);
+        st.a[q.id] = v; delete st.r[q.id]; save(); paint(q); score();
+      });
+      row.append(el("div","ml", r), s);
+      box.append(row);
+    });
+    body.append(box);
+  } else if (q.t === "table"){
+    const w = el("div","tw"); const t = el("table","tbl");
+    const thead = el("thead"); const tr = el("tr");
+    q.h.forEach(x => tr.append(el("th","", x))); thead.append(tr); t.append(thead);
+    const tb = el("tbody");
+    q.rows.forEach(r => {
+      const row = el("tr");
+      r.forEach(c => {
+        if (c.b != null){
+          const td = el("td","blank");
+          const s = document.createElement("select"); s.id = q.id + "-t" + c.b; s.dataset.b = c.b;
+          s.append(new Option("·", ""));
+          q.ch.forEach(v => s.append(new Option(v, v)));
+          if (ans && ans[c.b]) s.value = ans[c.b];
+          s.addEventListener("change", () => {
+            const v = []; t.querySelectorAll("select").forEach(x => v[+x.dataset.b] = x.value);
+            st.a[q.id] = v; delete st.r[q.id]; save(); paint(q); score();
+          });
+          td.append(s); row.append(td);
+        } else row.append(el("td","", c.v));
+      });
+      tb.append(row);
+    });
+    t.append(tb); w.append(t); body.append(w);
+  } else if (q.t === "text"){
+    const inp = document.createElement("input"); inp.className = "tin"; inp.id = q.id + "-txt";
+    inp.placeholder = q.ph; inp.autocomplete = "off"; inp.spellcheck = false;
+    if (ans) inp.value = ans;
+    inp.addEventListener("input", () => { st.a[q.id] = inp.value; delete st.r[q.id]; save(); paint(q); score(); });
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") check(q); });
+    body.append(inp);
+  }
+  const f = el("div","qf");
+  const b1 = el("button","btn primary","Corregir"); b1.type = "button"; b1.addEventListener("click", () => check(q));
+  const b2 = el("button","btn","Borrar"); b2.type = "button"; b2.addEventListener("click", () => clearQ(q));
+  const v = el("span","verdict");
+  f.append(b1, b2, v);
+  card.append(f);
+  const ex = el("div","expl"); ex.hidden = true; card.append(ex);
+  return card;
+}
+
+function grade(q){
+  const a = st.a[q.id];
+  if (q.t === "one" || q.t === "many"){
+    const s = (a || []).slice().sort((x,y)=>x-y);
+    return s.length === q.a.length && s.every((x,i) => x === q.a[i]);
+  }
+  if (q.t === "match") return !!a && q.a.every((x,i) => a[i] === x);
+  if (q.t === "table") return !!a && q.a.every((x,i) => a[i] === x);
+  if (q.t === "text") return !!a && q.a.some(x => norm(x) === norm(a));
+}
+function answered(q){
+  const a = st.a[q.id];
+  if (a == null) return false;
+  if (q.t === "text") return a.trim() !== "";
+  return Array.isArray(a) && a.some(x => x !== "" && x != null);
+}
+function check(q){ st.r[q.id] = grade(q) ? 1 : 0; save(); paint(q); score(); }
+function clearQ(q){
+  delete st.a[q.id]; delete st.r[q.id]; save();
+  const old = document.getElementById(q.id);
+  const idx = DATA.qs.indexOf(q);
+  const n = build(q, idx); old.replaceWith(n); paint(q); score(); applyView();
+}
+function correctText(q){
+  if (q.t === "one" || q.t === "many") return q.a.map(k => L[k]).join(", ");
+  if (q.t === "text") return q.a[0];
+  return "";
+}
+function paint(q){
+  const card = document.getElementById(q.id); if (!card) return;
+  const r = st.r[q.id]; const done = r === 0 || r === 1;
+  card.classList.toggle("is-ok", r === 1); card.classList.toggle("is-bad", r === 0);
+  const a = st.a[q.id];
+  if (q.t === "one" || q.t === "many"){
+    card.querySelectorAll(".opt").forEach((lab, k) => {
+      const chosen = !!(a && a.includes(k));
+      lab.classList.toggle("sel", chosen && !done);
+      lab.classList.toggle("right", done && q.a.includes(k));
+      lab.classList.toggle("wrong", done && chosen && !q.a.includes(k));
+    });
+  } else if (q.t === "match"){
+    card.querySelectorAll(".mrow").forEach((row, k) => {
+      row.querySelectorAll(".fix").forEach(x => x.remove());
+      const ok = a && a[k] === q.a[k];
+      row.classList.toggle("right", done && ok); row.classList.toggle("wrong", done && !ok);
+      if (done && !ok) row.append(el("div","fix","Correcta: " + (q.lt ? L[q.a[k]] + ". " : "") + q.ch[q.a[k]]));
+    });
+  } else if (q.t === "table"){
+    card.querySelectorAll("td.blank").forEach(td => {
+      const s = td.querySelector("select"); const b = +s.dataset.b;
+      td.querySelectorAll(".corr").forEach(x => x.remove());
+      const ok = a && a[b] === q.a[b];
+      td.classList.toggle("right", done && ok); td.classList.toggle("wrong", done && !ok);
+      if (done && !ok) td.append(el("span","corr", q.a[b]));
+    });
+  } else if (q.t === "text"){
+    const inp = card.querySelector(".tin");
+    inp.classList.toggle("right", r === 1); inp.classList.toggle("wrong", r === 0);
+  }
+  const v = card.querySelector(".verdict");
+  v.className = "verdict" + (r === 1 ? " ok" : r === 0 ? " bad" : "");
+  v.textContent = r === 1 ? "Correcta" : r === 0 ? "Incorrecta" : "";
+  const ex = card.querySelector(".expl");
+  ex.hidden = !done;
+  if (done){
+    const ct = correctText(q);
+    ex.innerHTML = (ct ? `<p class="ans">Respuesta: ${ct}</p>` : "") + (q.e ? `<p>${q.e}</p>` : "");
+    if (!ex.innerHTML) ex.hidden = true;
+  }
+}
+function score(){
+  const n = DATA.qs.length;
+  let ok = 0, bad = 0;
+  DATA.qs.forEach(q => { if (st.r[q.id] === 1) ok++; else if (st.r[q.id] === 0) bad++; });
+  const pend = n - ok - bad;
+  document.getElementById("score").innerHTML =
+    `<span class="okc"><b>${ok}</b> correctas</span><span class="badc"><b>${bad}</b> incorrectas</span><span class="mut"><b>${pend}</b> sin corregir · ${n} en total</span>` +
+    `<span class="meter" aria-hidden="true"><i class="m1" style="width:${ok/n*100}%"></i><i class="m2" style="width:${bad/n*100}%"></i></span>`;
+  if (view.filter !== "all") applyView();
+}
+function applyView(){
+  let shown = 0;
+  DATA.qs.forEach(q => {
+    const c = document.getElementById(q.id);
+    let vis = view.sec === "all" || q.sec === view.sec;
+    if (view.sim) vis = view.sim.includes(q.id);
+    const r = st.r[q.id];
+    if (view.filter === "todo") vis = vis && r == null;
+    if (view.filter === "bad") vis = vis && r === 0;
+    if (view.filter === "ok") vis = vis && r === 1;
+    c.hidden = !vis; if (vis) shown++;
+  });
+  document.getElementById("empty").hidden = shown > 0;
+}
+function chips(){
+  const box = document.getElementById("chips"); box.innerHTML = "";
+  const mk = (label, key, n) => {
+    const b = el("button","chip", `${label}<small>${n}</small>`); b.type = "button";
+    b.setAttribute("aria-pressed", String(view.sec === key && !view.sim));
+    b.addEventListener("click", () => { view.sec = key; view.sim = null; chips(); applyView(); });
+    box.append(b);
+  };
+  mk("Todas", "all", DATA.qs.length);
+  DATA.secs.forEach(s => mk(s, s, DATA.qs.filter(q => q.sec === s).length));
+  if (view.sim){ const b = el("button","chip","Simulacro<small>14</small>"); b.type="button"; b.setAttribute("aria-pressed","true"); box.append(b); }
+}
+function shuffleArr(a){ for (let i = a.length-1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; } return a; }
+
+DATA.qs.forEach((q,i) => { list.append(build(q,i)); });
+DATA.qs.forEach(paint);
+chips(); score(); applyView();
+
+document.getElementById("filter").addEventListener("change", e => { view.filter = e.target.value; applyView(); });
+document.getElementById("shuffle").addEventListener("click", () => {
+  const cards = shuffleArr([...list.children]); cards.forEach(c => list.append(c));
+});
+document.getElementById("sim").addEventListener("click", () => {
+  const pick = shuffleArr(DATA.qs.map(q => q.id)).slice(0, 14);
+  pick.forEach(id => { delete st.a[id]; delete st.r[id]; const q = byId[id]; const old = document.getElementById(id); old.replaceWith(build(q, DATA.qs.indexOf(q))); paint(q); });
+  save();
+  view.sim = pick; view.filter = "all"; document.getElementById("filter").value = "all";
+  pick.forEach(id => list.append(document.getElementById(id)));
+  chips(); score(); applyView(); window.scrollTo({top:0});
+});
+document.getElementById("checkall").addEventListener("click", () => {
+  DATA.qs.forEach(q => { const c = document.getElementById(q.id); if (!c.hidden && answered(q)) { st.r[q.id] = grade(q) ? 1 : 0; paint(q); } });
+  save(); score();
+});
+let armed = false;
+const rb = document.getElementById("reset");
+rb.addEventListener("click", () => {
+  if (!armed){ armed = true; rb.textContent = "¿Borrar todo? Tocá de nuevo"; setTimeout(() => { armed = false; rb.textContent = "Reiniciar"; }, 3000); return; }
+  st = {a:{}, r:{}}; save(); list.innerHTML = ""; view = {sec:"all", filter:"all", sim:null};
+  document.getElementById("filter").value = "all";
+  DATA.qs.forEach((q,i) => list.append(build(q,i))); DATA.qs.forEach(paint);
+  armed = false; rb.textContent = "Reiniciar"; chips(); score(); applyView();
+});
+</script>
+
+</body>
+</html>

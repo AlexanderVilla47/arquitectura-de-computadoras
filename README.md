@@ -351,4 +351,17 @@ Planificación de 16 semanas.
 - [ranking temas 2019 a 2022](Recursos%20Extras/ranking%20temas%20%202019%20a%202022.pdf)
 
 </details>
+
+<details>
+<summary><b>Cuestionarios</b> — _Preguntas para practicar el parcial_</summary>
+
+- [Introducción y generaciones](Recursos%20Extras/Cuestionarios/01-introduccion.html)
+- [Sistemas numéricos](Recursos%20Extras/Cuestionarios/02-sistemas-numericos.html)
+- [Codificación y errores](Recursos%20Extras/Cuestionarios/03-codificacion.html)
+- [Álgebra de Boole](Recursos%20Extras/Cuestionarios/04-algebra-de-boole.html)
+- [Circuitos combinacionales](Recursos%20Extras/Cuestionarios/05-combinacionales.html)
+- [Circuitos secuenciales](Recursos%20Extras/Cuestionarios/06-secuenciales.html)
+- [Parciales anteriores](Recursos%20Extras/Cuestionarios/07-parciales-anteriores.html)
+
+</details>
 <!-- INDICE:FIN -->
