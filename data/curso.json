@@ -1,9 +1,10 @@
 {
   "curso": "Arquitectura de Computadoras",
   "subtitulo": "UTN FRRE · Dictado Especial · Segundo Cuatrimestre 2026",
-  "generado": "2026-09-24T22:10:33.002Z",
+  "generado": "2026-09-24T22:52:45.714Z",
   "pendientes": [
-    "_Entrada/arqui-preguntas-c1.zip"
+    "_Entrada/arqui-preguntas-c1.zip",
+    "_Entrada/introduccion.html"
   ],
   "secciones": [
     {
@@ -1091,9 +1092,9 @@
           "archivo": "Recursos Extras/Cuestionarios/01-introduccion.html",
           "ext": "html",
           "unidad": "U1",
-          "descripcion": "Definiciones de computador, estructura, niveles de Tanenbaum, clasificación, generaciones, Ley de Moore y sistemas operativos.",
-          "preguntas": 73,
-          "temas": 7
+          "descripcion": "Definiciones, estructura y ciclo de la máquina, CPU y flujo de datos, niveles de Tanenbaum, clasificación, generaciones en detalle, Ley de Moore, sistemas operativos y sistemas de información.",
+          "preguntas": 142,
+          "temas": 9
         },
         {
           "tipo": "cuestionario",
