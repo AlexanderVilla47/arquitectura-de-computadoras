@@ -147,6 +147,28 @@ const DATA = {"id": "boole", "qs": [{"t": "one", "p": "Un sistema digital es cua
 const KEY = "arqui-bank-" + DATA.id;
 const KIND = {one:"Seleccione una", many:"Seleccione una o más", match:"Relacione", table:"Complete la tabla", text:"Complete"};
 const L = "abcdefghijklmnopqrstuvwxyz";
+/* Orden en que se ofrecen las opciones de un "relacione". Sin esto salen en el
+   mismo orden que las filas y la respuesta correcta termina siendo "la primera
+   con la primera": la pregunta se contesta sin leerla. Barajamos solo lo que se
+   ve y dejamos el value en el indice real, asi ni la correccion ni el progreso
+   guardado se enteran. La semilla es el id de la pregunta: deja de ser la
+   identidad, pero tampoco baila al recargar ni al cambiar de filtro. */
+const ORD = {};
+function ordenCh(q){
+  if (ORD[q.id]) return ORD[q.id];
+  const idx = q.ch.map((_, j) => j);
+  let h = 2166136261;
+  for (let i = 0; i < q.id.length; i++){ h ^= q.id.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+  for (let i = idx.length - 1; i > 0; i--){
+    h = (Math.imul(h, 1103515245) + 12345) >>> 0;
+    const j = h % (i + 1);
+    [idx[i], idx[j]] = [idx[j], idx[i]];
+  }
+  /* Si el barajado devolvio justo el orden original, lo corremos uno: la gracia
+     es que no se pueda contestar por posicion. */
+  if (idx.length > 1 && idx.every((v, i) => v === i)) idx.push(idx.shift());
+  return (ORD[q.id] = idx);
+}
 let st = {a:{}, r:{}};
 try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.a) st = s; } catch(e) {}
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(st)); } catch(e) {} }
@@ -191,7 +213,7 @@ function build(q, i){
       const row = el("div","mrow");
       const s = document.createElement("select"); s.id = q.id + "-m" + k;
       s.append(new Option("Elegir…", ""));
-      q.ch.forEach((c, j) => s.append(new Option(q.lt ? L[j] + ". " + stripTags(c) : stripTags(c), j)));
+      ordenCh(q).forEach(j => s.append(new Option(q.lt ? L[j] + ". " + stripTags(q.ch[j]) : stripTags(q.ch[j]), j)));
       if (ans && ans[k] != null && ans[k] !== "") s.value = ans[k];
       s.addEventListener("change", () => {
         const v = [...box.querySelectorAll("select")].map(x => x.value === "" ? "" : +x.value);
