@@ -164,9 +164,15 @@ function ordenCh(q){
     const j = h % (i + 1);
     [idx[i], idx[j]] = [idx[j], idx[i]];
   }
-  /* Si el barajado devolvio justo el orden original, lo corremos uno: la gracia
-     es que no se pueda contestar por posicion. */
-  if (idx.length > 1 && idx.every((v, i) => v === i)) idx.push(idx.shift());
+  /* Ninguna opcion puede quedar en su lugar original. La letra sale de la
+     posicion, asi que un punto fijo devuelve la letra de siempre a la opcion
+     de siempre y vuelve a delatar la respuesta. */
+  for (let i = 0; i < idx.length; i++){
+    if (idx[i] === i){
+      const j = i === idx.length - 1 ? 0 : i + 1;
+      const t = idx[i]; idx[i] = idx[j]; idx[j] = t;
+    }
+  }
   return (ORD[q.id] = idx);
 }
 let st = {a:{}, r:{}};
@@ -205,7 +211,7 @@ function build(q, i){
   } else if (q.t === "match"){
     if (q.lt){
       const ol = el("ul","optlist");
-      q.ch.forEach((c,k) => ol.append(el("li","", `<span>${L[k]}.</span> ${c}`)));
+      ordenCh(q).forEach((j,k) => ol.append(el("li","", `<span>${L[k]}.</span> ${q.ch[j]}`)));
       body.append(el("p","sec","Opciones:"), ol);
     }
     const box = el("div","mrows");
@@ -213,7 +219,7 @@ function build(q, i){
       const row = el("div","mrow");
       const s = document.createElement("select"); s.id = q.id + "-m" + k;
       s.append(new Option("Elegir…", ""));
-      ordenCh(q).forEach(j => s.append(new Option(q.lt ? L[j] + ". " + stripTags(q.ch[j]) : stripTags(q.ch[j]), j)));
+      ordenCh(q).forEach((j,k) => s.append(new Option(q.lt ? L[k] + ". " + stripTags(q.ch[j]) : stripTags(q.ch[j]), j)));
       if (ans && ans[k] != null && ans[k] !== "") s.value = ans[k];
       s.addEventListener("change", () => {
         const v = [...box.querySelectorAll("select")].map(x => x.value === "" ? "" : +x.value);
@@ -310,7 +316,7 @@ function paint(q){
       row.querySelectorAll(".fix").forEach(x => x.remove());
       const ok = a && a[k] === q.a[k];
       row.classList.toggle("right", done && ok); row.classList.toggle("wrong", done && !ok);
-      if (done && !ok) row.append(el("div","fix","Correcta: " + (q.lt ? L[q.a[k]] + ". " : "") + q.ch[q.a[k]]));
+      if (done && !ok) row.append(el("div","fix","Correcta: " + (q.lt ? L[ordenCh(q).indexOf(q.a[k])] + ". " : "") + q.ch[q.a[k]]));
     });
   } else if (q.t === "table"){
     card.querySelectorAll("td.blank").forEach(td => {
